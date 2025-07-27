@@ -3,96 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TechTonic Dashboard ⚡️</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>TechTonic Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Nunito', sans-serif;
-      color: #222;
-      padding: 20px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: background 0.5s ease;
-    }
-    header {
-      max-width: 900px;
-      width: 100%;
-      margin-bottom: 30px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-    }
-    header .avatar {
-      font-size: 3.5rem;
-      user-select: none;
-    }
-    h1 {
-      font-family: 'Fredoka One', cursive;
-      font-size: 3rem;
-      color: #ffda6a;
+      background: #f0f4ff;
       margin: 0;
-      text-shadow: 2px 2px 5px #000a;
+      padding: 0 20px 40px;
+      color: #222;
+      min-height: 100vh;
     }
-    .info-box {
-      background: #fff;
-      padding: 25px 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
-      max-width: 700px;
-      width: 100%;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    button {
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: #2563eb;
       color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 25px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      box-shadow: 0 5px 15px #2563ebcc;
-      transition: background 0.3s ease;
+      padding: 15px 30px;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 15px rgb(37 99 235 / 0.5);
+      margin-bottom: 40px;
     }
-    button:hover {
-      background: #1e40af;
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      user-select: none;
+    }
+    .avatar {
+      font-size: 3rem;
+      background: white;
+      color: #2563eb;
+      padding: 10px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+    }
+    .nav-buttons button {
+      background: white;
+      border: none;
+      color: #2563eb;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 10px 20px;
+      margin-left: 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgb(37 99 235 / 0.3);
+      transition: background-color 0.3s ease;
+    }
+    .nav-buttons button:hover {
+      background-color: #dbeafe;
+    }
+
+    /* Stats cards container */
+    .stats-container {
+      display: flex;
+      gap: 25px;
+      max-width: 900px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+      padding: 25px 35px;
+      flex: 1 1 250px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #2563eb;
+    }
+    .stat-card span {
+      display: block;
+      margin-top: 10px;
+      font-weight: 400;
+      font-size: 1rem;
+      color: #444;
     }
   </style>
 </head>
 <body>
-<nav class="top-nav">
-  <ul>
-    <li><a href="index.html">🏠 Home</a></li>
-    <li><a href="dashboard.html">📊 Dashboard</a></li>
-    <li><a href="lessons.html">📚 Lessons</a></li>
-    <li><a href="challenges.html">🏆 Challenges</a></li>
-    <li><a href="profile.html">👤 Profile</a></li>
-    <li><a href="#" id="logout-link">🔐 Logout</a></li>
-  </ul>
-</nav>
 
-  <header>
-    <div class="avatar" id="avatar-display">😎</div>
-    <h1>Welcome to TechTonic, <span id="display-name">Coder</span>! 🎉</h1>
+  <header class="dashboard-header">
+    <div class="user-info">
+      <div class="avatar" id="avatar-display">😎</div>
+      <div id="nickname-display">Coder</div>
+    </div>
+    <nav class="nav-buttons">
+      <button id="profile-btn">👤 Profile</button>
+      <button id="lessons-btn">📚 Lessons</button>
+      <button id="logout-btn">🔐 Logout</button>
+    </nav>
   </header>
 
-  <div class="info-box">
-    <h2>Your Stats 📊</h2>
-    <p>🔥 Current Streak: <strong id="streak-count">0</strong> days</p>
-    <p>🏅 Badges Earned: <strong id="badge-count">0</strong></p>
-    <p>💻 Challenges Completed: <strong id="project-count">0</strong></p>
-  </div>
-
-  <button id="logout-btn">Log Out 🔐</button>
+  <main>
+    <div class="stats-container">
+      <div class="stat-card">
+        <div id="streak-count">0</div>
+        <span>🔥 Current Streak</span>
+      </div>
+      <div class="stat-card">
+        <div id="badge-count">0</div>
+        <span>🏅 Badges Earned</span>
+      </div>
+      <div class="stat-card">
+        <div id="project-count">0</div>
+        <span>💻 Challenges Completed</span>
+      </div>
+    </div>
+  </main>
 
   <script>
     const avatarDisplay = document.getElementById('avatar-display');
-    const displayNameSpan = document.getElementById('display-name');
-    const logoutBtn = document.getElementById('logout-btn');
+    const nicknameDisplay = document.getElementById('nickname-display');
 
     const loggedInUser = localStorage.getItem('loggedInUser');
 
@@ -102,20 +130,15 @@
     }
 
     // Load profile data
-    let profiles = JSON.parse(localStorage.getItem('techtonicProfiles')) || {};
-    let userProfile = profiles[loggedInUser] || {};
+    const profiles = JSON.parse(localStorage.getItem('techtonicProfiles')) || {};
+    const userProfile = profiles[loggedInUser] || {};
 
-    // Set avatar and display name (nickname fallback to username)
     avatarDisplay.textContent = userProfile.avatar || '😎';
-    displayNameSpan.textContent = userProfile.displayName || loggedInUser;
-
-    // Apply theme color background gradient or default
-    const themeColor = userProfile.themeColor || '#6ee7b7';
-    document.body.style.background = `linear-gradient(135deg, ${themeColor} 0%, #3b82f6 100%)`;
+    nicknameDisplay.textContent = userProfile.displayName || loggedInUser;
 
     // Load progress data
-    let progress = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
-    let userProgress = progress[loggedInUser] || {};
+    const progress = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
+    const userProgress = progress[loggedInUser] || {};
 
     // Count completed challenges
     let completedCount = 0;
@@ -123,24 +146,24 @@
       if (userProgress[challengeId]) completedCount++;
     }
 
-    // Update stats dynamically with emojis
     document.getElementById('project-count').textContent = completedCount;
     document.getElementById('badge-count').textContent = Math.floor(completedCount / 2);
     document.getElementById('streak-count').textContent = completedCount;
 
-    logoutBtn.addEventListener('click', () => {
+    // Buttons navigation
+    document.getElementById('profile-btn').addEventListener('click', () => {
+      window.location.href = 'profile.html';
+    });
+
+    document.getElementById('lessons-btn').addEventListener('click', () => {
+      window.location.href = 'lessons.html';
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
       localStorage.removeItem('loggedInUser');
       alert('Logged out successfully! 👋');
       window.location.href = 'index.html';
     });
-
-  document.getElementById('logout-link')?.addEventListener('click', e => {
-  e.preventDefault();
-  localStorage.removeItem('loggedInUser');
-  alert('Logged out successfully! 👋');
-  window.location.href = 'index.html';
-});
-
   </script>
 
 </body>
