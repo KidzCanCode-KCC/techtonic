@@ -8,25 +8,33 @@
   <style>
     body {
       font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #6ee7b7 0%, #3b82f6 100%);
       color: #222;
       padding: 20px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      transition: background 0.5s ease;
     }
     header {
       max-width: 900px;
       width: 100%;
       margin-bottom: 30px;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    header .avatar {
+      font-size: 3.5rem;
+      user-select: none;
     }
     h1 {
       font-family: 'Fredoka One', cursive;
       font-size: 3rem;
       color: #ffda6a;
-      margin-bottom: 10px;
+      margin: 0;
       text-shadow: 2px 2px 5px #000a;
     }
     .info-box {
@@ -58,7 +66,8 @@
 <body>
 
   <header>
-    <h1>Welcome to TechTonic, <span id="username-display">Coder</span>! 🎉</h1>
+    <div class="avatar" id="avatar-display">😎</div>
+    <h1>Welcome to TechTonic, <span id="display-name">Coder</span>! 🎉</h1>
   </header>
 
   <div class="info-box">
@@ -71,17 +80,28 @@
   <button id="logout-btn">Log Out 🔐</button>
 
   <script>
-    const usernameDisplay = document.getElementById('username-display');
+    const avatarDisplay = document.getElementById('avatar-display');
+    const displayNameSpan = document.getElementById('display-name');
     const logoutBtn = document.getElementById('logout-btn');
 
     const loggedInUser = localStorage.getItem('loggedInUser');
 
-    if (loggedInUser) {
-      usernameDisplay.textContent = loggedInUser;
-    } else {
+    if (!loggedInUser) {
       alert('Please log in first. 🚪');
       window.location.href = 'index.html';
     }
+
+    // Load profile data
+    let profiles = JSON.parse(localStorage.getItem('techtonicProfiles')) || {};
+    let userProfile = profiles[loggedInUser] || {};
+
+    // Set avatar and display name (nickname fallback to username)
+    avatarDisplay.textContent = userProfile.avatar || '😎';
+    displayNameSpan.textContent = userProfile.displayName || loggedInUser;
+
+    // Apply theme color background gradient or default
+    const themeColor = userProfile.themeColor || '#6ee7b7';
+    document.body.style.background = `linear-gradient(135deg, ${themeColor} 0%, #3b82f6 100%)`;
 
     // Load progress data
     let progress = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
