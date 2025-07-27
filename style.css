@@ -257,3 +257,39 @@ footer {
   font-size: 0.9rem;
   box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.05);
 }
+
+.navbar {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.2rem;
+  color: #ffda6a;
+  user-select: none;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+.nav-links li a:hover {
+  color: #ffda6a;
+}
