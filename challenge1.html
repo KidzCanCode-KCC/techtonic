@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechTonic Challenges 🏆</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
+      color: #222;
+      padding: 30px;
+      min-height: 100vh;
+    }
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #7c3aed;
+    }
+    ul {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      background: #fff;
+      margin-bottom: 15px;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    li:hover {
+      background: #ede9fe;
+    }
+    .status {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .completed {
+      color: #16a34a;
+    }
+    .incomplete {
+      color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Challenges 🏆</h1>
+  <ul id="challenge-list">
+    <!-- Challenges will be inserted here -->
+  </ul>
+
+  <script>
+    const loggedInUser = localStorage.getItem('loggedInUser');
+
+    if (!loggedInUser) {
+      alert('Please log in first.');
+      window.location.href = 'index.html';
+    }
+
+    // Challenge data
+    const challenges = [
+      { id: 'challenge1', title: 'Simple Math Puzzle 🧩', url: 'challenge1.html' },
+      { id: 'challenge2', title: 'Basic Python Print 🐍', url: 'challenge2.html' },
+      { id: 'challenge3', title: 'HTML Color Tags 🌈', url: 'challenge3.html' }
+      // Add more challenges here
+    ];
+
+    // Load progress
+    let progress = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
+
+    const list = document.getElementById('challenge-list');
+
+    challenges.forEach(challenge => {
+      const li = document.createElement('li');
+      const isCompleted = progress[loggedInUser] && progress[loggedInUser][challenge.id];
+
+      li.innerHTML = `
+        <span>${challenge.title}</span>
+        <span class="status ${isCompleted ? 'completed' : 'incomplete'}">
+          ${isCompleted ? '✅ Completed' : '❌ Incomplete'}
+        </span>
+      `;
+
+      li.addEventListener('click', () => {
+        window.location.href = challenge.url;
+      });
+
+      list.appendChild(li);
+    });
+  </script>
+</body>
+</html>
