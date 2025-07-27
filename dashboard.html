@@ -6,149 +6,173 @@
   <title>TechTonic Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: #f0f4ff;
-      margin: 0;
-      padding: 0 20px 40px;
-      color: #222;
-      min-height: 100vh;
-    }
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #2563eb;
-      color: white;
-      padding: 15px 30px;
-      border-radius: 0 0 15px 15px;
-      box-shadow: 0 4px 15px rgb(37 99 235 / 0.5);
-      margin-bottom: 40px;
-    }
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      font-weight: 700;
-      font-size: 1.4rem;
-      user-select: none;
-    }
-    .avatar {
-      font-size: 3rem;
-      background: white;
-      color: #2563eb;
-      padding: 10px;
-      border-radius: 50%;
-      box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
-    }
-    .nav-buttons button {
-      background: white;
-      border: none;
-      color: #2563eb;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 10px 20px;
-      margin-left: 12px;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 3px 8px rgb(37 99 235 / 0.3);
-      transition: background-color 0.3s ease;
-    }
-    .nav-buttons button:hover {
-      background-color: #dbeafe;
-    }
-    .stats-container {
-      display: flex;
-      gap: 25px;
-      max-width: 900px;
-      margin: 0 auto;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .stat-card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
-      padding: 25px 35px;
-      flex: 1 1 250px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #2563eb;
-    }
-    .stat-card span {
-      display: block;
-      margin-top: 10px;
-      font-weight: 400;
-      font-size: 1rem;
-      color: #444;
-    }
-    main section {
-      background: white;
-      max-width: 900px;
-      margin: 35px auto;
-      padding: 25px 35px;
-      border-radius: 15px;
-      box-shadow: 0 6px 15px rgb(0 0 0 / 0.1);
-    }
-    main section h2 {
-      margin-top: 0;
-      color: #2563eb;
-      font-weight: 700;
-      font-size: 1.6rem;
-    }
-    .continue-learning p {
-      font-size: 1.2rem;
-    }
-    .continue-learning button,
-    .daily-challenge button {
-      background: #2563eb;
-      color: white;
-      font-weight: 700;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: background-color 0.3s ease;
-    }
-    .continue-learning button:hover,
-    .daily-challenge button:hover {
-      background-color: #1e40af;
-    }
-    .recent-projects ul {
-      list-style: none;
-      padding-left: 0;
-      margin-top: 15px;
-    }
-    .recent-projects ul li {
-      padding: 10px 0;
-      border-bottom: 1px solid #ddd;
-      cursor: pointer;
-      color: #2563eb;
-      font-weight: 600;
-      font-size: 1.1rem;
-      user-select: none;
-      transition: color 0.25s ease;
-    }
-    .recent-projects ul li:hover {
-      text-decoration: underline;
-      color: #1e40af;
-    }
-    .progress-bar {
-      width: 100%;
-      background: #e0e7ff;
-      height: 24px;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-top: 12px;
-    }
-    .progress-fill {
-      height: 100%;
-      background: #2563eb;
-      width: 0%;
-      transition: width 0.5s ease;
-    }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #f5faff, #d6ecff);
+  color: #000;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #222;
+}
+
+.lessons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 30px;
+  max-width: 1200px;
+  z-index: 1;
+}
+
+.track {
+  background: white;
+  border-radius: 20px;
+  padding: 25px 30px;
+  width: 260px;
+  height: 180px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.track:hover {
+  transform: translateY(-8px);
+}
+
+.track h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.track p {
+  flex: 1;
+  font-size: 1rem;
+  color: #555;
+}
+
+.track button {
+  align-self: flex-start;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.track button:hover {
+  background-color: #0056b3;
+}
+
+/* Zync (the robot) */
+.zync-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  z-index: 2;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -52%); }
+  50% { transform: translate(-50%, -48%); }
+}
+
+.zync-bubble {
+  position: absolute;
+  top: calc(50% + 120px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 15px 25px;
+  border-radius: 20px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  font-size: 1.1rem;
+  z-index: 3;
+  max-width: 320px;
+  text-align: center;
+  color: #222;
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  height: 12px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: #28a745;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+
+/* Optional Color Wipe Page Transition */
+.page-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #007bff;
+  z-index: 9999;
+  animation: wipeOut 1s ease-in-out forwards;
+}
+
+@keyframes wipeOut {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .track {
+    width: 100%;
+    height: auto;
+  }
+
+  .zync-img {
+    width: 140px;
+  }
+
+  .zync-bubble {
+    font-size: 1rem;
+    padding: 12px 20px;
+  }
+}
+
   </style>
 </head>
 <body>
