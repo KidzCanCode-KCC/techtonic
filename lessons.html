@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechTonic Lessons</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="lessons.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <h1 class="logo">TechTonic ⚡️</h1>
+    <ul class="nav-links">
+      <li><a href="dashboard.html">Dashboard 🧠</a></li>
+      <li><a href="profile.html">Profile 👤</a></li>
+      <li><a href="lessons.html" class="active">Lessons 📚</a></li>
+      <li><a href="#" id="logout-link">Logout 🔓</a></li>
+    </ul>
+  </nav>
+
+  <main class="lessons-container">
+    <h2>Choose Your Track! 🚀</h2>
+
+    <section class="track">
+      <h3>Block Coding 🧩</h3>
+      <ul class="lesson-list" data-track="block">
+        <li data-lesson="block-1">Intro to Blocks 🧱 <button>Start</button></li>
+        <li data-lesson="block-2" class="locked">Events & Actions 🎮 <button disabled>Locked</button></li>
+        <li data-lesson="block-3" class="locked">Loops & Logic 🔄 <button disabled>Locked</button></li>
+        <li data-lesson="block-4" class="locked">Making a Game 🎲 <button disabled>Locked</button></li>
+        <li data-lesson="block-5" class="locked">Project Time! 🛠️ <button disabled>Locked</button></li>
+        <li class="coming-soon">More coming soon... ✨</li>
+      </ul>
+    </section>
+
+    <section class="track">
+      <h3>Python 🐍</h3>
+      <ul class="lesson-list" data-track="python">
+        <li data-lesson="python-1">Hello Python! 👋 <button>Start</button></li>
+        <li data-lesson="python-2" class="locked">Variables & Input 📝 <button disabled>Locked</button></li>
+        <li data-lesson="python-3" class="locked">If Statements 🤔 <button disabled>Locked</button></li>
+        <li data-lesson="python-4" class="locked">Loops 🔁 <button disabled>Locked</button></li>
+        <li data-lesson="python-5" class="locked">Mini Game! 🎮 <button disabled>Locked</button></li>
+        <li class="coming-soon">More coming soon... 🧠</li>
+      </ul>
+    </section>
+
+    <section class="track">
+      <h3>HTML/CSS 🌐</h3>
+      <ul class="lesson-list" data-track="htmlcss">
+        <li data-lesson="html-1">Intro to HTML 🧱 <button>Start</button></li>
+        <li data-lesson="html-2" class="locked">Text & Links 🔗 <button disabled>Locked</button></li>
+        <li data-lesson="html-3" class="locked">Images & Lists 🖼️ <button disabled>Locked</button></li>
+        <li data-lesson="html-4" class="locked">Styling with CSS 🎨 <button disabled>Locked</button></li>
+        <li data-lesson="html-5" class="locked">Build Your Site 🛠️ <button disabled>Locked</button></li>
+        <li class="coming-soon">More coming soon... 💡</li>
+      </ul>
+    </section>
+
+    <section class="track">
+      <h3>JavaScript ⚙️</h3>
+      <ul class="lesson-list" data-track="javascript">
+        <li data-lesson="js-1">Intro to JS 💬 <button>Start</button></li>
+        <li data-lesson="js-2" class="locked">Variables & Alerts 🚨 <button disabled>Locked</button></li>
+        <li data-lesson="js-3" class="locked">Functions 🔧 <button disabled>Locked</button></li>
+        <li data-lesson="js-4" class="locked">Events & Interactions 🖱️ <button disabled>Locked</button></li>
+        <li data-lesson="js-5" class="locked">Make a Click Game 🕹️ <button disabled>Locked</button></li>
+        <li class="coming-soon">More coming soon... 🌟</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
