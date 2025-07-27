@@ -85,6 +85,74 @@
       font-size: 1rem;
       color: #444;
     }
+
+    /* New sections styling */
+    main section {
+      background: white;
+      max-width: 900px;
+      margin: 35px auto;
+      padding: 25px 35px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgb(0 0 0 / 0.1);
+    }
+    main section h2 {
+      margin-top: 0;
+      color: #2563eb;
+      font-weight: 700;
+      font-size: 1.6rem;
+    }
+    .continue-learning p {
+      font-size: 1.2rem;
+    }
+    .continue-learning button,
+    .daily-challenge button {
+      background: #2563eb;
+      color: white;
+      font-weight: 700;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background-color 0.3s ease;
+    }
+    .continue-learning button:hover,
+    .daily-challenge button:hover {
+      background-color: #1e40af;
+    }
+    .recent-projects ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 15px;
+    }
+    .recent-projects ul li {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+      color: #2563eb;
+      font-weight: 600;
+      font-size: 1.1rem;
+      user-select: none;
+      transition: color 0.25s ease;
+    }
+    .recent-projects ul li:hover {
+      text-decoration: underline;
+      color: #1e40af;
+    }
+    .progress-bar {
+      width: 100%;
+      background: #e0e7ff;
+      height: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #2563eb;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
   </style>
 </head>
 <body>
@@ -116,6 +184,32 @@
         <span>💻 Challenges Completed</span>
       </div>
     </div>
+
+    <section class="continue-learning">
+      <h2>🚀 Continue Learning</h2>
+      <p>Your next lesson: <strong id="next-lesson">Python Basics - Variables</strong></p>
+      <button id="continue-btn">Continue Lesson ▶️</button>
+    </section>
+
+    <section class="recent-projects">
+      <h2>🎨 Your Recent Projects</h2>
+      <ul id="project-list">
+        <!-- JS will fill this -->
+      </ul>
+    </section>
+
+    <section class="daily-challenge">
+      <h2>🔥 Daily Challenge</h2>
+      <p id="challenge-text">Try creating a program that prints your favorite animal!</p>
+      <button id="start-challenge-btn">Start Challenge</button>
+    </section>
+
+    <section class="progress-bar-section">
+      <h2>📈 Overall Progress</h2>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -164,6 +258,52 @@
       alert('Logged out successfully! 👋');
       window.location.href = 'index.html';
     });
+
+    // Continue learning section
+    const nextLessonText = document.getElementById('next-lesson');
+    const continueBtn = document.getElementById('continue-btn');
+    const projectList = document.getElementById('project-list');
+    const challengeText = document.getElementById('challenge-text');
+    const startChallengeBtn = document.getElementById('start-challenge-btn');
+    const progressFill = document.getElementById('progress-fill');
+
+    // Example user data (replace with real data loading)
+    const nextLesson = 'Python Basics - Variables';
+    const recentProjects = [
+      { title: 'Cool Maze Game', link: 'project1.html' },
+      { title: 'My Virtual Pet', link: 'project2.html' },
+      { title: 'Interactive Story', link: 'project3.html' }
+    ];
+    const dailyChallenge = 'Try creating a program that prints your favorite animal!';
+    const totalLessons = 20;
+    const completedLessons = 7;
+
+    // Set next lesson
+    nextLessonText.textContent = nextLesson;
+    continueBtn.onclick = () => {
+      alert('Taking you to the next lesson...');
+      window.location.href = 'lessons.html';
+    };
+
+    // Fill recent projects list
+    projectList.innerHTML = '';
+    recentProjects.forEach(p => {
+      const li = document.createElement('li');
+      li.textContent = p.title;
+      li.onclick = () => window.location.href = p.link;
+      projectList.appendChild(li);
+    });
+
+    // Daily challenge
+    challengeText.textContent = dailyChallenge;
+    startChallengeBtn.onclick = () => {
+      alert('Good luck with today’s challenge! Let’s get coding! 🎉');
+      window.location.href = 'challenge.html';
+    };
+
+    // Update progress bar width
+    const progressPercent = (completedLessons / totalLessons) * 100;
+    progressFill.style.width = progressPercent + '%';
   </script>
 
 </body>
