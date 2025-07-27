@@ -3,133 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TechTonic Lessons</title>
+  <title>CodeQuest Dashboard</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="lessons.js"></script>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #e0f7fa, #fce4ec);
-      color: #2c3e50;
+      background: linear-gradient(to bottom right, #f5faff, #d6ecff);
+      color: #000;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
-    .navbar {
-      background-color: #ffffffcc;
+    .dashboard-container {
+      padding: 50px 20px;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      padding: 10px 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 15px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #444;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #00796b;
-    }
-
-    .lessons-container {
-      height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 20px;
-      padding: 60px;
       position: relative;
     }
 
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .lessons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 50px;
+      max-width: 1300px;
+      margin-top: 20px;
+      z-index: 1;
+    }
+
     .track {
-      border: 2px solid #80cbc4;
-      border-radius: 16px;
-      padding: 20px;
-      background-color: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
+      background: #fff;
+      border-radius: 25px;
+      padding: 30px;
+      width: 280px;
+      height: 200px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .track:hover {
-      transform: scale(1.02);
+      transform: translateY(-8px);
     }
 
-    .track h3 {
-      margin-top: 0;
-      color: #00695c;
+    .track h2 {
+      font-size: 1.7rem;
+      margin-bottom: 12px;
+      color: #111;
     }
 
-    .lesson-list {
-      list-style: none;
-      padding: 0;
+    .track p {
+      flex: 1;
+      font-size: 1rem;
+      color: #333;
     }
 
-    .lesson-list li {
-      margin: 8px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    button {
-      padding: 6px 12px;
-      border-radius: 12px;
-      background-color: #26a69a;
-      color: white;
+    .track button {
+      background-color: #ffcb05;
+      color: #000;
       border: none;
-      font-weight: bold;
+      padding: 10px 18px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease;
     }
 
-    button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-
-    button:hover:enabled {
-      background-color: #00796b;
-    }
-
-    .coming-soon {
-      font-style: italic;
-      color: #888;
-    }
-
-    .zync-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 10;
+    .track button:hover {
+      background-color: #f0b000;
     }
 
     .zync-img {
-      width: 120px;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .speech-bubble {
-      background: #fff;
-      border: 2px solid #26a69a;
-      padding: 10px 20px;
-      border-radius: 16px;
-      margin-bottom: 10px;
-      display: inline-block;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      width: 240px;
+      z-index: 2;
+      animation: float 4s ease-in-out infinite;
     }
 
     @keyframes float {
@@ -137,95 +97,68 @@
       50% { transform: translateY(5px); }
     }
 
-    /* Fade wipe transition */
-    a {
-      position: relative;
-    }
-
-    a::after {
-      content: "";
+    .zync-bubble {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      background: #26a69a;
-      left: 0;
-      top: 0;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.4s ease-in-out;
-      z-index: -1;
+      bottom: 300px;
+      right: 300px;
+      background: #fff;
+      padding: 15px 25px;
+      border-radius: 20px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+      font-size: 1.1rem;
+      z-index: 3;
+      max-width: 320px;
+      text-align: center;
+      color: #222;
     }
 
-    a:hover::after {
-      transform: scaleX(1);
-      z-index: -1;
+    .progress {
+      width: 100%;
+      height: 8px;
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #5cb85c;
+      width: 60%;
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <h1 class="logo">TechTonic ⚡️</h1>
-    <ul class="nav-links">
-      <li><a href="dashboard.html">Dashboard 🧠</a></li>
-      <li><a href="profile.html">Profile 👤</a></li>
-      <li><a href="lessons.html" class="active">Lessons 📚</a></li>
-      <li><a href="#" id="logout-link">Logout 🔓</a></li>
-    </ul>
-  </nav>
-
-  <main class="lessons-container">
-    <section class="track" style="grid-area: 1 / 1">
-      <h3>Block Coding 🧩</h3>
-      <ul class="lesson-list" data-track="block">
-        <li data-lesson="block-1">Intro to Blocks 🧱 <button>Start</button></li>
-        <li data-lesson="block-2" class="locked">Events & Actions 🎮 <button disabled>Locked</button></li>
-        <li data-lesson="block-3" class="locked">Loops & Logic 🔄 <button disabled>Locked</button></li>
-        <li data-lesson="block-4" class="locked">Making a Game 🎲 <button disabled>Locked</button></li>
-        <li data-lesson="block-5" class="locked">Project Time! 🛠️ <button disabled>Locked</button></li>
-        <li class="coming-soon">More coming soon... ✨</li>
-      </ul>
-    </section>
-
-    <section class="track" style="grid-area: 1 / 2">
-      <h3>Python 🐍</h3>
-      <ul class="lesson-list" data-track="python">
-        <li data-lesson="python-1">Hello Python! 👋 <button>Start</button></li>
-        <li data-lesson="python-2" class="locked">Variables & Input 📝 <button disabled>Locked</button></li>
-        <li data-lesson="python-3" class="locked">If Statements 🤔 <button disabled>Locked</button></li>
-        <li data-lesson="python-4" class="locked">Loops 🔁 <button disabled>Locked</button></li>
-        <li data-lesson="python-5" class="locked">Mini Game! 🎮 <button disabled>Locked</button></li>
-        <li class="coming-soon">More coming soon... 🧠</li>
-      </ul>
-    </section>
-
-    <section class="track" style="grid-area: 2 / 1">
-      <h3>HTML/CSS 🌐</h3>
-      <ul class="lesson-list" data-track="htmlcss">
-        <li data-lesson="html-1">Intro to HTML 🧱 <button>Start</button></li>
-        <li data-lesson="html-2" class="locked">Text & Links 🔗 <button disabled>Locked</button></li>
-        <li data-lesson="html-3" class="locked">Images & Lists 🖼️ <button disabled>Locked</button></li>
-        <li data-lesson="html-4" class="locked">Styling with CSS 🎨 <button disabled>Locked</button></li>
-        <li data-lesson="html-5" class="locked">Build Your Site 🛠️ <button disabled>Locked</button></li>
-        <li class="coming-soon">More coming soon... 💡</li>
-      </ul>
-    </section>
-
-    <section class="track" style="grid-area: 2 / 2">
-      <h3>JavaScript ⚙️</h3>
-      <ul class="lesson-list" data-track="javascript">
-        <li data-lesson="js-1">Intro to JS 💬 <button>Start</button></li>
-        <li data-lesson="js-2" class="locked">Variables & Alerts 🚨 <button disabled>Locked</button></li>
-        <li data-lesson="js-3" class="locked">Functions 🔧 <button disabled>Locked</button></li>
-        <li data-lesson="js-4" class="locked">Events & Interactions 🖱️ <button disabled>Locked</button></li>
-        <li data-lesson="js-5" class="locked">Make a Click Game 🕹️ <button disabled>Locked</button></li>
-        <li class="coming-soon">More coming soon... 🌟</li>
-      </ul>
-    </section>
-
-    <div class="zync-container">
-      <div class="speech-bubble">Hi, I'm Zync! Where do you wanna start, adventurer?</div>
-      <img class="zync-img" src="zync.png" alt="Zync the robot helper" />
+  <div class="dashboard-container">
+    <h1>Welcome Back, Cadet!</h1>
+    <div class="lessons-container">
+      <div class="track">
+        <h2>HTML Hills</h2>
+        <p>Learn how to build web pages using HTML elements and structure!</p>
+        <div class="progress"><div class="progress-fill"></div></div>
+        <button onclick="location.href='lessons.html?track=html'">Explore</button>
+      </div>
+      <div class="track">
+        <h2>CSS City</h2>
+        <p>Style your pages with colors, layouts, and animations using CSS!</p>
+        <div class="progress"><div class="progress-fill" style="width: 40%"></div></div>
+        <button onclick="location.href='lessons.html?track=css'">Explore</button>
+      </div>
+      <div class="track">
+        <h2>Python Planet</h2>
+        <p>Write your first programs and games using the Python language!</p>
+        <div class="progress"><div class="progress-fill" style="width: 20%"></div></div>
+        <button onclick="location.href='lessons.html?track=python'">Explore</button>
+      </div>
+      <div class="track">
+        <h2>JavaScript Jungle</h2>
+        <p>Make your websites come alive with JavaScript code!</p>
+        <div class="progress"><div class="progress-fill" style="width: 0%"></div></div>
+        <button onclick="location.href='lessons.html?track=javascript'">Explore</button>
+      </div>
     </div>
-  </main>
+    <div class="zync-bubble">Welcome back! Ready for your next mission?</div>
+    <img src="zync.png" alt="Zync the Robot" class="zync-img" />
+  </div>
 </body>
 </html>
