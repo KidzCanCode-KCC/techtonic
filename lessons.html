@@ -2,163 +2,405 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TechTonic Lessons</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Choose Your Own Adventure!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #f5faff, #d6ecff);
-      color: #000;
+    /* Reset & base */
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: 'Nunito', sans-serif;
+      background: #f0f6ff;
       overflow-x: hidden;
-      min-height: 100vh;
+      user-select: none;
     }
-
-    .dashboard-container {
-      padding: 50px 20px;
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* Loading Screen */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: #2563eb;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 40px;
-      text-align: center;
-    }
-
-    .lessons-container {
-      display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 50px;
-      max-width: 1300px;
-      margin-top: 20px;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+      z-index: 9999;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      user-select: none;
+      flex-direction: column;
+    }
+    #loading-screen span {
+      margin-top: 15px;
+      font-weight: 400;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+    /* Navbar */
+    nav.navbar {
+      background: #4f83f1;
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.3rem;
+      box-shadow: 0 5px 20px rgba(79, 131, 241, 0.5);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav.navbar button {
+      background: #f0f6ff;
+      border: none;
+      color: #4f83f1;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 10px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(79, 131, 241, 0.3);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    nav.navbar button:hover {
+      background-color: #dbe9ff;
+    }
+    /* Page title */
+    header.page-header {
+      text-align: center;
+      margin: 25px auto 40px;
+      color: #2563eb;
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      user-select: text;
+    }
+    /* Roadmap container */
+    .roadmap {
+      max-width: 1100px;
+      margin: 0 auto 50px;
+      padding: 0 15px;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 60px;
+      user-select: none;
+    }
+    /* The connecting line */
+    .roadmap::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 60px;
+      right: 60px;
+      height: 6px;
+      background: linear-gradient(90deg, #6a9fff, #2f63d6);
+      border-radius: 4px;
+      transform: translateY(-50%);
       z-index: 1;
     }
-
-    .track {
-      background: #fff;
-      border-radius: 25px;
-      padding: 30px;
-      width: 280px;
-      height: 200px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+    /* Each world card */
+    .world {
+      position: relative;
+      background: white;
+      border-radius: 50%;
+      width: 140px;
+      height: 140px;
+      box-shadow: 0 8px 22px rgba(47, 99, 214, 0.3);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .track:hover {
-      transform: translateY(-8px);
-    }
-
-    .track h2 {
-      font-size: 1.7rem;
-      margin-bottom: 12px;
-      color: #111;
-    }
-
-    .track p {
-      flex: 1;
-      font-size: 1rem;
-      color: #333;
-    }
-
-    .track button {
-      background-color: #ffcb05;
-      color: #000;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 12px;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
-      font-size: 0.95rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .track button:hover {
-      background-color: #f0b000;
-    }
-
-    .zync-img {
-      position: absolute;
-      bottom: 40px;
-      right: 40px;
-      width: 240px;
+      transition: transform 0.3s ease, box-shadow 0.4s ease;
       z-index: 2;
-      animation: float 4s ease-in-out infinite;
+      flex-shrink: 0;
     }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(-5px); }
-      50% { transform: translateY(5px); }
+    .world:hover {
+      transform: translateY(-12px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(47, 99, 214, 0.5);
     }
-
-    .zync-bubble {
-      position: absolute;
-      bottom: 300px;
-      right: 300px;
-      background: #fff;
-      padding: 15px 25px;
-      border-radius: 20px;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-      font-size: 1.1rem;
-      z-index: 3;
-      max-width: 320px;
+    /* World icon (circle inside circle effect) */
+    .world-icon {
+      background: linear-gradient(135deg, #4f83f1, #2f63d6);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.8rem;
+      color: white;
+      margin-bottom: 12px;
+      user-select: none;
+    }
+    /* World name */
+    .world-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #2f3e60;
+      margin-bottom: 8px;
       text-align: center;
-      color: #222;
+      user-select: text;
+    }
+    /* Get Started button */
+    .get-started {
+      background: #2563eb;
+      color: white;
+      font-weight: 700;
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+    .get-started:hover {
+      background-color: #1e40af;
+      transform: scale(1.05);
     }
 
-    .progress {
+    /* Confetti container */
+    #confetti-canvas {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
       width: 100%;
-      height: 8px;
-      background: #eee;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 10px;
+      height: 100%;
+      z-index: 10000;
+      user-select: none;
     }
 
-    .progress-fill {
-      height: 100%;
-      background-color: #5cb85c;
-      width: 60%;
+    /* Responsive */
+    @media (max-width: 1000px) {
+      .roadmap {
+        max-width: 90%;
+        gap: 45px;
+      }
+      .world {
+        width: 120px;
+        height: 120px;
+      }
+      .world-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2.3rem;
+      }
+    }
+    @media (max-width: 650px) {
+      .roadmap {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px 45px;
+      }
+      .world {
+        width: 110px;
+        height: 110px;
+      }
+      .world-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+      }
+      nav.navbar {
+        font-size: 1.1rem;
+      }
+      nav.navbar button {
+        padding: 8px 18px;
+        font-size: 0.9rem;
+      }
+      header.page-header {
+        font-size: 2rem;
+        margin-bottom: 30px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="dashboard-container">
-    <h1>Welcome Back, Cadet!</h1>
-    <div class="lessons-container">
-      <div class="track">
-        <h2>HTML Hills</h2>
-        <p>Learn how to build web pages using HTML elements and structure!</p>
-        <div class="progress"><div class="progress-fill"></div></div>
-        <button onclick="location.href='lessons.html?track=html'">Explore</button>
-      </div>
-      <div class="track">
-        <h2>CSS City</h2>
-        <p>Style your pages with colors, layouts, and animations using CSS!</p>
-        <div class="progress"><div class="progress-fill" style="width: 40%"></div></div>
-        <button onclick="location.href='lessons.html?track=css'">Explore</button>
-      </div>
-      <div class="track">
-        <h2>Python Planet</h2>
-        <p>Write your first programs and games using the Python language!</p>
-        <div class="progress"><div class="progress-fill" style="width: 20%"></div></div>
-        <button onclick="location.href='lessons.html?track=python'">Explore</button>
-      </div>
-      <div class="track">
-        <h2>JavaScript Jungle</h2>
-        <p>Make your websites come alive with JavaScript code!</p>
-        <div class="progress"><div class="progress-fill" style="width: 0%"></div></div>
-        <button onclick="location.href='lessons.html?track=javascript'">Explore</button>
-      </div>
-    </div>
-    <div class="zync-bubble">Welcome back! Ready for your next mission?</div>
-    <img src="zync.png" alt="Zync the Robot" class="zync-img" />
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    Loading Adventures...
+    <span>Get ready to code your own path! 🚀</span>
   </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div>🛠️ TechTonic</div>
+    <div>
+      <button id="dashboard-btn">🏠 Dashboard</button>
+      <button id="profile-btn">👤 Profile</button>
+      <button id="logout-btn">🔐 Logout</button>
+    </div>
+  </nav>
+
+  <!-- Title -->
+  <header class="page-header">Choose Your Own Adventure!</header>
+
+  <!-- Roadmap with worlds -->
+  <section class="roadmap" aria-label="Lessons Roadmap">
+
+    <div class="world" tabindex="0" role="button" aria-label="Block Coding World - Get Started">
+      <div class="world-icon">🧱</div>
+      <div class="world-name">Block Coding</div>
+      <button class="get-started" aria-label="Start Block Coding Lessons">Get Started!</button>
+    </div>
+
+    <div class="world" tabindex="0" role="button" aria-label="Python Planet - Get Started">
+      <div class="world-icon">🐍</div>
+      <div class="world-name">Python Planet</div>
+      <button class="get-started" aria-label="Start Python Lessons">Get Started!</button>
+    </div>
+
+    <div class="world" tabindex="0" role="button" aria-label="HTML Hills - Get Started">
+      <div class="world-icon">🌄</div>
+      <div class="world-name">HTML Hills</div>
+      <button class="get-started" aria-label="Start HTML Lessons">Get Started!</button>
+    </div>
+
+    <div class="world" tabindex="0" role="button" aria-label="CSS City - Get Started">
+      <div class="world-icon">🏙️</div>
+      <div class="world-name">CSS City</div>
+      <button class="get-started" aria-label="Start CSS Lessons">Get Started!</button>
+    </div>
+
+    <div class="world" tabindex="0" role="button" aria-label="JavaScript Jungle - Get Started">
+      <div class="world-icon">🌴</div>
+      <div class="world-name">JavaScript Jungle</div>
+      <button class="get-started" aria-label="Start JavaScript Lessons">Get Started!</button>
+    </div>
+
+  </section>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <script>
+    // Loading screen - hide after 2 seconds
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loading-screen').style.display = 'none';
+        startConfetti();
+      }, 2000);
+    });
+
+    // Navigation button handlers
+    document.getElementById('dashboard-btn').onclick = () => {
+      window.location.href = 'dashboard.html';
+    };
+    document.getElementById('profile-btn').onclick = () => {
+      window.location.href = 'profile.html';
+    };
+    document.getElementById('logout-btn').onclick = () => {
+      localStorage.removeItem('loggedInUser');
+      alert('Logged out successfully! 👋');
+      window.location.href = 'index.html';
+    };
+
+    // World click handlers - redirect to lessons page with query param
+    const worlds = document.querySelectorAll('.world');
+    const worldLinks = {
+      'Block Coding': 'block.html',
+      'Python Planet': 'python.html',
+      'HTML Hills': 'html.html',
+      'CSS City': 'css.html',
+      'JavaScript Jungle': 'javascript.html',
+    };
+    worlds.forEach(world => {
+      world.onclick = () => {
+        const name = world.querySelector('.world-name').textContent.trim();
+        window.location.href = worldLinks[name];
+      };
+      // keyboard accessibility - activate on enter or space
+      world.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          world.click();
+        }
+      });
+      // Also trigger on button inside world
+      world.querySelector('.get-started').onclick = (e) => {
+        e.stopPropagation();
+        const name = world.querySelector('.world-name').textContent.trim();
+        window.location.href = worldLinks[name];
+      };
+    });
+
+    // Simple confetti effect - adapted from canvas-confetti
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const ctx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+
+    function randomRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function createConfettiParticle() {
+      return {
+        x: randomRange(0, window.innerWidth),
+        y: randomRange(-20, 0),
+        size: randomRange(7, 12),
+        speedY: randomRange(1, 3),
+        speedX: randomRange(-0.5, 0.5),
+        angle: randomRange(0, 360),
+        angleSpeed: randomRange(5, 10),
+        color: `hsl(${Math.floor(randomRange(0, 360))}, 70%, 60%)`,
+      };
+    }
+
+    function initConfetti() {
+      confettiParticles = [];
+      for (let i = 0; i < 150; i++) {
+        confettiParticles.push(createConfettiParticle());
+      }
+    }
+
+    function resizeCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confettiParticles.forEach(p => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.angle * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.4);
+        ctx.restore();
+
+        // Update position
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.angle += p.angleSpeed;
+
+        // Reset if out of view
+        if (p.y > confettiCanvas.height) {
+          p.x = randomRange(0, confettiCanvas.width);
+          p.y = randomRange(-20, 0);
+          p.angle = randomRange(0, 360);
+        }
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+
+    function startConfetti() {
+      resizeCanvas();
+      initConfetti();
+      drawConfetti();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+  </script>
 </body>
 </html>
