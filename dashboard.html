@@ -6,7 +6,6 @@
   <title>TechTonic Dashboard ⚡️</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Quick styling for dashboard */
     body {
       font-family: 'Nunito', sans-serif;
       background: linear-gradient(135deg, #6ee7b7 0%, #3b82f6 100%);
@@ -63,39 +62,45 @@
   </header>
 
   <div class="info-box">
-    <h2>Your Stats</h2>
-    <p>🔥 Streak: <strong id="streak-count">0</strong> days</p>
-    <p>🏅 Badges earned: <strong id="badge-count">0</strong></p>
-    <p>💻 Projects completed: <strong id="project-count">0</strong></p>
+    <h2>Your Stats 📊</h2>
+    <p>🔥 Current Streak: <strong id="streak-count">0</strong> days</p>
+    <p>🏅 Badges Earned: <strong id="badge-count">0</strong></p>
+    <p>💻 Challenges Completed: <strong id="project-count">0</strong></p>
   </div>
 
   <button id="logout-btn">Log Out 🔐</button>
 
   <script>
-    // Show username from localStorage
     const usernameDisplay = document.getElementById('username-display');
     const logoutBtn = document.getElementById('logout-btn');
 
-    // You might store logged-in username in localStorage under 'loggedInUser'
     const loggedInUser = localStorage.getItem('loggedInUser');
 
     if (loggedInUser) {
       usernameDisplay.textContent = loggedInUser;
     } else {
-      // No user logged in, redirect to homepage
-      alert('Please log in first.');
+      alert('Please log in first. 🚪');
       window.location.href = 'index.html';
     }
 
-    // Placeholder stats — later you can update with real data
-    document.getElementById('streak-count').textContent = 3;  // example
-    document.getElementById('badge-count').textContent = 5;   // example
-    document.getElementById('project-count').textContent = 2; // example
+    // Load progress data
+    let progress = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
+    let userProgress = progress[loggedInUser] || {};
 
-    // Logout clears loggedInUser and redirects to homepage
+    // Count completed challenges
+    let completedCount = 0;
+    for (const challengeId in userProgress) {
+      if (userProgress[challengeId]) completedCount++;
+    }
+
+    // Update stats dynamically with emojis
+    document.getElementById('project-count').textContent = completedCount;
+    document.getElementById('badge-count').textContent = Math.floor(completedCount / 2);
+    document.getElementById('streak-count').textContent = completedCount;
+
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('loggedInUser');
-      alert('Logged out successfully!');
+      alert('Logged out successfully! 👋');
       window.location.href = 'index.html';
     });
   </script>
