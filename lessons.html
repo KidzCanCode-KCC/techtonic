@@ -6,17 +6,19 @@
   <title>Choose Your Own Adventure! - Roadmap</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet" />
   <style>
-    /* Base */
+    /* Reset & base */
     * {
       box-sizing: border-box;
     }
     body, html {
       margin: 0; padding: 0; height: 100%;
       font-family: 'Nunito', sans-serif;
-      background: #e0f0ff;
+      background: #4a4a4a; /* dark asphalt road background */
       overflow-x: hidden;
       user-select: none;
       scroll-behavior: smooth;
+      color: #fff;
+      position: relative;
     }
 
     /* Loading Screen */
@@ -33,6 +35,7 @@
       font-size: 2rem;
       letter-spacing: 0.08em;
       z-index: 9999;
+      user-select: none;
     }
     #loading-screen span {
       margin-top: 12px;
@@ -43,7 +46,7 @@
 
     /* Navbar */
     nav.navbar {
-      background: #3a6df0;
+      background: #1e40af;
       padding: 18px 30px;
       display: flex;
       justify-content: space-between;
@@ -51,21 +54,24 @@
       color: white;
       font-weight: 700;
       font-size: 1.3rem;
-      box-shadow: 0 5px 20px rgba(58, 109, 240, 0.5);
-      position: sticky;
+      box-shadow: 0 5px 20px rgba(30, 64, 175, 0.7);
+      position: fixed;
+      width: 100%;
       top: 0;
-      z-index: 10;
+      left: 0;
+      z-index: 20;
+      user-select: none;
     }
     nav.navbar button {
       background: #f0f6ff;
       border: none;
-      color: #3a6df0;
+      color: #1e40af;
       font-weight: 700;
       font-size: 1rem;
       padding: 10px 22px;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(58, 109, 240, 0.3);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4);
       transition: background-color 0.3s ease;
       user-select: none;
     }
@@ -75,190 +81,224 @@
 
     /* Page Title */
     header.page-header {
-      color: #1e40af;
-      font-size: 3.2rem;
+      font-size: 3.8rem;
       font-weight: 900;
       text-align: center;
-      margin: 30px 20px 50px;
+      margin: 110px 20px 60px; /* below navbar */
+      color: #ffea00; /* bright yellow */
+      text-shadow:
+        0 0 10px #ffea00,
+        0 0 20px #ffd600,
+        0 0 30px #ffea00;
       user-select: text;
       letter-spacing: 0.06em;
+      z-index: 10;
+      position: relative;
     }
 
-    /* Roadmap container */
+    /* Roadmap container - fills viewport */
     .roadmap-container {
       position: relative;
-      max-width: 900px;
-      margin: 0 auto 60px;
-      padding-left: 100px;
-      padding-right: 80px;
-      min-height: 1200px;
+      width: 100vw;
+      height: calc(100vh - 200px);
+      max-height: 1000px;
+      margin: 0 auto;
+      padding: 0;
+      user-select: none;
+      overflow: visible;
+      z-index: 5;
     }
 
-    /* SVG Road */
+    /* SVG road network covering whole container */
     svg.roadmap-svg {
       position: absolute;
-      left: 0;
-      top: 0;
-      width: 150px;
-      height: 1200px;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
       overflow: visible;
       user-select: none;
-      z-index: 0;
+      z-index: 1;
     }
     svg.roadmap-svg path {
       fill: none;
-      stroke: #3a6df0;
-      stroke-width: 18;
+      stroke: #ffea00; /* bright yellow roads */
+      stroke-width: 14;
       stroke-linejoin: round;
-      filter: drop-shadow(0 0 5px rgba(58,109,240,0.3));
-    }
-    svg.roadmap-svg path.dashed {
-      stroke-dasharray: 20 15;
-      stroke-width: 10;
-      stroke-opacity: 0.7;
+      filter: drop-shadow(0 0 7px #ffea00);
+      stroke-dasharray: 22 18; /* dashed */
+      stroke-linecap: round;
     }
 
-    /* World nodes container */
-    .worlds-list {
+    /* Worlds container - holds the 5 circles positioned */
+    .worlds-container {
       position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 160px;
-      z-index: 2;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+      z-index: 10;
     }
 
-    /* Each world */
+    /* World circles */
     .world {
-      position: relative;
-      background: white;
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(145deg, #262626, #3a3a3a);
+      border: 8px solid #ffea00;
       border-radius: 50%;
-      width: 140px;
-      height: 140px;
-      box-shadow: 0 10px 28px rgba(58,109,240,0.25);
-      cursor: pointer;
+      box-shadow:
+        0 0 35px 8px rgba(255, 234, 0, 0.6),
+        inset 0 0 15px #ffea00;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      user-select: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-align: center;
+      cursor: pointer;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      outline-offset: 4px;
+      user-select: none;
+      outline-offset: 6px;
       outline-color: transparent;
       outline-style: solid;
+      z-index: 12;
     }
     .world:hover, .world:focus-visible {
-      transform: translateX(20px) scale(1.05);
-      box-shadow: 0 20px 40px rgba(58,109,240,0.45);
-      outline-color: #3a6df0;
+      transform: scale(1.15);
+      box-shadow:
+        0 0 60px 12px rgba(255, 234, 0, 0.9),
+        inset 0 0 25px #ffea00;
+      outline-color: #ffea00;
+      outline-width: 4px;
+      outline-style: solid;
+      z-index: 20;
     }
     .world:focus-visible {
-      outline-width: 4px;
+      outline-offset: 6px;
     }
 
-    /* World icon circle */
+    /* World icon */
     .world-icon {
-      background: linear-gradient(135deg, #4f83f1, #2f63d6);
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      box-shadow: 0 7px 22px rgba(0, 0, 0, 0.14);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 3.2rem;
-      color: white;
-      margin-bottom: 12px;
+      font-size: 5rem;
+      margin-bottom: 16px;
       user-select: none;
-      transition: background 0.3s ease;
-    }
-    .world:hover .world-icon, .world:focus-visible .world-icon {
-      background: linear-gradient(135deg, #2f63d6, #1740a5);
+      pointer-events: none;
+      text-shadow:
+        0 0 12px #ffea00,
+        0 0 20px #ffd600;
     }
 
     /* World name */
     .world-name {
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #1e2e5e;
-      margin-bottom: 10px;
-      text-align: center;
+      font-weight: 900;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      color: #ffea00;
+      text-shadow:
+        0 0 10px #ffea00,
+        0 0 15px #ffd600;
       user-select: text;
     }
 
     /* Get started button */
     .get-started {
-      background: #2563eb;
-      color: white;
+      background: #ffea00;
+      color: #444;
       font-weight: 700;
-      padding: 8px 28px;
+      padding: 12px 32px;
       border-radius: 30px;
-      font-size: 1rem;
-      box-shadow: 0 7px 20px rgba(37, 99, 235, 0.4);
+      font-size: 1.1rem;
+      box-shadow: 0 10px 30px rgba(255, 234, 0, 0.7);
       transition: background-color 0.3s ease, transform 0.2s ease;
       user-select: none;
       cursor: pointer;
       border: none;
-      user-select: none;
     }
     .get-started:hover, .get-started:focus-visible {
-      background-color: #1e40af;
+      background-color: #ffd600;
       transform: scale(1.1);
       outline: none;
     }
 
-    /* Align worlds horizontally from the road */
-    .world:nth-child(odd) {
-      margin-left: 0;
+    /* Position worlds in corners and center */
+    .top-left {
+      top: 40px;
+      left: 40px;
     }
-    .world:nth-child(even) {
-      margin-left: 60px;
+    .top-right {
+      top: 40px;
+      right: 40px;
+    }
+    .bottom-left {
+      bottom: 40px;
+      left: 40px;
+    }
+    .bottom-right {
+      bottom: 40px;
+      right: 40px;
+    }
+    .center {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     /* Responsive */
-    @media (max-width: 700px) {
-      .roadmap-container {
-        padding-left: 40px;
-        padding-right: 40px;
-        min-height: 1400px;
-      }
-      svg.roadmap-svg {
-        width: 100px;
-        height: 1400px;
-      }
+    @media (max-width: 900px) {
       .world {
-        width: 120px;
-        height: 120px;
+        width: 140px;
+        height: 140px;
+        font-size: 1.1rem;
       }
       .world-icon {
-        width: 65px;
-        height: 65px;
-        font-size: 2.6rem;
+        font-size: 3.8rem;
+        margin-bottom: 12px;
       }
-      .world:nth-child(even) {
-        margin-left: 30px;
+      .get-started {
+        padding: 10px 26px;
+        font-size: 1rem;
       }
     }
-    @media (max-width: 450px) {
-      .roadmap-container {
-        padding-left: 20px;
-        padding-right: 20px;
-        min-height: 1600px;
-      }
-      svg.roadmap-svg {
-        display: none;
-      }
-      .worlds-list {
-        gap: 100px;
+    @media (max-width: 500px) {
+      nav.navbar {
+        flex-direction: column;
+        gap: 12px;
+        font-size: 1.1rem;
       }
       .world {
         width: 110px;
         height: 110px;
-        margin-left: 0 !important;
+        font-size: 1rem;
       }
       .world-icon {
-        width: 55px;
-        height: 55px;
-        font-size: 2.2rem;
+        font-size: 3rem;
+      }
+      .get-started {
+        padding: 8px 22px;
+        font-size: 0.9rem;
+      }
+      .top-left, .top-right, .bottom-left, .bottom-right {
+        top: auto; bottom: auto; left: auto; right: auto;
+        margin: 12px auto;
+        position: relative;
+        transform: none !important;
+      }
+      .center {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none !important;
+        margin: 24px auto;
+      }
+      .roadmap-container {
+        height: auto;
+        padding-bottom: 60px;
+      }
+      svg.roadmap-svg {
+        display: none;
       }
     }
 
@@ -277,7 +317,7 @@
 <body>
 
   <!-- Loading Screen -->
-  <div id="loading-screen">
+  <div id="loading-screen" role="alert" aria-live="assertive" aria-busy="true">
     Loading Adventures...
     <span>Get ready to code your own path! 🚀</span>
   </div>
@@ -292,61 +332,55 @@
     </div>
   </nav>
 
-  <!-- Title -->
+  <!-- Page Title -->
   <header class="page-header" role="heading" aria-level="1">Choose Your Own Adventure!</header>
 
   <!-- Roadmap container -->
   <main class="roadmap-container" role="main" aria-label="Lessons roadmap">
 
-    <!-- SVG Road -->
-    <svg class="roadmap-svg" aria-hidden="true" width="150" height="1200" viewBox="0 0 150 1200" xmlns="http://www.w3.org/2000/svg" >
-      <!-- Main curved road -->
-      <path d="
-        M 75 20 
-        C 100 80, 100 200, 75 260
-        S 50 400, 75 460
-        S 100 600, 75 660
-        S 50 800, 75 860
-        S 100 1000, 75 1060
-        " />
-      <!-- Dotted lane line -->
-      <path class="dashed" d="
-        M 75 20 
-        C 100 80, 100 200, 75 260
-        S 50 400, 75 460
-        S 100 600, 75 660
-        S 50 800, 75 860
-        S 100 1000, 75 1060
-        " />
+    <!-- SVG Road network with 4 curved dashed yellow roads connecting the corners and center -->
+    <svg class="roadmap-svg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet">
+      <!-- Top-left to center -->
+      <path d="M 140 140
+               C 300 140, 300 350, 500 350" />
+      <!-- Top-right to center -->
+      <path d="M 860 140
+               C 700 140, 700 350, 500 350" />
+      <!-- Bottom-left to center -->
+      <path d="M 140 560
+               C 300 560, 300 350, 500 350" />
+      <!-- Bottom-right to center -->
+      <path d="M 860 560
+               C 700 560, 700 350, 500 350" />
     </svg>
 
-    <!-- Worlds list -->
-    <div class="worlds-list">
-      <div class="world" tabindex="0" role="button" aria-label="Block Coding World - Get Started" style="--pos-y: 0px;">
+    <!-- Worlds -->
+    <div class="worlds-container">
+      <div class="world top-left" tabindex="0" role="button" aria-label="Block Coding World - Get Started">
         <div class="world-icon" aria-hidden="true">🧱</div>
         <div class="world-name">Block Coding</div>
         <button class="get-started" aria-label="Start Block Coding Lessons">Get Started!</button>
       </div>
 
-      <div class="world" tabindex="0" role="button" aria-label="Python Planet - Get Started" style="--pos-y: 160px;">
+      <div class="world top-right" tabindex="0" role="button" aria-label="Python Planet - Get Started">
         <div class="world-icon" aria-hidden="true">🐍</div>
         <div class="world-name">Python Planet</div>
         <button class="get-started" aria-label="Start Python Lessons">Get Started!</button>
       </div>
 
-      <div class="world" tabindex="0" role="button" aria-label="HTML Hills - Get Started" style="--pos-y: 320px;">
+      <div class="world bottom-left" tabindex="0" role="button" aria-label="HTML Hills - Get Started">
         <div class="world-icon" aria-hidden="true">🌄</div>
         <div class="world-name">HTML Hills</div>
         <button class="get-started" aria-label="Start HTML Lessons">Get Started!</button>
       </div>
 
-      <div class="world" tabindex="0" role="button" aria-label="CSS City - Get Started" style="--pos-y: 480px;">
+      <div class="world bottom-right" tabindex="0" role="button" aria-label="CSS City - Get Started">
         <div class="world-icon" aria-hidden="true">🏙️</div>
         <div class="world-name">CSS City</div>
         <button class="get-started" aria-label="Start CSS Lessons">Get Started!</button>
       </div>
 
-      <div class="world" tabindex="0" role="button" aria-label="JavaScript Jungle - Get Started" style="--pos-y: 640px;">
+      <div class="world center" tabindex="0" role="button" aria-label="JavaScript Jungle - Get Started">
         <div class="world-icon" aria-hidden="true">🌴</div>
         <div class="world-name">JavaScript Jungle</div>
         <button class="get-started" aria-label="Start JavaScript Lessons">Get Started!</button>
@@ -426,13 +460,13 @@
         speedX: randomRange(-0.5, 0.5),
         angle: randomRange(0, 360),
         angleSpeed: randomRange(5, 10),
-        color: `hsl(${Math.floor(randomRange(0, 360))}, 70%, 60%)`,
+        color: `hsl(${Math.floor(randomRange(40, 60))}, 100%, 60%)`, // warm yellow hues
       };
     }
 
     function initConfetti() {
       confettiParticles = [];
-      for (let i = 0; i < 150; i++) {
+      for (let i = 0; i < 160; i++) {
         confettiParticles.push(createConfettiParticle());
       }
     }
@@ -459,21 +493,4 @@
 
         // Reset if out of view
         if (p.y > confettiCanvas.height) {
-          p.x = randomRange(0, confettiCanvas.width);
-          p.y = randomRange(-20, 0);
-          p.angle = randomRange(0, 360);
-        }
-      });
-      requestAnimationFrame(drawConfetti);
-    }
-
-    function startConfetti() {
-      resizeCanvas();
-      initConfetti();
-      drawConfetti();
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-  </script>
-</body>
-</html>
+          p.x = randomRange(0, confettiCanvas
