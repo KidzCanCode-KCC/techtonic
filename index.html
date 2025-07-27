@@ -81,7 +81,7 @@
   </footer>
 
   <script>
-    // Login script
+    // LOGIN script here (replace your old login script)
     const loginForm = document.getElementById('login-form');
 
     loginForm.addEventListener('submit', function(event) {
@@ -93,14 +93,15 @@
       let users = JSON.parse(localStorage.getItem('techtonicUsers')) || {};
 
       if (users[username] && users[username] === password) {
+        localStorage.setItem('loggedInUser', username);
         alert('Login successful! Welcome back, ' + username + ' 👏.');
-        // TODO: Redirect to dashboard/profile page
+        window.location.href = 'dashboard.html';
       } else {
         alert('Invalid username or password. Please try again ❌.');
       }
     });
 
-    // Signup script
+    // SIGNUP script (keep this the same)
     const signupForm = document.getElementById('signup-form');
 
     signupForm.addEventListener('submit', function(event) {
@@ -122,5 +123,8 @@
       signupForm.reset();
     });
   </script>
+</body>
+</html>
+
 </body>
 </html>
