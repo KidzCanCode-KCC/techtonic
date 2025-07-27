@@ -57,8 +57,6 @@
     .nav-buttons button:hover {
       background-color: #dbeafe;
     }
-
-    /* Stats cards container */
     .stats-container {
       display: flex;
       gap: 25px;
@@ -85,8 +83,6 @@
       font-size: 1rem;
       color: #444;
     }
-
-    /* New sections styling */
     main section {
       background: white;
       max-width: 900px;
@@ -187,20 +183,20 @@
 
     <section class="continue-learning">
       <h2>🚀 Continue Learning</h2>
-      <p>Your next lesson: <strong id="next-lesson">Python Basics - Variables</strong></p>
+      <p>Your next lesson: <strong id="next-lesson">Loading...</strong></p>
       <button id="continue-btn">Continue Lesson ▶️</button>
     </section>
 
     <section class="recent-projects">
       <h2>🎨 Your Recent Projects</h2>
       <ul id="project-list">
-        <!-- JS will fill this -->
+        <li>Loading...</li>
       </ul>
     </section>
 
     <section class="daily-challenge">
       <h2>🔥 Daily Challenge</h2>
-      <p id="challenge-text">Try creating a program that prints your favorite animal!</p>
+      <p id="challenge-text">Loading...</p>
       <button id="start-challenge-btn">Start Challenge</button>
     </section>
 
@@ -223,7 +219,7 @@
       window.location.href = 'index.html';
     }
 
-    // Load profile data
+    // Load user profile data
     const profiles = JSON.parse(localStorage.getItem('techtonicProfiles')) || {};
     const userProfile = profiles[loggedInUser] || {};
 
@@ -231,79 +227,73 @@
     nicknameDisplay.textContent = userProfile.displayName || loggedInUser;
 
     // Load progress data
-    const progress = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
-    const userProgress = progress[loggedInUser] || {};
+    const progressData = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
+    const userProgress = progressData[loggedInUser] || {};
 
-    // Count completed challenges
-    let completedCount = 0;
-    for (const challengeId in userProgress) {
-      if (userProgress[challengeId]) completedCount++;
+    // Calculate completed challenges
+    const completedCount = Object.values(userProgress).filter(Boolean).length;
+
+    // Load user stats (streak and badges) from profile or default 0
+    const currentStreak = userProfile.currentStreak || 0;
+    const badgesEarned = userProfile.badgesEarned || Math.floor(completedCount / 2);
+
+    // Update stats cards
+    document.getElementById('project-count').textContent = completedCount;
+    document.getElementById('badge-count').textContent = badgesEarned;
+    document.getElementById('streak-count').textContent = currentStreak;
+
+    // Load next lesson (default to message if not set)
+    const nextLessons = JSON.parse(localStorage.getItem('techtonicNextLesson')) || {};
+    const nextLesson = nextLessons[loggedInUser] || 'No lessons assigned yet.';
+    document.getElementById('next-lesson').textContent = nextLesson;
+
+    // Load recent projects (empty array if none)
+    const recentProjectsData = JSON.parse(localStorage.getItem('techtonicRecentProjects')) || {};
+    const recentProjects = recentProjectsData[loggedInUser] || [];
+
+    const projectList = document.getElementById('project-list');
+    projectList.innerHTML = '';
+
+    if (recentProjects.length === 0) {
+      const li = document.createElement('li');
+      li.textContent = 'No projects yet. Start coding!';
+      projectList.appendChild(li);
+    } else {
+      recentProjects.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = p.title;
+        li.onclick = () => window.location.href = p.link;
+        projectList.appendChild(li);
+      });
     }
 
-    document.getElementById('project-count').textContent = completedCount;
-    document.getElementById('badge-count').textContent = Math.floor(completedCount / 2);
-    document.getElementById('streak-count').textContent = completedCount;
+    // Daily challenge (could be global or per user)
+    const dailyChallengeText = JSON.parse(localStorage.getItem('techtonicDailyChallenge')) || 'Try creating a program that prints your favorite animal!';
+    document.getElementById('challenge-text').textContent = dailyChallengeText;
 
-    // Buttons navigation
-    document.getElementById('profile-btn').addEventListener('click', () => {
-      window.location.href = 'profile.html';
-    });
-
-    document.getElementById('lessons-btn').addEventListener('click', () => {
-      window.location.href = 'lessons.html';
-    });
-
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      localStorage.removeItem('loggedInUser');
-      alert('Logged out successfully! 👋');
-      window.location.href = 'index.html';
-    });
-
-    // Continue learning section
-    const nextLessonText = document.getElementById('next-lesson');
-    const continueBtn = document.getElementById('continue-btn');
-    const projectList = document.getElementById('project-list');
-    const challengeText = document.getElementById('challenge-text');
-    const startChallengeBtn = document.getElementById('start-challenge-btn');
-    const progressFill = document.getElementById('progress-fill');
-
-    // Example user data (replace with real data loading)
-    const nextLesson = 'Python Basics - Variables';
-    const recentProjects = [
-      { title: 'Cool Maze Game', link: 'project1.html' },
-      { title: 'My Virtual Pet', link: 'project2.html' },
-      { title: 'Interactive Story', link: 'project3.html' }
-    ];
-    const dailyChallenge = 'Try creating a program that prints your favorite animal!';
-    const totalLessons = 20;
-    const completedLessons = 7;
-
-    // Set next lesson
-    nextLessonText.textContent = nextLesson;
-    continueBtn.onclick = () => {
-      alert('Taking you to the next lesson...');
-      window.location.href = 'lessons.html';
-    };
-
-    // Fill recent projects list
-    projectList.innerHTML = '';
-    recentProjects.forEach(p => {
-      const li = document.createElement('li');
-      li.textContent = p.title;
-      li.onclick = () => window.location.href = p.link;
-      projectList.appendChild(li);
-    });
-
-    // Daily challenge
-    challengeText.textContent = dailyChallenge;
-    startChallengeBtn.onclick = () => {
+    document.getElementById('start-challenge-btn').onclick = () => {
       alert('Good luck with today’s challenge! Let’s get coding! 🎉');
+      // Replace with your actual challenge page
       window.location.href = 'challenge.html';
     };
 
-    // Update progress bar width
-    const progressPercent = (completedLessons / totalLessons) * 100;
-    progressFill.style.width = progressPercent + '%';
+    // Progress bar
+    const totalLessonsCount = JSON.parse(localStorage.getItem('techtonicTotalLessons')) || 20;
+    const progressPercent = totalLessonsCount > 0 ? (completedCount / totalLessonsCount) * 100 : 0;
+    document.getElementById('progress-fill').style.width = progressPercent + '%';
+
+    // Navigation buttons
+    document.getElementById('profile-btn').onclick = () => {
+      window.location.href = 'profile.html';
+    };
+    document.getElementById('lessons-btn').onclick = () => {
+      window.location.href = 'lessons.html';
+    };
+    document.getElementById('logout-btn').onclick = () => {
+      localStorage.removeItem('loggedInUser');
+      alert('Logged out successfully! 👋');
+      window.location.href = 'index.html';
+    };
   </script>
 
 </body>
