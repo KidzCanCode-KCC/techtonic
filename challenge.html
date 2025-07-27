@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechTonic Challenge 🏆</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+      color: #222;
+      padding: 30px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .challenge-box {
+      background: #fff;
+      max-width: 700px;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgb(0 0 0 / 0.15);
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      color: #d97706;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      border: 2px solid #d97706;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #b45309;
+      color: white;
+      border: none;
+      padding: 14px 35px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px #b45309cc;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #78350f;
+    }
+    .feedback {
+      margin-top: 20px;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="challenge-box">
+    <h1>Challenge #1: Simple Math Puzzle 🧩</h1>
+    <p>Write the result of 3 + 4 × 2</p>
+
+    <form id="challenge-form">
+      <label for="answer">Your answer:</label>
+      <input type="text" id="answer" name="answer" autocomplete="off" required />
+
+      <button type="submit">Submit Answer</button>
+    </form>
+
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <script>
+    // Get logged in user
+    const loggedInUser = localStorage.getItem('loggedInUser');
+
+    if (!loggedInUser) {
+      alert('Please log in first.');
+      window.location.href = 'index.html';
+    }
+
+    const form = document.getElementById('challenge-form');
+    const feedback = document.getElementById('feedback');
+
+    // Challenge correct answer
+    const correctAnswer = '11'; // 3 + (4*2) = 3 + 8 = 11
+
+    // Load user's challenge progress from localStorage
+    let progress = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
+    // Structure: { username: { challenge1: true, challenge2: false, ... } }
+
+    // Check if already completed
+    if (progress[loggedInUser] && progress[loggedInUser].challenge1) {
+      feedback.textContent = '✅ You already completed this challenge!';
+      feedback.style.color = 'green';
+      form.querySelector('button').disabled = true;
+      form.querySelector('input').disabled = true;
+    }
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const userAnswer = form.answer.value.trim();
+
+      if (userAnswer === correctAnswer) {
+        feedback.textContent = '🎉 Correct! Challenge completed.';
+        feedback.style.color = 'green';
+
+        // Save progress
+        if (!progress[loggedInUser]) {
+          progress[loggedInUser] = {};
+        }
+        progress[loggedInUser].challenge1 = true;
+        localStorage.setItem('techtonicProgress', JSON.stringify(progress));
+
+        form.querySelector('button').disabled = true;
+        form.querySelector('input').disabled = true;
+      } else {
+        feedback.textContent = '❌ That’s not right, try again.';
+        feedback.style.color = 'red';
+      }
+    });
+  </script>
+
+</body>
+</html>
