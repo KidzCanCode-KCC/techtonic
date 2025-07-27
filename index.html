@@ -3,92 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TechTonic - Code That Shakes the World</title>
+  <title>TechTonic 🌟 - Code That Shakes the World 🌍</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
-<script>
-  const loginForm = document.getElementById('login-form');
-
-  loginForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const username = loginForm.username.value.trim();
-    const password = loginForm.password.value;
-
-    // Retrieve stored users or initialize empty object
-    let users = JSON.parse(localStorage.getItem('techtonicUsers')) || {};
-
-    if (users[username] && users[username] === password) {
-      alert('Login successful! Welcome back, ' + username + '.');
-      // TODO: Redirect to dashboard/profile page
-    } else {
-      alert('Invalid username or password. Please try again.');
-    }
-  });
-</script>
-
-<form id="signup-form" class="login-form" style="margin-top: 30px;">
-  <h4>Create a new account</h4>
-  <label for="new-username">Username:</label>
-  <input type="text" id="new-username" name="new-username" required />
-  
-  <label for="new-password">Password:</label>
-  <input type="password" id="new-password" name="new-password" required />
-  
-  <button type="submit">Sign Up</button>
-</form>
-
-<script>
-  const signupForm = document.getElementById('signup-form');
-  
-  signupForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const newUsername = signupForm['new-username'].value.trim();
-    const newPassword = signupForm['new-password'].value;
-
-    let users = JSON.parse(localStorage.getItem('techtonicUsers')) || {};
-
-    if (users[newUsername]) {
-      alert('Username already exists. Please choose another.');
-      return;
-    }
-
-    users[newUsername] = newPassword;
-    localStorage.setItem('techtonicUsers', JSON.stringify(users));
-    alert('Account created successfully! You can now log in.');
-    signupForm.reset();
-  });
-</script>
-
-
 <body>
   <header>
     <nav class="navbar">
-      <h1 class="logo">TechTonic</h1>
+      <h1 class="logo">TechTonic ⚡️</h1>
       <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#tracks">Tracks</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#login">Login</a></li>
+        <li><a href="#about">About 🤖</a></li>
+        <li><a href="#tracks">Tracks 🚀</a></li>
+        <li><a href="#projects">Projects 🎨</a></li>
+        <li><a href="#login">Login 🔐</a></li>
       </ul>
     </nav>
     <section class="hero">
-      <h2>Code That Shakes the World</h2>
-      <p>Learn Python, HTML/CSS, JavaScript, and Block Coding through slides, challenges, and fun projects. Built for ages 7–14.</p>
-      <a href="#signup" class="btn">Get Started</a>
+      <h2>Code That Shakes the World 🌍🔥</h2>
+      <p>Learn Python 🐍, HTML/CSS 🌐, JavaScript 🌴, and Block Coding 🧱 through slides, challenges, and fun projects. Built for ages 7–14 🎉.</p>
+      <a href="#signup" class="btn">Get Started 🚀</a>
     </section>
   </header>
 
   <main>
     <section id="about" class="section">
-      <h3>What is TechTonic?</h3>
-      <p>TechTonic is an adventure-filled coding platform created by <strong>KidzCanCode</strong>. Kids learn coding step-by-step through interactive slides, quizzes, and shareable projects — just like Scratch, but with the power of real coding languages.</p>
+      <h3>What is TechTonic? 💡</h3>
+      <p>TechTonic is an adventure-filled coding platform created by <strong>KidzCanCode</strong> 🎓. Kids learn coding step-by-step through interactive slides, quizzes, and shareable projects — just like Scratch, but with the power of real coding languages ⚙️.</p>
     </section>
 
     <section id="tracks" class="section">
-      <h3>Choose Your Learning Path</h3>
+      <h3>Choose Your Learning Path 🚦</h3>
       <div class="tracks">
         <div class="track">🧱 Block Coding (Blockly)</div>
         <div class="track">🐍 Python Planet</div>
@@ -98,31 +41,86 @@
     </section>
 
     <section id="projects" class="section">
-      <h3>Build &amp; Share</h3>
-      <p>After each module, students unlock new challenges and projects. Earn streaks, badges, and even publish your work to the community gallery!</p>
-      <a href="#explore" class="btn">Explore Projects</a>
+      <h3>Build &amp; Share 🎉</h3>
+      <p>After each module, students unlock new challenges and projects 🏆. Earn streaks 🔥, badges 🏅, and even publish your work to the community gallery 🌟!</p>
+      <a href="#explore" class="btn">Explore Projects 🔍</a>
     </section>
 
     <section id="login" class="section">
-      <h3>Join the Movement</h3>
-      <p>Already learning? Log in to continue your journey. New to TechTonic? Create a free profile and start coding today!</p>
+      <h3>Join the Movement 🚀</h3>
+      <p>Already learning? Log in to continue your journey 🧭. New to TechTonic? Create a free profile and start coding today! 💻</p>
 
+      <!-- Login Form -->
       <form id="login-form" class="login-form">
-        <label for="username">Username:</label>
+        <label for="username">Username: 👤</label>
         <input type="text" id="username" name="username" required />
 
-        <label for="password">Password:</label>
+        <label for="password">Password: 🔒</label>
         <input type="password" id="password" name="password" required />
 
-        <button type="submit">Login</button>
-        <p>Don't have an account? <a href="#signup">Sign up here</a>.</p>
+        <button type="submit">Login 🔐</button>
+        <p>Don't have an account? <a href="#signup">Sign up here ✍️</a>.</p>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signup-form" class="login-form" style="margin-top: 30px;">
+        <h4>Create a new account ✨</h4>
+        <label for="new-username">Username: 👤</label>
+        <input type="text" id="new-username" name="new-username" required />
+
+        <label for="new-password">Password: 🔒</label>
+        <input type="password" id="new-password" name="new-password" required />
+
+        <button type="submit">Sign Up 🎉</button>
       </form>
     </section>
   </main>
 
   <footer>
-    <p>Made with ❤️ by KidzCanCode | © 2025 TechTonic</p>
+    <p>Made with ❤️ by KidzCanCode | © 2025 TechTonic 🌟</p>
   </footer>
+
+  <script>
+    // Login script
+    const loginForm = document.getElementById('login-form');
+
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const username = loginForm.username.value.trim();
+      const password = loginForm.password.value;
+
+      let users = JSON.parse(localStorage.getItem('techtonicUsers')) || {};
+
+      if (users[username] && users[username] === password) {
+        alert('Login successful! Welcome back, ' + username + ' 👏.');
+        // TODO: Redirect to dashboard/profile page
+      } else {
+        alert('Invalid username or password. Please try again ❌.');
+      }
+    });
+
+    // Signup script
+    const signupForm = document.getElementById('signup-form');
+
+    signupForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const newUsername = signupForm['new-username'].value.trim();
+      const newPassword = signupForm['new-password'].value;
+
+      let users = JSON.parse(localStorage.getItem('techtonicUsers')) || {};
+
+      if (users[newUsername]) {
+        alert('Username already exists. Please choose another ❗.');
+        return;
+      }
+
+      users[newUsername] = newPassword;
+      localStorage.setItem('techtonicUsers', JSON.stringify(users));
+      alert('Account created successfully! You can now log in 🎉.');
+      signupForm.reset();
+    });
+  </script>
 </body>
 </html>
-
