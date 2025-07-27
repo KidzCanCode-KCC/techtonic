@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechTonic Profile Customization 🎨</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #f9a8d4 0%, #f472b6 100%);
+      color: #222;
+      padding: 30px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      color: #db2777;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+    .profile-box {
+      background: #fff;
+      max-width: 600px;
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgb(0 0 0 / 0.15);
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      border: 2px solid #db2777;
+    }
+    button {
+      margin-top: 25px;
+      background: #db2777;
+      color: white;
+      border: none;
+      padding: 14px 35px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px #db2777cc;
+      transition: background 0.3s ease;
+      width: 100%;
+    }
+    button:hover {
+      background: #9d174d;
+    }
+    .avatar-preview {
+      font-size: 4rem;
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Customize Your Profile 🎉</h1>
+
+  <div class="profile-box">
+    <form id="profile-form">
+      <label for="displayName">Display Name (Nickname)</label>
+      <input type="text" id="displayName" name="displayName" placeholder="Your cool nickname" required />
+
+      <label for="avatar">Choose Avatar</label>
+      <select id="avatar" name="avatar">
+        <option value="😎">😎 Cool Shades</option>
+        <option value="🤖">🤖 Robot</option>
+        <option value="🐱">🐱 Cat</option>
+        <option value="🦄">🦄 Unicorn</option>
+        <option value="🚀">🚀 Rocket</option>
+        <option value="👾">👾 Alien</option>
+      </select>
+
+      <div class="avatar-preview" id="avatar-preview">😎</div>
+
+      <label for="themeColor">Favorite Theme Color</label>
+      <select id="themeColor" name="themeColor">
+        <option value="#f472b6">Pink</option>
+        <option value="#3b82f6">Blue</option>
+        <option value="#10b981">Green</option>
+        <option value="#f59e0b">Orange</option>
+        <option value="#8b5cf6">Purple</option>
+      </select>
+
+      <button type="submit">Save Profile 💾</button>
+    </form>
+  </div>
+
+  <script>
+    const loggedInUser = localStorage.getItem('loggedInUser');
+
+    if (!loggedInUser) {
+      alert('Please log in first.');
+      window.location.href = 'index.html';
+    }
+
+    const profileForm = document.getElementById('profile-form');
+    const avatarSelect = document.getElementById('avatar');
+    const avatarPreview = document.getElementById('avatar-preview');
+    const displayNameInput = document.getElementById('displayName');
+    const themeColorSelect = document.getElementById('themeColor');
+
+    // Load saved profile data
+    let profiles = JSON.parse(localStorage.getItem('techtonicProfiles')) || {};
+    if (profiles[loggedInUser]) {
+      displayNameInput.value = profiles[loggedInUser].displayName || '';
+      avatarSelect.value = profiles[loggedInUser].avatar || '😎';
+      themeColorSelect.value = profiles[loggedInUser].themeColor || '#f472b6';
+      avatarPreview.textContent = avatarSelect.value;
+      document.body.style.background = `linear-gradient(135deg, ${themeColorSelect.value} 0%, #f9a8d4 100%)`;
+    }
+
+    avatarSelect.addEventListener('change', () => {
+      avatarPreview.textContent = avatarSelect.value;
+    });
+
+    themeColorSelect.addEventListener('change', () => {
+      document.body.style.background = `linear-gradient(135deg, ${themeColorSelect.value} 0%, #f9a8d4 100%)`;
+    });
+
+    profileForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const newProfile = {
+        displayName: displayNameInput.value.trim(),
+        avatar: avatarSelect.value,
+        themeColor: themeColorSelect.value
+      };
+
+      profiles[loggedInUser] = newProfile;
+      localStorage.setItem('techtonicProfiles', JSON.stringify(profiles));
+
+      alert('Profile saved! 🎉');
+
+      // Optionally redirect to dashboard or update dashboard UI live
+      window.location.href = 'dashboard.html';
+    });
+  </script>
+
+</body>
+</html>
