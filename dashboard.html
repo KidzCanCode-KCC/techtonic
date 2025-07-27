@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechTonic Dashboard ⚡️</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Quick styling for dashboard */
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #6ee7b7 0%, #3b82f6 100%);
+      color: #222;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      max-width: 900px;
+      width: 100%;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 3rem;
+      color: #ffda6a;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 5px #000a;
+    }
+    .info-box {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+      max-width: 700px;
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px #2563ebcc;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to TechTonic, <span id="username-display">Coder</span>! 🎉</h1>
+  </header>
+
+  <div class="info-box">
+    <h2>Your Stats</h2>
+    <p>🔥 Streak: <strong id="streak-count">0</strong> days</p>
+    <p>🏅 Badges earned: <strong id="badge-count">0</strong></p>
+    <p>💻 Projects completed: <strong id="project-count">0</strong></p>
+  </div>
+
+  <button id="logout-btn">Log Out 🔐</button>
+
+  <script>
+    // Show username from localStorage
+    const usernameDisplay = document.getElementById('username-display');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // You might store logged-in username in localStorage under 'loggedInUser'
+    const loggedInUser = localStorage.getItem('loggedInUser');
+
+    if (loggedInUser) {
+      usernameDisplay.textContent = loggedInUser;
+    } else {
+      // No user logged in, redirect to homepage
+      alert('Please log in first.');
+      window.location.href = 'index.html';
+    }
+
+    // Placeholder stats — later you can update with real data
+    document.getElementById('streak-count').textContent = 3;  // example
+    document.getElementById('badge-count').textContent = 5;   // example
+    document.getElementById('project-count').textContent = 2; // example
+
+    // Logout clears loggedInUser and redirects to homepage
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('loggedInUser');
+      alert('Logged out successfully!');
+      window.location.href = 'index.html';
+    });
+  </script>
+
+</body>
+</html>
