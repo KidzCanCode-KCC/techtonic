@@ -1,1 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TechTonic - Block Building Burrow</title>
+<style>
+  body, html {
+    margin: 0; padding: 0; font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: #e0f7fa;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    color: #004d40;
+  }
+
+  h1 {
+    margin-top: 40px;
+    font-size: 3rem;
+    color: #00796b;
+    text-shadow: 1px 1px 3px #a7ffeb;
+  }
+
+  .units-container {
+    width: 90%;
+    max-width: 700px;
+    margin: 40px 0 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .unit-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0, 150, 136, 0.25);
+    padding: 25px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+  }
+
+  .unit-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #00695c;
+  }
+
+  .unit-desc {
+    font-size: 1.1rem;
+    color: #00796b;
+    line-height: 1.4;
+  }
+
+  /* Progress Bar */
+  .progress-bar-container {
+    width: 100%;
+    height: 22px;
+    background: #b2dfdb;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(255,255,255,0.7);
+  }
+  .progress-bar {
+    height: 100%;
+    background: #00796b;
+    width: 0%;
+    border-radius: 12px 0 0 12px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Start Button */
+  .start-btn {
+    background: #00796b;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    align-self: flex-start;
+    box-shadow: 0 8px 15px rgba(0,121,107,0.6);
+    user-select: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .start-btn:focus {
+    outline: 3px solid #004d40;
+  }
+  .start-btn:hover:not(:disabled) {
+    transform: scale(1.12);
+    box-shadow: 0 12px 22px rgba(0,150,136,0.85);
+  }
+
+  /* Disabled Button */
+  .start-btn:disabled {
+    background: #80cbc4;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Locked Overlay */
+  .locked-overlay {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    font-size: 1.8rem;
+    color: #80cbc4;
+  }
+
+  /* Bounce animation for start button */
+  @keyframes bounce-btn {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .start-btn.bounce {
+    animation: bounce-btn 1.2s ease-in-out infinite;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2.4rem;
+    }
+    .unit-title {
+      font-size: 1.5rem;
+    }
+    .start-btn {
+      font-size: 1rem;
+      padding: 10px 22px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Block Building Burrow</h1>
+
+<div class="units-container" role="list" aria-label="Block Coding Units">
+
+  <!-- Unit 1: Unlocked -->
+  <section class="unit-card" role="listitem" aria-labelledby="unit1-title">
+    <div class="unit-title" id="unit1-title">Unit 1: Basics of Block Coding</div>
+    <div class="unit-desc">Learn the basics of coding by dragging and dropping blocks. Master logic and loops!</div>
+
+    <div class="progress-bar-container" aria-label="Unit 1 progress">
+      <div id="unit1-progress" class="progress-bar" style="width: 0%"></div>
+    </div>
+
+    <button id="start-unit1" class="start-btn bounce" aria-describedby="unit1-desc" aria-label="Start Unit 1 lessons">
+      Start
+    </button>
+  </section>
+
+  <!-- Unit 2: Locked -->
+  <section class="unit-card" role="listitem" aria-labelledby="unit2-title" aria-disabled="true" aria-label="Unit 2 locked">
+    <div class="unit-title" id="unit2-title">Unit 2: Building Fun Projects</div>
+    <div class="unit-desc">Create cool projects and games using blocks. Unlock by completing Unit 1!</div>
+
+    <div class="progress-bar-container" aria-label="Unit 2 progress">
+      <div id="unit2-progress" class="progress-bar" style="width: 0%"></div>
+    </div>
+
+    <button class="start-btn" disabled aria-label="Unit 2 locked, complete Unit 1 first">Start</button>
+    <div class="locked-overlay" aria-hidden="true">🔒</div>
+  </section>
+
+  <!-- Unit 3: Locked -->
+  <section class="unit-card" role="listitem" aria-labelledby="unit3-title" aria-disabled="true" aria-label="Unit 3 locked">
+    <div class="unit-title" id="unit3-title">Unit 3: Advanced Concepts</div>
+    <div class="unit-desc">Dive deeper into coding logic and create interactive stories.</div>
+
+    <div class="progress-bar-container" aria-label="Unit 3 progress">
+      <div id="unit3-progress" class="progress-bar" style="width: 0%"></div>
+    </div>
+
+    <button class="start-btn" disabled aria-label="Unit 3 locked, complete previous units first">Start</button>
+    <div class="locked-overlay" aria-hidden="true">🔒</div>
+  </section>
+
+  <!-- Unit 4: Locked -->
+  <section class="unit-card" role="listitem" aria-labelledby="unit4-title" aria-disabled="true" aria-label="Unit 4 locked">
+    <div class="unit-title" id="unit4-title">Unit 4: Loops and Conditionals</div>
+    <div class="unit-desc">Use loops and conditionals to build smart programs and solve puzzles.</div>
+
+    <div class="progress-bar-container" aria-label="Unit 4 progress">
+      <div id="unit4-progress" class="progress-bar" style="width: 0%"></div>
+    </div>
+
+    <button class="start-btn" disabled aria-label="Unit 4 locked, complete previous units first">Start</button>
+    <div class="locked-overlay" aria-hidden="true">🔒</div>
+  </section>
+
+  <!-- Unit 5: Locked -->
+  <section class="unit-card" role="listitem" aria-labelledby="unit5-title" aria-disabled="true" aria-label="Unit 5 locked">
+    <div class="unit-title" id="unit5-title">Unit 5: Creative Coding</div>
+    <div class="unit-desc">Build your own games and stories with everything you learned.</div>
+
+    <div class="progress-bar-container" aria-label="Unit 5 progress">
+      <div id="unit5-progress" class="progress-bar" style="width: 0%"></div>
+    </div>
+
+    <button class="start-btn" disabled aria-label="Unit 5 locked, complete previous units first">Start</button>
+    <div class="locked-overlay" aria-hidden="true">🔒</div>
+  </section>
+
+</div>
+
+<script>
+  // Constants for progress
+  const LESSONS_PER_UNIT = 5;
+  const UNITS_TOTAL = 5;
+
+  // Storage keys
+  const STORAGE_KEY = 'block_lessons_completed'; // Object: {unit1: [true,false,...], unit2: [...] ...}
+
+  // Initialize progress data if not exist
+  function initProgress() {
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      // For simplicity, only unit1 lessons array needed now, 5 lessons
+      const initialProgress = {
+        unit1: [false, false, false, false, false],
+        unit2: [],
+        unit3: [],
+        unit4: [],
+        unit5: []
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(initialProgress));
+    }
+  }
+
+  // Get current progress data
+  function getProgress() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY));
+  }
+
+  // Save progress data
+  function saveProgress(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  // Update progress bars and unlocks
+  function updateUI() {
+    const progressData = getProgress();
+
+    // Unit 1 progress
+    const unit1Completed = progressData.unit1.filter(Boolean).length;
+    const unit1ProgressPercent = (unit1Completed / LESSONS_PER_UNIT) * 100;
+    document.getElementById('unit1-progress').style.width = `${unit1ProgressPercent}%`;
+
+    // Unlock unit 2 if unit 1 completed fully
+    const unit2Card = document.getElementById('unit2-progress').parentElement;
+    const unit2StartBtn = unit2Card.querySelector('button.start-btn');
+    if (unit1Completed === LESSONS_PER_UNIT) {
+      unit2StartBtn.disabled = false;
+      unit2StartBtn.classList.add('bounce');
+      unit2Card.removeAttribute('aria-disabled');
+      unit2Card.querySelector('.locked-overlay').style.display = 'none';
+    }
+
+    // For now, units 3-5 remain locked (no progress or unlocking logic yet)
+  }
+
+  // On page load
+  window.addEventListener('DOMContentLoaded', () => {
+    initProgress();
+    updateUI();
+
+    // Start button click
+    document.getElementById('start-unit1').addEventListener('click', () => {
+      // Navigate to block_unit_1.html
+      window.location.href = 'block_unit_1.html';
+    });
+  });
+
+  // NOTE: For demo, to simulate lesson completion, run this in console:
+  // let data = JSON.parse(localStorage.getItem('block_lessons_completed'));
+  // data.unit1[0] = true; localStorage.setItem('block_lessons_completed', JSON.stringify(data)); updateUI();
+</script>
+
+</body>
+</html>
 
