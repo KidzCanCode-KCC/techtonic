@@ -7,13 +7,35 @@
   <link rel="stylesheet" href="lessons.css" />
 </head>
 <body>
+  <!-- 🔵 NAVIGATION BAR -->
+  <nav>
+    <ul>
+      <li><a href="dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="lessons.html">📚 Lessons</a></li>
+      <li><a href="profile.html">👤 Profile</a></li>
+      <li><a href="about.html">ℹ️ About</a></li>
+    </ul>
+  </nav>
+
   <h1>🌟 Choose Your Own Adventure! 🌟</h1>
+
+  <!-- Background fun stuff -->
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+  <div class="star star1"></div>
+  <div class="star star2"></div>
+  <div class="rollercoaster">🎢</div>
+  <div class="car car1">🚗</div>
+  <div class="car car2">🚙</div>
+
+  <!-- Giant oval buttons -->
   <div class="map">
-    <div class="location" style="top: 10%; left: 15%;">
+    <div class="location" style="top: 10%; left: 10%;">
       <h2>🎢 Block Coding</h2>
       <button onclick="goTo('block.html')">Get Started!</button>
     </div>
-    <div class="location" style="top: 10%; right: 15%;">
+    <div class="location" style="top: 10%; right: 10%;">
       <h2>🪐 Python Planet</h2>
       <button onclick="goTo('python.html')">Get Started!</button>
     </div>
@@ -25,24 +47,16 @@
       <h2>🏙️ CSS City</h2>
       <button onclick="goTo('css.html')">Get Started!</button>
     </div>
-    <div class="location" style="top: 45%; left: 42%;">
+    <div class="location" style="top: 45%; left: 40%;">
       <h2>🌴 JavaScript Jungle</h2>
       <button onclick="goTo('javascript.html')">Get Started!</button>
     </div>
-
-    <!-- Curved dashed "roads" using SVG paths -->
-    <svg class="roads" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 20% 15% Q 40% 5%, 80% 15%" />
-      <path d="M 20% 15% Q 10% 40%, 15% 80%" />
-      <path d="M 80% 15% Q 90% 40%, 85% 85%" />
-      <path d="M 15% 80% Q 50% 90%, 85% 85%" />
-      <path d="M 20% 15% Q 40% 50%, 45% 50%" />
-      <path d="M 80% 15% Q 60% 50%, 45% 50%" />
-      <path d="M 15% 80% Q 30% 60%, 45% 50%" />
-      <path d="M 85% 85% Q 70% 60%, 45% 50%" />
-    </svg>
   </div>
 
-  <script src="lessons.js"></script>
+  <script>
+    function goTo(page) {
+      window.location.href = page;
+    }
+  </script>
 </body>
 </html>
