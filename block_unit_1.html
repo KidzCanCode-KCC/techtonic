@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TechTonic - Block Unit 1 Lessons</title>
+<style>
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: #e0f7fa;
+    color: #004d40;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  nav {
+    width: 100%;
+    background: #00796b;
+    display: flex;
+    justify-content: flex-end;
+    gap: 26px;
+    padding: 16px 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  nav a {
+    color: white;
+    font-weight: bold;
+    font-size: 1.15rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  nav a:hover, nav a:focus {
+    color: #a7ffeb;
+    outline: none;
+  }
+
+  h1 {
+    margin: 48px 0 24px;
+    font-size: 3rem;
+    color: #00796b;
+    text-shadow: 1px 1px 3px #a7ffeb;
+  }
+
+  .lessons-container {
+    width: 90%;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-bottom: 100px;
+  }
+
+  .lesson-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(0, 150, 136, 0.28);
+    padding: 22px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lesson-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #00695c;
+  }
+
+  .lesson-desc {
+    font-size: 1.1rem;
+    color: #00796b;
+    line-height: 1.4;
+  }
+
+  .complete-btn {
+    align-self: flex-start;
+    margin-top: 10px;
+    background: #00796b;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0,121,107,0.6);
+    user-select: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .complete-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 12px 24px rgba(0,150,136,0.85);
+  }
+  .complete-btn:disabled {
+    background: #80cbc4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .complete-btn:focus {
+    outline: 3px solid #004d40;
+  }
+
+  .progress-bar-container {
+    width: 100%;
+    height: 26px;
+    background: #b2dfdb;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.7);
+    margin: 32px 0 16px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: #00796b;
+    width: 0%;
+    border-radius: 14px 0 0 14px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .congrats-message {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #00796b;
+    margin-top: 40px;
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { text-shadow: 0 0 10px #00bfa5; }
+    50% { text-shadow: 0 0 22px #004d40; }
+  }
+
+  .back-btn {
+    display: block;
+    margin: 30px auto 0;
+    background: #004d40;
+    color: #a7ffeb;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 14px 36px;
+    border-radius: 18px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,77,64,0.8);
+    user-select: none;
+    transition: background 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    width: fit-content;
+  }
+  .back-btn:hover, .back-btn:focus {
+    background: #00796b;
+    outline: none;
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2.4rem;
+      margin-top: 30px;
+    }
+    .lesson-title {
+      font-size: 1.3rem;
+    }
+    .complete-btn {
+      font-size: 1rem;
+      padding: 10px 22px;
+    }
+    .back-btn {
+      font-size: 1rem;
+      padding: 12px 28px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Main navigation">
+  <a href="lessons.html" tabindex="0">Lessons</a>
+  <a href="dashboard.html" tabindex="0">Dashboard</a>
+  <a href="block.html" tabindex="0">Block Lessons</a>
+</nav>
+
+<h1>Block Building Burrow - Unit 1</h1>
+
+<div class="progress-bar-container" aria-label="Unit 1 progress">
+  <div id="unit1-progress" class="progress-bar" style="width: 0%"></div>
+</div>
+
+<div class="lessons-container" role="list" aria-label="Unit 1 Lessons">
+
+  <!-- Lesson 1 -->
+  <section class="lesson-card" role="listitem" aria-labelledby="lesson1-title">
+    <div class="lesson-title" id="lesson1-title">Lesson 1: What Are Blocks?</div>
+    <div class="lesson-desc">Learn what coding blocks are and how they fit together like puzzle pieces.</div>
+    <button class="complete-btn" id="complete-1" aria-label="Complete Lesson 1">Complete Lesson</button>
+  </section>
+
+  <!-- Lesson 2 -->
+  <section class="lesson-card" role="listitem" aria-labelledby="lesson2-title">
+    <div class="lesson-title" id="lesson2-title">Lesson 2: Moving Your First Block</div>
+    <div class="lesson-desc">Practice dragging and dropping blocks to make things happen.</div>
+    <button class="complete-btn" id="complete-2" aria-label="Complete Lesson 2">Complete Lesson</button>
+  </section>
+
+  <!-- Lesson 3 -->
+  <section class="lesson-card" role="listitem" aria-labelledby="lesson3-title">
+    <div class="lesson-title" id="lesson3-title">Lesson 3: Putting Blocks Together</div>
+    <div class="lesson-desc">Snap blocks together to create your first simple program.</div>
+    <button class="complete-btn" id="complete-3" aria-label="Complete Lesson 3">Complete Lesson</button>
+  </section>
+
+  <!-- Lesson 4 -->
+  <section class="lesson-card" role="listitem" aria-labelledby="lesson4-title">
+    <div class="lesson-title" id="lesson4-title">Lesson 4: Making Choices</div>
+    <div class="lesson-desc">Learn how to tell your program to make decisions using blocks.</div>
+    <button class="complete-btn" id="complete-4" aria-label="Complete Lesson 4">Complete Lesson</button>
+  </section>
+
+  <!-- Lesson 5 -->
+  <section class="lesson-card" role="listitem" aria-labelledby="lesson5-title">
+    <div class="lesson-title" id="lesson5-title">Lesson 5: Your First Mini Project</div>
+    <div class="lesson-desc">Put all your new skills together to make a fun little program.</div>
+    <button class="complete-btn" id="complete-5" aria-label="Complete Lesson 5">Complete Lesson</button>
+  </section>
+
+</div>
+
+<div id="congrats-message" class="congrats-message" style="display:none;" role="alert" aria-live="polite">
+  🎉 Congratulations! You completed Unit 1! 🎉
+</div>
+
+<a href="block.html" id="back-to-block" class="back-btn" style="display:none;" aria-label="Return to Block Lessons main page">Back to Block Lessons</a>
+
+<script>
+  const LESSONS_TOTAL = 5;
+  const STORAGE_KEY = 'block_lessons_completed';
+
+  function initProgress() {
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      const initialProgress = {
+        unit1: [false, false, false, false, false],
+        unit2: [],
+        unit3: [],
+        unit4: [],
+        unit5: []
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(initialProgress));
+    }
+  }
+
+  function getProgress() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY));
+  }
+
+  function saveProgress(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function updateUI() {
+    const progressData = getProgress();
+    const unit1Progress = progressData.unit1;
+    const completedCount = unit1Progress.filter(Boolean).length;
+    const percent = (completedCount / LESSONS_TOTAL) * 100;
+
+    document.getElementById('unit1-progress').style.width = percent + '%';
+
+    for (let i = 1; i <= LESSONS_TOTAL; i++) {
+      const btn = document.getElementById(`complete-${i}`);
+      if (unit1Progress[i-1]) {
+        btn.textContent = 'Completed ✔️';
+        btn.disabled = true;
+        btn.style.cursor = 'default';
+      } else {
+        btn.textContent = 'Complete Lesson';
+        btn.disabled = false;
+        btn.style.cursor = 'pointer';
+      }
+    }
+
+    if (completedCount === LESSONS_TOTAL) {
+      document.getElementById('congrats-message').style.display = 'block';
+      document.getElementById('back-to-block').style.display = 'inline-block';
+    } else {
+      document.getElementById('congrats-message').style.display = 'none';
+      document.getElementById('back-to-block').style.display = 'none';
+    }
+  }
+
+  function completeLesson(lessonNum) {
+    const progressData = getProgress();
+    if (!progressData.unit1[lessonNum - 1]) {
+      progressData.unit1[lessonNum - 1] = true;
+      saveProgress(progressData);
+      updateUI();
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    initProgress();
+    updateUI();
+
+    for (let i = 1; i <= LESSONS_TOTAL; i++) {
+      document.getElementById(`complete-${i}`).addEventListener('click', () => {
+        completeLesson(i);
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
+
