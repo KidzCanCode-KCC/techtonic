@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TechTonic - Lesson 1: What Are Blocks?</title>
+<style>
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: #e0f7fa;
+    color: #004d40;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  nav {
+    width: 100%;
+    background: #00796b;
+    display: flex;
+    justify-content: flex-end;
+    gap: 26px;
+    padding: 16px 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  nav a {
+    color: white;
+    font-weight: bold;
+    font-size: 1.15rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  nav a:hover, nav a:focus {
+    color: #a7ffeb;
+    outline: none;
+  }
+  h1 {
+    margin: 40px 0 20px;
+    font-size: 2.8rem;
+    color: #00796b;
+    text-shadow: 1px 1px 3px #a7ffeb;
+  }
+  /* Slide container */
+  #slide-container {
+    background: white;
+    max-width: 700px;
+    width: 90%;
+    border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(0, 150, 136, 0.28);
+    padding: 28px 32px;
+    position: relative;
+    min-height: 280px;
+  }
+  .slide {
+    display: none;
+    font-size: 1.2rem;
+    color: #004d40;
+    line-height: 1.5;
+  }
+  .slide.active {
+    display: block;
+  }
+  /* Navigation buttons */
+  .nav-buttons {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 700px;
+    width: 90%;
+  }
+  button.nav-btn {
+    background: #00796b;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0,121,107,0.6);
+    user-select: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-width: 120px;
+  }
+  button.nav-btn:disabled {
+    background: #80cbc4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  button.nav-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 12px 24px rgba(0,150,136,0.85);
+  }
+  button.nav-btn:focus {
+    outline: 3px solid #004d40;
+  }
+
+  /* Quiz container */
+  #quiz-container {
+    background: white;
+    max-width: 700px;
+    width: 90%;
+    border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(0, 150, 136, 0.28);
+    padding: 28px 32px;
+    margin-top: 30px;
+    display: none;
+    flex-direction: column;
+  }
+  #quiz-container h2 {
+    color: #00796b;
+    margin-bottom: 20px;
+  }
+  .question {
+    margin-bottom: 22px;
+  }
+  .question-text {
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .feedback {
+    margin-top: 6px;
+    font-weight: 700;
+    height: 20px;
+  }
+  .feedback.correct {
+    color: #2e7d32;
+  }
+  .feedback.incorrect {
+    color: #c62828;
+  }
+  button#submit-quiz {
+    align-self: flex-start;
+    margin-top: 16px;
+  }
+
+  /* Interactive coding area */
+  #interactive-container {
+    background: white;
+    max-width: 700px;
+    width: 90%;
+    border-radius: 20px;
+    box-shadow: 0 8px 22px rgba(0, 150, 136, 0.28);
+    padding: 28px 32px;
+    margin-top: 30px;
+    display: none;
+    flex-direction: column;
+  }
+  #interactive-container h2 {
+    color: #00796b;
+    margin-bottom: 20px;
+  }
+  #blocks-area {
+    border: 2px dashed #00796b;
+    border-radius: 16px;
+    min-height: 120px;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .block {
+    background: #004d40;
+    color: #a7ffeb;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: grab;
+    user-select: none;
+    box-shadow: 0 4px 8px rgba(0,77,64,0.7);
+    transition: background 0.3s ease;
+  }
+  .block:active {
+    cursor: grabbing;
+    background: #00796b;
+  }
+  #target-area {
+    margin-top: 24px;
+    border: 2px solid #004d40;
+    border-radius: 16px;
+    min-height: 100px;
+    padding: 12px;
+    background: #b2dfdb;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #target-area .block {
+    cursor: default;
+  }
+  #check-btn {
+    margin-top: 24px;
+    background: #00796b;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0,121,107,0.6);
+    user-select: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    align-self: flex-start;
+  }
+  #check-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 24px rgba(0,150,136,0.85);
+  }
+  #check-btn:focus {
+    outline: 3px solid #004d40;
+  }
+
+  #completion-section {
+    margin-top: 30px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+  }
+  #complete-lesson-btn {
+    background: #004d40;
+    color: #a7ffeb;
+    font-weight: 700;
+    font-size: 1.3rem;
+    padding: 14px 36px;
+    border-radius: 18px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,77,64,0.8);
+    user-select: none;
+    transition: background 0.3s ease;
+  }
+  #complete-lesson-btn:hover, #complete-lesson-btn:focus {
+    background: #00796b;
+    outline: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2.2rem;
+      margin: 30px 0 16px;
+    }
+    #slide-container, #quiz-container, #interactive-container {
+      width: 95%;
+      padding: 20px;
+      min-height: auto;
+    }
+    button.nav-btn {
+      min-width: 100px;
+      font-size: 1rem;
+      padding: 8px 20px;
+    }
+    #complete-lesson-btn {
+      font-size: 1.1rem;
+      padding: 12px 28px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Main navigation">
+  <a href="lessons.html" tabindex="0">Lessons</a>
+  <a href="dashboard.html" tabindex="0">Dashboard</a>
+  <a href="block.html" tabindex="0">Block Lessons</a>
+</nav>
+
+<h1>Lesson 1: What Are Blocks?</h1>
+
+<!-- Slide show -->
+<div id="slide-container" aria-live="polite" aria-atomic="true" aria-label="Lesson slides">
+  <div class="slide active" role="group" aria-roledescription="slide" aria-label="Slide 1">
+    <h2>Welcome to Block Coding!</h2>
+    <p>Blocks are colorful puzzle pieces that fit together to tell a computer what to do.</p>
+  </div>
+  <div class="slide" role="group" aria-roledescription="slide" aria-label="Slide 2">
+    <h2>Drag & Drop</h2>
+    <p>You can drag blocks and snap them together to make a program.</p>
+  </div>
+  <div class="slide" role="group" aria-roledescription="slide" aria-label="Slide 3">
+    <h2>Blocks Have Meaning</h2>
+    <p>Each block does something special, like moving, turning, or repeating actions.</p>
+  </div>
+  <div class="slide" role="group" aria-roledescription="slide" aria-label="Slide 4">
+    <h2>Snap Blocks Together</h2>
+    <p>When blocks snap together, the computer reads them in order and does what they say.</p>
+  </div>
+  <div class="slide" role="group" aria-roledescription="slide" aria-label="Slide 5">
+    <h2>Let’s Practice!</h2>
+    <p>Next, you’ll take a quick quiz and try dragging blocks yourself.</p>
+  </div>
+</div>
+
+<div class="nav-buttons">
+  <button id="prev-btn" class="nav-btn" disabled aria-label="Previous slide">Previous</button>
+  <button id="next-btn" class="nav-btn" aria-label="Next slide">Next</button>
+</div>
+
+<!-- Quiz -->
+<div id="quiz-container" aria-live="polite" aria-atomic="true" aria-label="Lesson quiz">
+  <h2>Quick Quiz: Test Your Knowledge</h2>
+
+  <form id="quiz-form" novalidate>
+    <div class="question" data-correct="b">
+      <div class="question-text">1. What do blocks look like?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="a" /> Long lines of text</label>
+        <label><input type="radio" name="q1" value="b" /> Colorful puzzle pieces</label>
+        <label><input type="radio" name="q1" value="c" /> Numbers and symbols</label>
+      </div>
+      <div class="feedback" aria-live="polite"></div>
+    </div>
+
+    <div class="question" data-correct="a">
+      <div class="question-text">2. How do you use blocks?</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="a" /> Drag and snap them together</label>
+        <label><input type="radio" name="q2" value="b" /> Write them on paper</label>
+        <label><input type="radio" name="q2" value="c" /> Draw pictures</label>
+      </div>
+      <div class="feedback" aria-live="polite"></div>
+    </div>
+
+    <div class="question" data-correct="c">
+      <div class="question-text">3. What happens when blocks snap together?</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="a" /> They disappear</label>
+        <label><input type="radio" name="q3" value="b" /> They change colors</label>
+        <label><input type="radio" name="q3" value="c" /> The computer reads them in order</label>
+      </div>
+      <div class="feedback" aria-live="polite"></div>
+    </div>
+
+    <div class="question" data-correct="b">
+      <div class="question-text">4. What can blocks tell a computer to do?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="a" /> Take a nap</label>
+        <label><input type="radio" name="q4" value="b" /> Move, turn, or repeat actions</label>
+        <label><input type="radio" name="q4" value="c" /> Make snacks</label>
+      </div>
+      <div class="feedback" aria-live="polite"></div>
+    </div>
+
+    <div class="question" data-correct="a">
+      <div class="question-text">5. What is the first thing you do with blocks?</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="a" /> Drag them</label>
+        <label><input type="radio" name="q5" value="b" /> Eat them</label>
+        <label><input type="radio" name="q5" value="c" /> Throw them</label>
+      </div>
+      <div class="feedback" aria-live="polite"></div>
+    </div>
+
+    <button type="submit" id="submit-quiz" class="nav-btn">Submit Quiz</button>
+  </form>
+</div>
+
+<!-- Interactive portion -->
+<div id="interactive-container" aria-label="Interactive block coding activity">
+  <h2>Try It Yourself: Build the Code!</h2>
+  <p>Drag the blocks below into the box in the correct order to make a simple program:</p>
+
+  <div id="blocks-area" aria-label="Draggable blocks">
+    <div class="block" draggable="true" tabindex="0" aria-grabbed="false" id="block-move">Move Forward</div>
+    <div class="block" draggable="true" tabindex="0" aria-grabbed="false" id="block-turn">Turn Right</div>
+    <div class="block" draggable="true" tabindex="0" aria-grabbed="false" id="block-repeat">Repeat 3 Times</div>
+  </div>
+
+  <
