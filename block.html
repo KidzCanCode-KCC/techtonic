@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Block Building Unit | TechTonic</title>
+  <title>Block Building Units | TechTonic</title>
   <style>
     :root {
       --blue: #3a86ff;
@@ -77,30 +77,30 @@
 
     /* --- PROGRESS BAR --- */
     #progress-container {
-      max-width: 600px;
-      margin: 0.75rem auto 2rem;
+      max-width: 700px;
+      margin: 1.5rem auto 3rem;
       background-color: var(--gray-light);
-      border-radius: 25px;
+      border-radius: 35px;
       overflow: hidden;
-      box-shadow: 0 3px 10px rgba(58, 134, 255, 0.15);
+      box-shadow: 0 5px 15px rgba(58, 134, 255, 0.25);
       user-select: none;
-      display: none; /* hidden initially */
-      font-weight: 700;
+      display: none; /* hide initially */
+      font-weight: 800;
       color: var(--blue);
     }
     #progress-label {
       text-align: center;
-      padding: 0.4rem 0;
-      font-size: 1.1rem;
+      padding: 0.6rem 0;
+      font-size: 1.5rem;
       background-color: var(--white);
-      box-shadow: inset 0 -2px 6px rgba(58, 134, 255, 0.1);
+      box-shadow: inset 0 -3px 8px rgba(58, 134, 255, 0.15);
     }
     #progress-bar {
-      height: 15px;
+      height: 25px;
       background-color: var(--blue);
       width: 0%;
-      transition: width 0.5s ease;
-      border-radius: 0 0 25px 25px;
+      transition: width 0.6s ease;
+      border-radius: 0 0 35px 35px;
     }
 
     /* --- MAIN UNIT CARDS --- */
@@ -212,44 +212,44 @@
   </nav>
 
   <header>
-    <h1>Block Building Unit</h1>
-    <p>Learn coding fundamentals with fun, interactive block lessons!</p>
+    <h1>Block Building Units</h1>
+    <p>Learn coding fundamentals with fun, interactive block units!</p>
   </header>
 
-  <div id="progress-container">
-    <div id="progress-label">Lesson: 0/5</div>
+  <div id="progress-container" aria-label="Unit progress">
+    <div id="progress-label">Units completed: 0 / 5</div>
     <div id="progress-bar"></div>
   </div>
 
   <main>
-    <div class="unit-card" data-lesson="1">
-      <h2>Lesson 1: Intro to Blocks</h2>
+    <div class="unit-card" data-unit="1">
+      <h2>Unit 1: Intro to Blocks</h2>
       <p>Get started with coding by learning how blocks work and creating your first program.</p>
-      <button class="start-btn" aria-label="Start or Continue Lesson 1">Start</button>
+      <button class="start-btn" aria-label="Start or Continue Unit 1">Start</button>
     </div>
 
-    <div class="unit-card locked" data-lesson="2">
+    <div class="unit-card locked" data-unit="2">
       <span class="lock-icon" title="Locked">&#128274;</span>
-      <h2>Lesson 2: Sequences & Loops</h2>
+      <h2>Unit 2: Sequences & Loops</h2>
       <p>Learn how to arrange blocks and use loops to repeat actions.</p>
       <button class="start-btn" disabled>Locked</button>
     </div>
 
-    <div class="unit-card locked" data-lesson="3">
+    <div class="unit-card locked" data-unit="3">
       <span class="lock-icon" title="Locked">&#128274;</span>
-      <h2>Lesson 3: Conditionals</h2>
+      <h2>Unit 3: Conditionals</h2>
       <p>Discover how to make decisions in your code with if/else blocks.</p>
       <button class="start-btn" disabled>Locked</button>
     </div>
 
-    <div class="unit-card locked" data-lesson="4">
+    <div class="unit-card locked" data-unit="4">
       <span class="lock-icon" title="Locked">&#128274;</span>
-      <h2>Lesson 4: Variables & Data</h2>
+      <h2>Unit 4: Variables & Data</h2>
       <p>Learn how to store and change information in your programs.</p>
       <button class="start-btn" disabled>Locked</button>
     </div>
 
-    <div class="unit-card locked" data-lesson="5">
+    <div class="unit-card locked" data-unit="5">
       <span class="lock-icon" title="Locked">&#128274;</span>
       <h2>Final Project</h2>
       <p>Create a fun project using everything you learned!</p>
@@ -258,70 +258,62 @@
   </main>
 
   <script>
-    // Track progress in localStorage as "blockUnitProgress" (number 0 to 5)
-    // 0 = no lessons started, 5 = all done
+    // Track completed units count in localStorage "blockUnitCompleted" (0-5)
+    // Progress bar updates only AFTER units are completed
 
     const progressContainer = document.getElementById('progress-container');
     const progressLabel = document.getElementById('progress-label');
     const progressBar = document.getElementById('progress-bar');
     const unitCards = document.querySelectorAll('.unit-card');
 
-    // Get current progress or default 0
-    let progress = parseInt(localStorage.getItem('blockUnitProgress')) || 0;
+    let completedUnits = parseInt(localStorage.getItem('blockUnitCompleted')) || 0;
 
-    // Show progress bar only if progress > 0
-    if (progress > 0) {
-      progressContainer.style.display = 'block';
-    }
-
-    // Update UI based on progress
     function updateUI() {
-      // Show progress bar
-      progressContainer.style.display = 'block';
-      progressLabel.textContent = `Lesson: ${progress}/${unitCards.length}`;
-      const percent = (progress / unitCards.length) * 100;
+      if (completedUnits > 0) {
+        progressContainer.style.display = 'block';
+      } else {
+        progressContainer.style.display = 'none';
+      }
+
+      progressLabel.textContent = `Units completed: ${completedUnits} / ${unitCards.length}`;
+      const percent = (completedUnits / unitCards.length) * 100;
       progressBar.style.width = percent + '%';
 
       unitCards.forEach(card => {
-        const lessonNum = parseInt(card.dataset.lesson);
+        const unitNum = parseInt(card.dataset.unit);
         const btn = card.querySelector('.start-btn');
 
-        if (lessonNum <= progress + 1) {
-          // Unlock lessons up to progress + 1
+        if (unitNum <= completedUnits + 1) {
+          // Unlock units up to completedUnits + 1
           card.classList.remove('locked');
           btn.disabled = false;
-          btn.textContent = lessonNum <= progress ? 'Continue' : 'Start';
-          btn.setAttribute('aria-label', `${btn.textContent} Lesson ${lessonNum}`);
+          btn.textContent = unitNum <= completedUnits ? 'Continue' : 'Start';
+          btn.setAttribute('aria-label', `${btn.textContent} Unit ${unitNum}`);
         } else {
-          // Lock lessons beyond progress+1
+          // Lock units beyond next one
           card.classList.add('locked');
           btn.disabled = true;
           btn.textContent = 'Locked';
-          btn.setAttribute('aria-label', `Lesson ${lessonNum} locked`);
+          btn.setAttribute('aria-label', `Unit ${unitNum} locked`);
         }
       });
     }
 
     updateUI();
 
-    // Handle start/continue click
     unitCards.forEach(card => {
       const btn = card.querySelector('.start-btn');
       if (!btn.disabled) {
         btn.addEventListener('click', () => {
-          const lessonNum = parseInt(card.dataset.lesson);
-          // Simulate "starting" or "continuing" lesson by going to lesson page
-          // For demo, just alert and increase progress if starting new lesson
+          const unitNum = parseInt(card.dataset.unit);
+          // Redirect to the correct unit page:
+          window.location.href = `block_unit_${unitNum}.html`;
 
-          // Normally you would redirect to lesson page:
-          // window.location.href = `block_unit_${lessonNum}.html`;
-
-          alert(`Opening Lesson ${lessonNum} page...`);
-
-          // If user just started a new lesson (lessonNum == progress+1), update progress
-          if (lessonNum === progress + 1) {
-            progress = lessonNum;
-            localStorage.setItem('blockUnitProgress', progress);
+          // After redirect, you could update progress on that page after completion.
+          // For demo, simulate progress update if starting new unit:
+          if (unitNum === completedUnits + 1) {
+            completedUnits = unitNum;
+            localStorage.setItem('blockUnitCompleted', completedUnits);
             updateUI();
           }
         });
