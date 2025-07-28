@@ -13,11 +13,36 @@
     color: #004d40;
   }
 
+  /* Navbar */
+  nav {
+    width: 100%;
+    background: #00796b;
+    display: flex;
+    justify-content: flex-end;
+    gap: 24px;
+    padding: 14px 30px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  nav a:hover, nav a:focus {
+    color: #a7ffeb;
+    outline: none;
+  }
+
   h1 {
     margin-top: 40px;
     font-size: 3rem;
     color: #00796b;
     text-shadow: 1px 1px 3px #a7ffeb;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .units-container {
@@ -140,7 +165,12 @@
 </head>
 <body>
 
-<h1>Block Building Burrow</h1>
+<nav role="navigation" aria-label="Main navigation">
+  <a href="lessons.html" tabindex="0">Lessons</a>
+  <a href="dashboard.html" tabindex="0">Dashboard</a>
+</nav>
+
+<h1>Block Building Burrow 🧱</h1>
 
 <div class="units-container" role="list" aria-label="Block Coding Units">
 
@@ -215,7 +245,6 @@
 <script>
   // Constants for progress
   const LESSONS_PER_UNIT = 5;
-  const UNITS_TOTAL = 5;
 
   // Storage keys
   const STORAGE_KEY = 'block_lessons_completed'; // Object: {unit1: [true,false,...], unit2: [...] ...}
@@ -223,7 +252,6 @@
   // Initialize progress data if not exist
   function initProgress() {
     if (!localStorage.getItem(STORAGE_KEY)) {
-      // For simplicity, only unit1 lessons array needed now, 5 lessons
       const initialProgress = {
         unit1: [false, false, false, false, false],
         unit2: [],
@@ -257,33 +285,26 @@
     // Unlock unit 2 if unit 1 completed fully
     const unit2Card = document.getElementById('unit2-progress').parentElement;
     const unit2StartBtn = unit2Card.querySelector('button.start-btn');
+    const lockedOverlay2 = unit2Card.querySelector('.locked-overlay');
     if (unit1Completed === LESSONS_PER_UNIT) {
       unit2StartBtn.disabled = false;
       unit2StartBtn.classList.add('bounce');
       unit2Card.removeAttribute('aria-disabled');
-      unit2Card.querySelector('.locked-overlay').style.display = 'none';
+      lockedOverlay2.style.display = 'none';
     }
 
-    // For now, units 3-5 remain locked (no progress or unlocking logic yet)
+    // For now, units 3-5 remain locked
   }
 
-  // On page load
   window.addEventListener('DOMContentLoaded', () => {
     initProgress();
     updateUI();
 
-    // Start button click
     document.getElementById('start-unit1').addEventListener('click', () => {
-      // Navigate to block_unit_1.html
       window.location.href = 'block_unit_1.html';
     });
   });
-
-  // NOTE: For demo, to simulate lesson completion, run this in console:
-  // let data = JSON.parse(localStorage.getItem('block_lessons_completed'));
-  // data.unit1[0] = true; localStorage.setItem('block_lessons_completed', JSON.stringify(data)); updateUI();
 </script>
 
 </body>
 </html>
-
