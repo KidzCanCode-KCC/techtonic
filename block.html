@@ -1,325 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Block Building Units | TechTonic</title>
+  <meta charset="UTF-8">
+  <title>Block Building Units</title>
   <style>
     :root {
-      --blue: #3a86ff;
-      --light-blue: #a0c4ff;
+      --blue: #4a90e2;
+      --light-blue: #e6f2ff;
       --white: #ffffff;
-      --gray-light: #f5f7fa;
-      --gray-dark: #475569;
-      --gray-muted: #a3aabf;
+      --gray: #cccccc;
     }
+
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--white);
-      color: var(--gray-dark);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      font-family: "Comic Sans MS", "Poppins", sans-serif;
+      background-color: var(--light-blue);
+      color: #333;
     }
 
-    /* --- NAVBAR --- */
+    /* Navbar */
     nav {
-      background: linear-gradient(135deg, #3a86ff 0%, #5db0ff 100%);
+      background: var(--white);
       padding: 1rem 2rem;
       display: flex;
-      gap: 2rem;
-      border-bottom-left-radius: 50px;
-      border-bottom-right-radius: 50px;
-      box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-    }
-    nav a {
-      color: var(--white);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 1.2rem;
-      padding: 0.5rem 1.5rem;
-      border-radius: 30px;
-      background: rgba(255 255 255 / 0.15);
-      transition: background-color 0.3s ease, color 0.3s ease;
-      user-select: none;
-      box-shadow: 0 3px 6px rgba(255 255 255 / 0.3);
-    }
-    nav a:hover {
-      background-color: var(--white);
-      color: var(--blue);
-      box-shadow: 0 5px 15px rgba(58, 134, 255, 0.7);
+      border-bottom: 2px solid var(--blue);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    /* --- HEADER --- */
-    header {
+    nav h1 {
+      font-size: 1.8rem;
+      color: var(--blue);
+    }
+
+    nav .links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-weight: bold;
+      color: var(--blue);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background: var(--blue);
+      color: white;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 1rem;
+    }
+
+    .unit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .unit-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 25px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
       text-align: center;
-      margin: 2rem 1rem 1rem;
+      transition: transform 0.2s ease;
       position: relative;
     }
-    header h1 {
-      font-weight: 700;
-      font-size: 2.8rem;
-      color: var(--blue);
-      margin-bottom: 0.25rem;
-    }
-    header p {
-      font-size: 1.15rem;
-      color: var(--gray-dark);
-      max-width: 400px;
-      margin: 0 auto;
+
+    .unit-card:hover {
+      transform: scale(1.03);
     }
 
-    /* --- PROGRESS BAR --- */
+    .unit-card.locked {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .unit-card h2 {
+      color: var(--blue);
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .unit-card p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .unit-card button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 20px;
+      background: var(--blue);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .unit-card button:hover {
+      background: #3a78c2;
+    }
+
     #progress-container {
       max-width: 700px;
-      margin: 1.5rem auto 3rem;
-      background-color: var(--gray-light);
+      margin: 2rem auto 3rem;
+      background-color: white;
       border-radius: 35px;
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(58, 134, 255, 0.25);
       user-select: none;
-      display: none; /* hide initially */
-      font-weight: 800;
-      color: var(--blue);
     }
+
     #progress-label {
       text-align: center;
-      padding: 0.6rem 0;
+      padding: 0.75rem;
       font-size: 1.5rem;
-      background-color: var(--white);
-      box-shadow: inset 0 -3px 8px rgba(58, 134, 255, 0.15);
+      font-weight: bold;
+      color: var(--blue);
     }
+
     #progress-bar {
       height: 25px;
       background-color: var(--blue);
       width: 0%;
       transition: width 0.6s ease;
-      border-radius: 0 0 35px 35px;
-    }
-
-    /* --- MAIN UNIT CARDS --- */
-    main {
-      flex-grow: 1;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      padding: 0 2rem 3rem;
-      max-width: 960px;
-      margin: 0 auto 3rem;
-    }
-    .unit-card {
-      background-color: var(--light-blue);
-      color: var(--blue);
-      border-radius: 50px;
-      box-shadow: 0 8px 20px rgba(58, 134, 255, 0.15);
-      width: 280px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      user-select: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-      position: relative;
-    }
-    .unit-card:hover:not(.locked) {
-      transform: translateY(-8px);
-      box-shadow: 0 14px 30px rgba(58, 134, 255, 0.3);
-    }
-    .unit-card.locked {
-      background-color: #cbd5e1; /* muted gray-blue */
-      color: var(--gray-muted);
-      cursor: default;
-      box-shadow: none;
-    }
-    .unit-card.locked:hover {
-      transform: none;
-      box-shadow: none;
-    }
-    .unit-card.locked .lock-icon {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.5rem;
-      color: var(--gray-muted);
-    }
-    .unit-card h2 {
-      margin: 0 0 1rem;
-      font-size: 1.6rem;
-      font-weight: 700;
-    }
-    .unit-card p {
-      font-size: 1rem;
-      line-height: 1.4;
-      flex-grow: 1;
-    }
-    .start-btn {
-      margin-top: 1.5rem;
-      background-color: var(--blue);
-      color: var(--white);
-      border: none;
-      border-radius: 30px;
-      padding: 0.75rem 1.5rem;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      outline-offset: 2px;
-      outline-color: transparent;
-    }
-    .start-btn:hover {
-      background-color: #265dff;
-    }
-    .unit-card.locked .start-btn {
-      background-color: var(--gray-muted);
-      cursor: not-allowed;
-    }
-
-    /* Responsive */
-    @media (max-width: 640px) {
-      main {
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 0 1rem 2rem;
-      }
-      .unit-card {
-        width: 100%;
-      }
-      nav {
-        gap: 1rem;
-      }
-      nav a {
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
-      }
     }
   </style>
 </head>
 <body>
-
   <nav>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="lessons.html">Lessons</a>
+    <h1>Block Units</h1>
+    <div class="links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="lessons.html">Units</a>
+    </div>
   </nav>
 
-  <header>
-    <h1>Block Building Units</h1>
-    <p>Learn coding fundamentals with fun, interactive block units!</p>
-  </header>
-
-  <div id="progress-container" aria-label="Unit progress">
+  <div id="progress-container">
     <div id="progress-label">Units completed: 0 / 5</div>
     <div id="progress-bar"></div>
   </div>
 
-  <main>
-    <div class="unit-card" data-unit="1">
-      <h2>Unit 1: Intro to Blocks</h2>
-      <p>Get started with coding by learning how blocks work and creating your first program.</p>
-      <button class="start-btn" aria-label="Start or Continue Unit 1">Start</button>
+  <div class="container">
+    <div class="unit-grid" id="unit-grid">
+      <!-- Units will be generated here -->
     </div>
-
-    <div class="unit-card locked" data-unit="2">
-      <span class="lock-icon" title="Locked">&#128274;</span>
-      <h2>Unit 2: Sequences & Loops</h2>
-      <p>Learn how to arrange blocks and use loops to repeat actions.</p>
-      <button class="start-btn" disabled>Locked</button>
-    </div>
-
-    <div class="unit-card locked" data-unit="3">
-      <span class="lock-icon" title="Locked">&#128274;</span>
-      <h2>Unit 3: Conditionals</h2>
-      <p>Discover how to make decisions in your code with if/else blocks.</p>
-      <button class="start-btn" disabled>Locked</button>
-    </div>
-
-    <div class="unit-card locked" data-unit="4">
-      <span class="lock-icon" title="Locked">&#128274;</span>
-      <h2>Unit 4: Variables & Data</h2>
-      <p>Learn how to store and change information in your programs.</p>
-      <button class="start-btn" disabled>Locked</button>
-    </div>
-
-    <div class="unit-card locked" data-unit="5">
-      <span class="lock-icon" title="Locked">&#128274;</span>
-      <h2>Final Project</h2>
-      <p>Create a fun project using everything you learned!</p>
-      <button class="start-btn" disabled>Locked</button>
-    </div>
-  </main>
+  </div>
 
   <script>
-    // Track completed units count in localStorage "blockUnitCompleted" (0-5)
-    // Progress bar updates only AFTER units are completed
+    const unitData = [
+      {
+        title: "Unit 1: Basics of Blocks",
+        desc: "Start building with simple commands! 🎉",
+        page: "block_unit_1.html"
+      },
+      {
+        title: "Unit 2: Motion Madness",
+        desc: "Make your sprites zoom, glide, and dance! 🚀",
+        page: "block_unit_2.html"
+      },
+      {
+        title: "Unit 3: Looks & Sounds",
+        desc: "Add colors, costumes, and music! 🎨🎵",
+        page: "block_unit_3.html"
+      },
+      {
+        title: "Unit 4: Logic Land",
+        desc: "Learn conditions and loops like a pro! 🧠",
+        page: "block_unit_4.html"
+      },
+      {
+        title: "Unit 5: Game Time!",
+        desc: "Put it all together to make a real game! 🎮",
+        page: "block_unit_5.html"
+      },
+    ];
 
-    const progressContainer = document.getElementById('progress-container');
-    const progressLabel = document.getElementById('progress-label');
+    const grid = document.getElementById('unit-grid');
     const progressBar = document.getElementById('progress-bar');
-    const unitCards = document.querySelectorAll('.unit-card');
+    const progressLabel = document.getElementById('progress-label');
 
-    let completedUnits = parseInt(localStorage.getItem('blockUnitCompleted')) || 0;
+    let completed = parseInt(localStorage.getItem('blockUnitCompleted')) || 0;
 
-    function updateUI() {
-      if (completedUnits > 0) {
-        progressContainer.style.display = 'block';
-      } else {
-        progressContainer.style.display = 'none';
-      }
-
-      progressLabel.textContent = `Units completed: ${completedUnits} / ${unitCards.length}`;
-      const percent = (completedUnits / unitCards.length) * 100;
+    function updateProgressBar() {
+      const percent = (completed / unitData.length) * 100;
       progressBar.style.width = percent + '%';
+      progressLabel.textContent = `Units completed: ${completed} / ${unitData.length}`;
+    }
 
-      unitCards.forEach(card => {
-        const unitNum = parseInt(card.dataset.unit);
-        const btn = card.querySelector('.start-btn');
+    function createUnits() {
+      unitData.forEach((unit, index) => {
+        const card = document.createElement('div');
+        card.className = 'unit-card';
 
-        if (unitNum <= completedUnits + 1) {
-          // Unlock units up to completedUnits + 1
-          card.classList.remove('locked');
-          btn.disabled = false;
-          btn.textContent = unitNum <= completedUnits ? 'Continue' : 'Start';
-          btn.setAttribute('aria-label', `${btn.textContent} Unit ${unitNum}`);
-        } else {
-          // Lock units beyond next one
+        if (index > completed) {
           card.classList.add('locked');
-          btn.disabled = true;
-          btn.textContent = 'Locked';
-          btn.setAttribute('aria-label', `Unit ${unitNum} locked`);
         }
+
+        card.dataset.index = index;
+
+        const title = document.createElement('h2');
+        title.textContent = unit.title;
+
+        const desc = document.createElement('p');
+        desc.textContent = unit.desc;
+
+        const btn = document.createElement('button');
+        const visited = localStorage.getItem(`visitedUnit${index + 1}`);
+
+        btn.textContent = visited ? "Continue" : "Start";
+        btn.addEventListener('click', () => {
+          localStorage.setItem(`visitedUnit${index + 1}`, true);
+          window.location.href = unit.page;
+        });
+
+        card.appendChild(title);
+        card.appendChild(desc);
+        card.appendChild(btn);
+        grid.appendChild(card);
       });
     }
 
-    updateUI();
-
-    unitCards.forEach(card => {
-      const btn = card.querySelector('.start-btn');
-      if (!btn.disabled) {
-        btn.addEventListener('click', () => {
-          const unitNum = parseInt(card.dataset.unit);
-          // Redirect to the correct unit page:
-          window.location.href = `block_unit_${unitNum}.html`;
-
-          // After redirect, you could update progress on that page after completion.
-          // For demo, simulate progress update if starting new unit:
-          if (unitNum === completedUnits + 1) {
-            completedUnits = unitNum;
-            localStorage.setItem('blockUnitCompleted', completedUnits);
-            updateUI();
-          }
-        });
-      }
-    });
+    updateProgressBar();
+    createUnits();
   </script>
-
 </body>
 </html>
