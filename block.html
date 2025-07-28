@@ -2,147 +2,332 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Block Building Burrow</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Block Building Unit | TechTonic</title>
   <style>
-    .unit-card {
-      background: #fdf4ff;
-      border: 2px solid #d8b4fe;
-      border-radius: 20px;
-      padding: 20px;
-      margin: 15px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
+    :root {
+      --blue: #3a86ff;
+      --light-blue: #a0c4ff;
+      --white: #ffffff;
+      --gray-light: #f5f7fa;
+      --gray-dark: #475569;
+      --gray-muted: #a3aabf;
     }
-    .unit-card:hover {
-      transform: scale(1.03);
-    }
-    .unit-card.locked {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-    .unit-card h2 {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-    }
-    .unit-card p {
-      font-size: 1em;
-      margin-bottom: 15px;
-    }
-    .progress {
-      background: #ddd;
-      border-radius: 10px;
-      height: 15px;
-      overflow: hidden;
-      margin: 10px 0;
-    }
-    .progress-bar {
-      background: #8b5cf6;
-      height: 100%;
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-    .unit-button {
-      padding: 10px 20px;
-      background-color: #c084fc;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    nav {
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--white);
+      color: var(--gray-dark);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #f3e8ff;
-      padding: 10px 20px;
-      border-bottom: 2px solid #d8b4fe;
+      flex-direction: column;
+      min-height: 100vh;
     }
-    nav h1 {
-      font-size: 1.5rem;
+
+    /* --- NAVBAR --- */
+    nav {
+      background: linear-gradient(135deg, #3a86ff 0%, #5db0ff 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      gap: 2rem;
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+      box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      align-items: center;
+      justify-content: center;
     }
     nav a {
+      color: var(--white);
       text-decoration: none;
-      margin-left: 15px;
-      color: #7e22ce;
-      font-weight: bold;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 0.5rem 1.5rem;
+      border-radius: 30px;
+      background: rgba(255 255 255 / 0.15);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+      box-shadow: 0 3px 6px rgba(255 255 255 / 0.3);
+    }
+    nav a:hover {
+      background-color: var(--white);
+      color: var(--blue);
+      box-shadow: 0 5px 15px rgba(58, 134, 255, 0.7);
+    }
+
+    /* --- HEADER --- */
+    header {
+      text-align: center;
+      margin: 2rem 1rem 1rem;
+      position: relative;
+    }
+    header h1 {
+      font-weight: 700;
+      font-size: 2.8rem;
+      color: var(--blue);
+      margin-bottom: 0.25rem;
+    }
+    header p {
+      font-size: 1.15rem;
+      color: var(--gray-dark);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* --- PROGRESS BAR --- */
+    #progress-container {
+      max-width: 600px;
+      margin: 0.75rem auto 2rem;
+      background-color: var(--gray-light);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(58, 134, 255, 0.15);
+      user-select: none;
+      display: none; /* hidden initially */
+      font-weight: 700;
+      color: var(--blue);
+    }
+    #progress-label {
+      text-align: center;
+      padding: 0.4rem 0;
+      font-size: 1.1rem;
+      background-color: var(--white);
+      box-shadow: inset 0 -2px 6px rgba(58, 134, 255, 0.1);
+    }
+    #progress-bar {
+      height: 15px;
+      background-color: var(--blue);
+      width: 0%;
+      transition: width 0.5s ease;
+      border-radius: 0 0 25px 25px;
+    }
+
+    /* --- MAIN UNIT CARDS --- */
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 0 2rem 3rem;
+      max-width: 960px;
+      margin: 0 auto 3rem;
+    }
+    .unit-card {
+      background-color: var(--light-blue);
+      color: var(--blue);
+      border-radius: 50px;
+      box-shadow: 0 8px 20px rgba(58, 134, 255, 0.15);
+      width: 280px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      user-select: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .unit-card:hover:not(.locked) {
+      transform: translateY(-8px);
+      box-shadow: 0 14px 30px rgba(58, 134, 255, 0.3);
+    }
+    .unit-card.locked {
+      background-color: #cbd5e1; /* muted gray-blue */
+      color: var(--gray-muted);
+      cursor: default;
+      box-shadow: none;
+    }
+    .unit-card.locked:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .unit-card.locked .lock-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      color: var(--gray-muted);
+    }
+    .unit-card h2 {
+      margin: 0 0 1rem;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+    .unit-card p {
+      font-size: 1rem;
+      line-height: 1.4;
+      flex-grow: 1;
+    }
+    .start-btn {
+      margin-top: 1.5rem;
+      background-color: var(--blue);
+      color: var(--white);
+      border: none;
+      border-radius: 30px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      outline-offset: 2px;
+      outline-color: transparent;
+    }
+    .start-btn:hover {
+      background-color: #265dff;
+    }
+    .unit-card.locked .start-btn {
+      background-color: var(--gray-muted);
+      cursor: not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      main {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 0 1rem 2rem;
+      }
+      .unit-card {
+        width: 100%;
+      }
+      nav {
+        gap: 1rem;
+      }
+      nav a {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+      }
     }
   </style>
 </head>
 <body>
+
   <nav>
-    <h1>Block Building Burrow 🧱</h1>
-    <div>
-      <a href="lessons.html">Lessons</a>
-      <a href="dashboard.html">Dashboard</a>
-    </div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="lessons.html">Lessons</a>
   </nav>
 
-  <div id="units-container"></div>
+  <header>
+    <h1>Block Building Unit</h1>
+    <p>Learn coding fundamentals with fun, interactive block lessons!</p>
+  </header>
+
+  <div id="progress-container">
+    <div id="progress-label">Lesson: 0/5</div>
+    <div id="progress-bar"></div>
+  </div>
+
+  <main>
+    <div class="unit-card" data-lesson="1">
+      <h2>Lesson 1: Intro to Blocks</h2>
+      <p>Get started with coding by learning how blocks work and creating your first program.</p>
+      <button class="start-btn" aria-label="Start or Continue Lesson 1">Start</button>
+    </div>
+
+    <div class="unit-card locked" data-lesson="2">
+      <span class="lock-icon" title="Locked">&#128274;</span>
+      <h2>Lesson 2: Sequences & Loops</h2>
+      <p>Learn how to arrange blocks and use loops to repeat actions.</p>
+      <button class="start-btn" disabled>Locked</button>
+    </div>
+
+    <div class="unit-card locked" data-lesson="3">
+      <span class="lock-icon" title="Locked">&#128274;</span>
+      <h2>Lesson 3: Conditionals</h2>
+      <p>Discover how to make decisions in your code with if/else blocks.</p>
+      <button class="start-btn" disabled>Locked</button>
+    </div>
+
+    <div class="unit-card locked" data-lesson="4">
+      <span class="lock-icon" title="Locked">&#128274;</span>
+      <h2>Lesson 4: Variables & Data</h2>
+      <p>Learn how to store and change information in your programs.</p>
+      <button class="start-btn" disabled>Locked</button>
+    </div>
+
+    <div class="unit-card locked" data-lesson="5">
+      <span class="lock-icon" title="Locked">&#128274;</span>
+      <h2>Final Project</h2>
+      <p>Create a fun project using everything you learned!</p>
+      <button class="start-btn" disabled>Locked</button>
+    </div>
+  </main>
 
   <script>
-    const unitsContainer = document.getElementById("units-container");
-    const totalUnits = 5;
-    const unitTitles = [
-      "Basics of Block Coding",
-      "Events & Loops",
-      "Conditions & Logic",
-      "Functions & Variables",
-      "Mini Projects"
-    ];
+    // Track progress in localStorage as "blockUnitProgress" (number 0 to 5)
+    // 0 = no lessons started, 5 = all done
 
-    const unitDescriptions = [
-      "Start your journey into block coding!",
-      "Learn how to make actions repeat and respond to triggers.",
-      "Make smart programs that decide what to do!",
-      "Create powerful, reusable code blocks.",
-      "Put your skills to the test with fun mini games!"
-    ];
+    const progressContainer = document.getElementById('progress-container');
+    const progressLabel = document.getElementById('progress-label');
+    const progressBar = document.getElementById('progress-bar');
+    const unitCards = document.querySelectorAll('.unit-card');
 
-    const visitedUnit1 = localStorage.getItem("unit1Visited") === "true";
-    const unitProgress = parseFloat(localStorage.getItem("unit1Progress")) || 0;
+    // Get current progress or default 0
+    let progress = parseInt(localStorage.getItem('blockUnitProgress')) || 0;
 
-    for (let i = 1; i <= totalUnits; i++) {
-      const unitCard = document.createElement("div");
-      unitCard.classList.add("unit-card");
-      if (i > 1 && !visitedUnit1) unitCard.classList.add("locked");
-
-      const title = document.createElement("h2");
-      title.textContent = `Unit ${i}: ${unitTitles[i - 1]}`;
-
-      const description = document.createElement("p");
-      description.textContent = unitDescriptions[i - 1];
-
-      const progress = document.createElement("div");
-      progress.classList.add("progress");
-      const progressBar = document.createElement("div");
-      progressBar.classList.add("progress-bar");
-      progressBar.style.width = i === 1 ? `${unitProgress * 100}%` : "0%";
-      progress.appendChild(progressBar);
-
-      const button = document.createElement("button");
-      button.classList.add("unit-button");
-      if (i === 1) {
-        button.textContent = visitedUnit1 ? "Continue" : "Start";
-        button.onclick = () => {
-          localStorage.setItem("unit1Visited", "true");
-          window.location.href = "block_unit_1.html";
-        };
-      } else {
-        button.textContent = "Locked";
-        button.disabled = true;
-      }
-
-      unitCard.appendChild(title);
-      unitCard.appendChild(description);
-      unitCard.appendChild(progress);
-      unitCard.appendChild(button);
-
-      unitsContainer.appendChild(unitCard);
+    // Show progress bar only if progress > 0
+    if (progress > 0) {
+      progressContainer.style.display = 'block';
     }
+
+    // Update UI based on progress
+    function updateUI() {
+      // Show progress bar
+      progressContainer.style.display = 'block';
+      progressLabel.textContent = `Lesson: ${progress}/${unitCards.length}`;
+      const percent = (progress / unitCards.length) * 100;
+      progressBar.style.width = percent + '%';
+
+      unitCards.forEach(card => {
+        const lessonNum = parseInt(card.dataset.lesson);
+        const btn = card.querySelector('.start-btn');
+
+        if (lessonNum <= progress + 1) {
+          // Unlock lessons up to progress + 1
+          card.classList.remove('locked');
+          btn.disabled = false;
+          btn.textContent = lessonNum <= progress ? 'Continue' : 'Start';
+          btn.setAttribute('aria-label', `${btn.textContent} Lesson ${lessonNum}`);
+        } else {
+          // Lock lessons beyond progress+1
+          card.classList.add('locked');
+          btn.disabled = true;
+          btn.textContent = 'Locked';
+          btn.setAttribute('aria-label', `Lesson ${lessonNum} locked`);
+        }
+      });
+    }
+
+    updateUI();
+
+    // Handle start/continue click
+    unitCards.forEach(card => {
+      const btn = card.querySelector('.start-btn');
+      if (!btn.disabled) {
+        btn.addEventListener('click', () => {
+          const lessonNum = parseInt(card.dataset.lesson);
+          // Simulate "starting" or "continuing" lesson by going to lesson page
+          // For demo, just alert and increase progress if starting new lesson
+
+          // Normally you would redirect to lesson page:
+          // window.location.href = `block_unit_${lessonNum}.html`;
+
+          alert(`Opening Lesson ${lessonNum} page...`);
+
+          // If user just started a new lesson (lessonNum == progress+1), update progress
+          if (lessonNum === progress + 1) {
+            progress = lessonNum;
+            localStorage.setItem('blockUnitProgress', progress);
+            updateUI();
+          }
+        });
+      }
+    });
   </script>
+
 </body>
 </html>
