@@ -1,62 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Choose Your Adventure</title>
-  <link rel="stylesheet" href="lessons.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Fredoka One', cursive;
+      background: linear-gradient(white, #f0f8ff);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Loading Screen */
+    #loader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 1s ease;
+    }
+
+    #loader h1 {
+      font-size: 3rem;
+      color: #333;
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    nav {
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      justify-content: flex-end;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav a {
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 1.2rem;
+      color: #333;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #007bff;
+    }
+
+    .map-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background-image: url('https://i.imgur.com/tIH3Nj1.png'); /* optional background */
+      background-size: cover;
+      background-position: center;
+    }
+
+    .world {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-color: #fff;
+      border: 5px dashed #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .world:hover {
+      transform: scale(1.05);
+    }
+
+    .world h2 {
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .world button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* World positions */
+    #block { top: 10%; left: 10%; }
+    #html { top: 10%; right: 10%; }
+    #css { top: 40%; left: 50%; transform: translateX(-50%); }
+    #javascript { bottom: 10%; left: 15%; }
+    #python { bottom: 10%; right: 15%; }
+
+    /* Background decorations */
+    .star, .cloud, .rollercoaster {
+      position: absolute;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .star {
+      width: 50px;
+      height: 50px;
+      background: yellow;
+      border-radius: 50%;
+      top: 5%;
+      left: 50%;
+    }
+
+    .cloud {
+      width: 100px;
+      height: 60px;
+      background: lightgray;
+      border-radius: 50px;
+      top: 20%;
+      right: 30%;
+    }
+
+    .rollercoaster {
+      width: 120px;
+      height: 40px;
+      background: lightblue;
+      bottom: 5%;
+      left: 40%;
+    }
+
+  </style>
 </head>
 <body>
-  <!-- 🔵 NAVIGATION BAR -->
-  <nav>
-    <ul>
-      <li><a href="dashboard.html">🏠 Dashboard</a></li>
-      <li><a href="lessons.html">📚 Lessons</a></li>
-      <li><a href="profile.html">👤 Profile</a></li>
-      <li><a href="about.html">ℹ️ About</a></li>
-    </ul>
-  </nav>
 
-  <h1>🌟 Choose Your Own Adventure! 🌟</h1>
+<!-- Loading screen -->
+<div id="loader">
+  <h1>Loading your adventure...</h1>
+</div>
 
-  <!-- Background fun stuff -->
-  <div class="cloud cloud1"></div>
-  <div class="cloud cloud2"></div>
-  <div class="cloud cloud3"></div>
-  <div class="star star1"></div>
-  <div class="star star2"></div>
-  <div class="rollercoaster">🎢</div>
-  <div class="car car1">🚗</div>
-  <div class="car car2">🚙</div>
+<!-- Navbar -->
+<nav>
+  <a href="dashboard.html">Dashboard</a>
+</nav>
 
-  <!-- Giant oval buttons -->
-  <div class="map">
-    <div class="location" style="top: 10%; left: 10%;">
-      <h2>🎢 Block Coding</h2>
-      <button onclick="goTo('block.html')">Get Started!</button>
-    </div>
-    <div class="location" style="top: 10%; right: 10%;">
-      <h2>🪐 Python Planet</h2>
-      <button onclick="goTo('python.html')">Get Started!</button>
-    </div>
-    <div class="location" style="bottom: 15%; left: 10%;">
-      <h2>🌄 HTML Hills</h2>
-      <button onclick="goTo('html.html')">Get Started!</button>
-    </div>
-    <div class="location" style="bottom: 10%; right: 10%;">
-      <h2>🏙️ CSS City</h2>
-      <button onclick="goTo('css.html')">Get Started!</button>
-    </div>
-    <div class="location" style="top: 45%; left: 40%;">
-      <h2>🌴 JavaScript Jungle</h2>
-      <button onclick="goTo('javascript.html')">Get Started!</button>
-    </div>
+<!-- Map Container -->
+<div class="map-container">
+  <div class="world" id="block">
+    <h2>Blockly Park</h2>
+    <button onclick="location.href='block.html'">Get Started!</button>
+  </div>
+  <div class="world" id="html">
+    <h2>HTML Hills</h2>
+    <button onclick="location.href='html.html'">Get Started!</button>
+  </div>
+  <div class="world" id="css">
+    <h2>CSS City</h2>
+    <button onclick="location.href='css.html'">Get Started!</button>
+  </div>
+  <div class="world" id="javascript">
+    <h2>JavaScript Jungle</h2>
+    <button onclick="location.href='javascript.html'">Get Started!</button>
+  </div>
+  <div class="world" id="python">
+    <h2>Python Planet</h2>
+    <button onclick="location.href='python.html'">Get Started!</button>
   </div>
 
-  <script>
-    function goTo(page) {
-      window.location.href = page;
-    }
-  </script>
+  <!-- Background fun elements -->
+  <div class="star"></div>
+  <div class="cloud"></div>
+  <div class="rollercoaster"></div>
+</div>
+
+<script>
+  // Simulate loading screen
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("loader");
+    loader.style.opacity = "0";
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 1000);
+  });
+</script>
+
 </body>
 </html>
