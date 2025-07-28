@@ -1,213 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Choose Your Adventure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TechTonic - Lessons</title>
+<style>
+  /* Reset and basics */
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: #f0f8ff;
+    overflow-x: hidden;
+  }
 
-    body {
-      font-family: 'Fredoka One', cursive;
-      background: linear-gradient(white, #f0f8ff);
-      overflow-x: hidden;
-      position: relative;
-    }
+  /* Navbar */
+  nav {
+    background: #0077cc;
+    color: white;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    padding: 14px 30px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  nav a:hover, nav a:focus {
+    color: #aaddff;
+    outline: none;
+  }
 
-    /* Loading Screen */
-    #loader {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      transition: opacity 1s ease;
-    }
+  /* Loading Screen */
+  #loading-screen {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+  }
 
-    #loader h1 {
-      font-size: 3rem;
-      color: #333;
-      animation: bounce 1s infinite;
-    }
+  .bounce-dots {
+    display: flex;
+    gap: 12px;
+  }
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
+  .bounce-dots div {
+    width: 20px; height: 20px;
+    background: #00aaff;
+    border-radius: 50%;
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  .bounce-dots div:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .bounce-dots div:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .bounce-dots div:nth-child(3) {
+    animation-delay: 0.4s;
+  }
 
-    nav {
-      width: 100%;
-      padding: 20px;
-      display: flex;
-      justify-content: flex-end;
-      background-color: #fff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+  @keyframes bounce {
+    0%, 80%, 100% {
+      transform: scale(0);
+      opacity: 0.3;
     }
-
-    nav a {
-      text-decoration: none;
-      margin: 0 20px;
-      font-size: 1.2rem;
-      color: #333;
-      transition: color 0.3s;
+    40% {
+      transform: scale(1);
+      opacity: 1;
     }
+  }
 
-    nav a:hover {
-      color: #007bff;
+  /* Container for Lessons */
+  .container {
+    max-width: 960px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3rem;
+    color: #0077cc;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 4px #cce7ff;
+  }
+
+  /* Lessons grid */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+  }
+
+  /* Each lesson card */
+  .lesson-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px 20px 40px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .lesson-card:hover {
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 170, 255, 0.35);
+  }
+
+  /* Icons */
+  .lesson-icon {
+    font-size: 4.5rem;
+    margin-bottom: 18px;
+    color: #00aaff;
+    filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.2));
+  }
+
+  /* Lesson titles */
+  .lesson-title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #005f99;
+    margin-bottom: 8px;
+  }
+
+  /* Lesson descriptions */
+  .lesson-desc {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 20px;
+    min-height: 50px;
+  }
+
+  /* Get Started button */
+  .get-started-btn {
+    background: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0,119,204,0.5);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    user-select: none;
+  }
+  .get-started-btn:hover, .get-started-btn:focus {
+    background: #005f99;
+    box-shadow: 0 8px 18px rgba(0,95,153,0.8);
+    outline: none;
+  }
+
+  /* Fun color variations per lesson */
+  .html-hills .lesson-icon {
+    color: #e34f26;
+  }
+  .css-city .lesson-icon {
+    color: #2965f1;
+  }
+  .js-jungle .lesson-icon {
+    color: #f7df1e;
+    filter: drop-shadow(0 0 3px #b59f00);
+  }
+  .python-planet .lesson-icon {
+    color: #306998;
+  }
+  .block-building-burrow .lesson-icon {
+    color: #5cbb58;
+  }
+
+  /* Footer spacing */
+  footer {
+    text-align: center;
+    margin: 50px 10px;
+    font-size: 0.9rem;
+    color: #777;
+  }
+
+  /* Responsive font scaling for smaller screens */
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2.2rem;
     }
-
-    .map-container {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      background-image: url('https://i.imgur.com/tIH3Nj1.png'); /* optional background */
-      background-size: cover;
-      background-position: center;
+    .lesson-title {
+      font-size: 1.3rem;
     }
-
-    .world {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background-color: #fff;
-      border: 5px dashed #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-    }
-
-    .world:hover {
-      transform: scale(1.05);
-    }
-
-    .world h2 {
-      font-size: 1.5rem;
-      color: #333;
-    }
-
-    .world button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: black;
-      color: white;
-      border: none;
-      border-radius: 20px;
+    .get-started-btn {
+      padding: 10px 22px;
       font-size: 1rem;
-      cursor: pointer;
     }
-
-    /* World positions */
-    #block { top: 10%; left: 10%; }
-    #html { top: 10%; right: 10%; }
-    #css { top: 40%; left: 50%; transform: translateX(-50%); }
-    #javascript { bottom: 10%; left: 15%; }
-    #python { bottom: 10%; right: 15%; }
-
-    /* Background decorations */
-    .star, .cloud, .rollercoaster {
-      position: absolute;
-      animation: float 6s ease-in-out infinite;
-      opacity: 0.6;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .star {
-      width: 50px;
-      height: 50px;
-      background: yellow;
-      border-radius: 50%;
-      top: 5%;
-      left: 50%;
-    }
-
-    .cloud {
-      width: 100px;
-      height: 60px;
-      background: lightgray;
-      border-radius: 50px;
-      top: 20%;
-      right: 30%;
-    }
-
-    .rollercoaster {
-      width: 120px;
-      height: 40px;
-      background: lightblue;
-      bottom: 5%;
-      left: 40%;
-    }
-
-  </style>
+  }
+</style>
 </head>
 <body>
 
-<!-- Loading screen -->
-<div id="loader">
-  <h1>Loading your adventure...</h1>
-</div>
-
 <!-- Navbar -->
 <nav>
-  <a href="dashboard.html">Dashboard</a>
+  <a href="profile.html" tabindex="0">Profile</a>
+  <a href="dashboard.html" tabindex="0">Dashboard</a>
 </nav>
 
-<!-- Map Container -->
-<div class="map-container">
-  <div class="world" id="block">
-    <h2>Blockly Park</h2>
-    <button onclick="location.href='block.html'">Get Started!</button>
+<!-- Loading Screen -->
+<div id="loading-screen" aria-label="Loading content">
+  <div class="bounce-dots" role="progressbar" aria-live="polite" aria-busy="true">
+    <div></div><div></div><div></div>
   </div>
-  <div class="world" id="html">
-    <h2>HTML Hills</h2>
-    <button onclick="location.href='html.html'">Get Started!</button>
-  </div>
-  <div class="world" id="css">
-    <h2>CSS City</h2>
-    <button onclick="location.href='css.html'">Get Started!</button>
-  </div>
-  <div class="world" id="javascript">
-    <h2>JavaScript Jungle</h2>
-    <button onclick="location.href='javascript.html'">Get Started!</button>
-  </div>
-  <div class="world" id="python">
-    <h2>Python Planet</h2>
-    <button onclick="location.href='python.html'">Get Started!</button>
-  </div>
+  <p style="margin-top:20px; font-size:1.2rem; color:#00aaff;">Loading lessons...</p>
+</div>
 
-  <!-- Background fun elements -->
-  <div class="star"></div>
-  <div class="cloud"></div>
-  <div class="rollercoaster"></div>
+<!-- Main Container -->
+<div class="container" style="opacity: 0;">
+  <h1>Choose Your TechTonic Adventure!</h1>
+
+  <div class="lessons-grid">
+
+    <div class="lesson-card html-hills" tabindex="0" role="region" aria-labelledby="html-title">
+      <div class="lesson-icon" aria-hidden="true">🏞️</div>
+      <div id="html-title" class="lesson-title">HTML Hills</div>
+      <div class="lesson-desc">
+        Explore the foundation of web pages by learning HTML — the building blocks of the internet.
+      </div>
+      <a href="html.html" class="get-started-btn" tabindex="0" aria-label="Get started with HTML Hills">Get Started</a>
+    </div>
+
+    <div class="lesson-card css-city" tabindex="0" role="region" aria-labelledby="css-title">
+      <div class="lesson-icon" aria-hidden="true">🏙️</div>
+      <div id="css-title" class="lesson-title">CSS City</div>
+      <div class="lesson-desc">
+        Design colorful and stylish websites with CSS — the art of web page styling and layout.
+      </div>
+      <a href="css.html" class="get-started-btn" tabindex="0" aria-label="Get started with CSS City">Get Started</a>
+    </div>
+
+    <div class="lesson-card js-jungle" tabindex="0" role="region" aria-labelledby="js-title">
+      <div class="lesson-icon" aria-hidden="true">🌴</div>
+      <div id="js-title" class="lesson-title">JavaScript Jungle</div>
+      <div class="lesson-desc">
+        Enter the world of programming with JavaScript — making websites interactive and fun.
+      </div>
+      <a href="javascript.html" class="get-started-btn" tabindex="0" aria-label="Get started with JavaScript Jungle">Get Started</a>
+    </div>
+
+    <div class="lesson-card python-planet" tabindex="0" role="region" aria-labelledby="python-title">
+      <div class="lesson-icon" aria-hidden="true">🪐</div>
+      <div id="python-title" class="lesson-title">Python Planet</div>
+      <div class="lesson-desc">
+        Blast off into Python — a powerful and friendly language great for games, apps, and more.
+      </div>
+      <a href="python.html" class="get-started-btn" tabindex="0" aria-label="Get started with Python Planet">Get Started</a>
+    </div>
+
+    <div class="lesson-card block-building-burrow" tabindex="0" role="region" aria-labelledby="block-title">
+      <div class="lesson-icon" aria-hidden="true">🧱</div>
+      <div id="block-title" class="lesson-title">Block Building Burrow</div>
+      <div class="lesson-desc">
+        Build coding skills with blocks — drag, drop, and learn programming logic the fun way.
+      </div>
+      <a href="block.html" class="get-started-btn" tabindex="0" aria-label="Get started with Block Building Burrow">Get Started</a>
+    </div>
+
+  </div>
 </div>
 
 <script>
-  // Simulate loading screen
-  window.addEventListener("load", () => {
-    const loader = document.getElementById("loader");
-    loader.style.opacity = "0";
+  // After page loads, hide loading screen with fade & bounce effect
+  window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const container = document.querySelector('.container');
+
+    // Wait a moment to show bounce animation (optional)
     setTimeout(() => {
-      loader.style.display = "none";
-    }, 1000);
+      // Fade out loading screen
+      loadingScreen.style.transition = 'opacity 0.8s ease';
+      loadingScreen.style.opacity = '0';
+
+      // Fade in main container
+      container.style.transition = 'opacity 1.2s ease';
+      container.style.opacity = '1';
+
+      // After fade out remove loading screen from DOM
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+      }, 900);
+    }, 1800);
   });
 </script>
 
