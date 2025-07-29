@@ -355,4 +355,30 @@
 
     function markComplete() {
       localStorage.setItem('block_unit_1_lesson_1_complete', 'true');
-      localStorage.set
+      localStorage.setItem('block_unit_1_lesson_1_xp', '50');
+      localStorage.setItem('block_unit_1_lesson_1_badge', 'Block Beginner');
+
+      // Unlock lesson 2
+      localStorage.setItem('block_unit_1_lesson_2_unlocked', 'true');
+
+      rewardsBox.style.display = 'block';
+    }
+
+    // Nav button handlers
+    document.getElementById('logout-btn').onclick = () => {
+      localStorage.removeItem('loggedInUser');
+      alert('Logged out successfully! 👋');
+      window.location.href = 'index.html';
+    };
+    document.getElementById('lessons-btn').onclick = () => {
+      window.location.href = 'lessons.html';
+    };
+    document.getElementById('profile-btn').onclick = () => {
+      window.location.href = 'profile.html';
+    };
+    document.getElementById('sandbox-btn').onclick = () => {
+      window.location.href = 'sandbox.html';
+    };
+  </script>
+</body>
+</html>
