@@ -1,1 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Block Building Burrow - Unit 1 Lesson 3</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #d0e6ff, #f9faff);
+      margin: 0;
+      padding: 20px;
+      color: #1a1a1a;
+      min-height: 100vh;
+      user-select: none;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #4f83f1;
+      color: #f0f6ff;
+      padding: 15px 30px;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 6px 20px rgba(79, 131, 241, 0.5);
+      user-select: none;
+    }
+    nav div:first-child {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 0.03em;
+      text-shadow: 0 0 5px rgba(79, 131, 241, 0.4);
+    }
+    nav div:nth-child(2) a {
+      color: #f0f6ff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    nav div:nth-child(2) a:hover {
+      color: #dbe9ff;
+      text-decoration: underline;
+    }
+
+    .slide {
+      display: none;
+      background: white;
+      max-width: 900px;
+      margin: 30px auto 0;
+      padding: 30px 40px;
+      border-radius: 25px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+      transition: box-shadow 0.3s ease;
+      user-select: text;
+    }
+    .slide.active {
+      display: block;
+    }
+    .slide:hover {
+      box-shadow: 0 12px 36px rgba(79, 131, 241, 0.2);
+    }
+
+    h2 {
+      color: #4f83f1;
+      font-weight: 800;
+      font-size: 1.8rem;
+      letter-spacing: 0.03em;
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: #2f3e60;
+      margin-bottom: 0;
+    }
+
+    .nav-buttons {
+      text-align: center;
+      margin-top: 30px;
+      user-select: none;
+    }
+    .nav-buttons button {
+      background: #4f83f1;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 12px 26px;
+      margin: 0 12px;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 7px 20px rgba(79, 131, 241, 0.5);
+      transition: background 0.3s ease, transform 0.3s ease;
+      user-select: none;
+    }
+    .nav-buttons button:hover {
+      background: #2f63d6;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(47, 99, 214, 0.7);
+    }
+
+    .quiz {
+      display: none;
+      background: white;
+      max-width: 900px;
+      margin: 40px auto 0;
+      padding: 30px 40px;
+      border-radius: 25px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+      user-select: text;
+    }
+    .quiz.active {
+      display: block;
+    }
+
+    .quiz h2 {
+      margin-top: 0;
+      color: #4f83f1;
+    }
+
+    .question {
+      margin-bottom: 24px;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .question p {
+      margin-bottom: 10px;
+    }
+
+    .question button {
+      background: #f0f6ff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #4f83f1;
+      margin: 4px 12px 8px 0;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .question button:hover {
+      background-color: #dbe9ff;
+    }
+    .question button.selected {
+      background-color: #4f83f1;
+      color: white;
+    }
+
+    .complete-btn {
+      display: none;
+      background: #3bb54a;
+      color: white;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 40px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      margin-top: 30px;
+      box-shadow: 0 8px 28px rgba(59, 181, 74, 0.7);
+      user-select: none;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .complete-btn:hover {
+      background: #2e9038;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(46, 144, 56, 0.8);
+    }
+
+    .rewards {
+      display: none;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 25px 30px;
+      text-align: center;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      user-select: none;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 650px) {
+      body {
+        padding: 15px;
+      }
+      nav {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px 15px;
+        border-radius: 0 0 20px 20px;
+      }
+      nav div:nth-child(2) a {
+        margin-left: 10px;
+        font-size: 1rem;
+      }
+      .slide, .quiz, .rewards {
+        padding: 25px 20px;
+        margin: 20px 0 0;
+        border-radius: 20px;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      p, .question {
+        font-size: 1rem;
+      }
+      .nav-buttons button {
+        font-size: 1rem;
+        padding: 10px 20px;
+        margin: 0 8px;
+      }
+      .question button {
+        font-size: 1rem;
+        padding: 8px 14px;
+        margin-right: 8px;
+      }
+      .complete-btn {
+        font-size: 1.1rem;
+        padding: 12px 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div>🧱 Block Building Burrow</div>
+    <div>
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="lessons.html">📚 Lessons</a>
+      <a href="block.html">🧩 BBB Units</a>
+    </div>
+  </nav>
+
+  <!-- Slides -->
+  <div class="slide active">
+    <h2>🔧 Putting Blocks Together</h2>
+    <p>Snap blocks to build a simple program. It’s like snapping puzzle pieces — each block does something special!</p>
+  </div>
+  <div class="slide">
+    <h2>🚦 Start Events</h2>
+    <p>Start blocks tell your program when to begin. Usually, it's "when green flag clicked" or "on start."</p>
+  </div>
+  <div class="slide">
+    <h2>➡️ Move Blocks</h2>
+    <p>Use move blocks to tell sprites or characters where to go.</p>
+  </div>
+  <div class="slide">
+    <h2>💬 Say Blocks</h2>
+    <p>Say blocks make your character talk — great for storytelling and fun!</p>
+  </div>
+  <div class="slide">
+    <h2>🔁 Repeat Loops</h2>
+    <p>Repeat blocks run the same code multiple times. Perfect for repeating actions without rewriting!</p>
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="prevSlide()">⬅️ Previous</button>
+    <button onclick="nextSlide()">➡️ Next</button>
+  </div>
+
+  <!-- Quiz -->
+  <div class="quiz">
+    <h2>📝 Quiz Time!</h2>
+
+    <div class="question" data-qindex="0">
+      <p>1. What block tells your program when to start?</p>
+      <button onclick="selectAnswer(0, this)">A. When green flag clicked</button>
+      <button onclick="selectAnswer(0, this)">B. Repeat block</button>
+      <button onclick="selectAnswer(0, this)">C. Move block</button>
+      <button onclick="selectAnswer(0, this)">D. Say block</button>
+    </div>
+
+    <div class="question" data-qindex="1">
+      <p>2. What does a move block do?</p>
+      <button onclick="selectAnswer(1, this)">A. Makes the character move</button>
+      <button onclick="selectAnswer(1, this)">B. Makes the character say something</button>
+      <button onclick="selectAnswer(1, this)">C. Starts the program</button>
+      <button onclick="selectAnswer(1, this)">D. Stops the program</button>
+    </div>
+
+    <div class="question" data-qindex="2">
+      <p>3. What is the purpose of a say block?</p>
+      <button onclick="selectAnswer(2, this)">A. To move the character</button>
+      <button onclick="selectAnswer(2, this)">B. To make the character talk</button>
+      <button onclick="selectAnswer(2, this)">C. To repeat an action</button>
+      <button onclick="selectAnswer(2, this)">D. To stop the program</button>
+    </div>
+
+    <div class="question" data-qindex="3">
+      <p>4. What does a repeat block do?</p>
+      <button onclick="selectAnswer(3, this)">A. Runs code multiple times</button>
+      <button onclick="selectAnswer(3, this)">B. Runs code once</button>
+      <button onclick="selectAnswer(3, this)">C. Stops the program</button>
+      <button onclick="selectAnswer(3, this)">D. Starts the program</button>
+    </div>
+
+    <div class="question" data-qindex="4">
+      <p>5. Which block should you snap your move and say blocks inside to repeat actions?</p>
+      <button onclick="selectAnswer(4, this)">A. Repeat block</button>
+      <button onclick="selectAnswer(4, this)">B. Start block</button>
+      <button onclick="selectAnswer(4, this)">C. Stop block</button>
+      <button onclick="selectAnswer(4, this)">D. Event block</button>
+    </div>
+
+    <div class="question" data-qindex="5">
+      <p>6. Which block usually starts a Scratch program?</p>
+      <button onclick="selectAnswer(5, this)">A. When green flag clicked</button>
+      <button onclick="selectAnswer(5, this)">B. When space key pressed</button>
+      <button onclick="selectAnswer(5, this)">C. Forever block</button>
+      <button onclick="selectAnswer(5, this)">D. Stop all block</button>
+    </div>
+
+    <div class="question" data-qindex="6">
+      <p>7. Can you change the number in the move block?</p>
+      <button onclick="selectAnswer(6, this)">A. Yes, to move different distances</button>
+      <button onclick="selectAnswer(6, this)">B. No, it is fixed</button>
+      <button onclick="selectAnswer(6, this)">C. Only in special cases</button>
+      <button onclick="selectAnswer(6, this)">D. It doesn’t affect movement</button>
+    </div>
+
+    <div class="question" data-qindex="7">
+      <p>8. What happens if you put blocks inside a repeat block?</p>
+      <button onclick="selectAnswer(7, this)">A. The blocks run multiple times</button>
+      <button onclick="selectAnswer(7, this)">B. The blocks stop working</button>
+      <button onclick="selectAnswer(7, this)">C. The blocks run once</button>
+      <button onclick="selectAnswer(7, this)">D. The blocks delete themselves</button>
+    </div>
+
+    <div class="question" data-qindex="8">
+      <p>9. What kind of blocks can you snap together?</p>
+      <button onclick="selectAnswer(8, this)">A. Puzzle-shaped blocks</button>
+      <button onclick="selectAnswer(8, this)">B. Random blocks</button>
+      <button onclick="selectAnswer(8, this)">C. Blocks that don’t fit</button>
+      <button onclick="selectAnswer(8, this)">D. Only move blocks</button>
+    </div>
+
+    <div class="question" data-qindex="9">
+      <p>10. What is a good way to test your block program?</p>
+      <button onclick="selectAnswer(9, this)">A. Run it and watch the results</button>
+      <button onclick="selectAnswer(9, this)">B. Guess what it does</button>
+      <button onclick="selectAnswer(9, this)">C. Ask a friend</button>
+      <button onclick="selectAnswer(9, this)">D. Ignore it</button>
+    </div>
+
+    <button class="complete-btn" onclick="markComplete()">🏆 Mark Lesson as Complete</button>
+  </div>
+
+  <div class="rewards" id="rewardsBox">
+    <h3>🎉 Great job!</h3>
+    <p>You've earned +60 XP and the 🥈 Block Builder Badge!</p>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const quiz = document.querySelector('.quiz');
+    const completeBtn = document.querySelector('.complete-btn');
+    const rewardsBox = document.getElementById('rewardsBox');
+
+    const totalQuestions = 10;
+    let selectedAnswers = Array(totalQuestions).fill(null);
+
+    const correctAnswers = ['A','A','B','A','A','A','A','A','A','A'];
+
+    // Show slide by index
+    function showSlide(n) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === n);
+      });
+
+      // Show quiz after last slide
+      if (n === slides.length) {
+        quiz.classList.add('active');
+        completeBtn.style.display = 'none';
+      } else {
+        quiz.classList.remove('active');
+      }
+
+      // Control nav buttons disabled state
+      document.querySelectorAll('.nav-buttons button')[0].disabled = (n === 0);
+      document.querySelectorAll('.nav-buttons button')[1].textContent = (n === slides.length -1) ? 'Start Quiz ➡️' : '➡️ Next';
+    }
+
+    // Next slide or show quiz
+    function nextSlide() {
+      if (currentSlide < slides.length -1) {
+        currentSlide++;
+        showSlide(currentSlide);
+      } else if (currentSlide === slides.length -1) {
+        // Move to quiz
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0 && currentSlide < slides.length) {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+    }
+
+    // Select quiz answer
+    function selectAnswer(qIndex, btn) {
+      const buttons = btn.parentNode.querySelectorAll('button');
+      buttons.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      // Save answer letter (A, B, C, D)
+      const answerLetter = btn.textContent.trim().charAt(0);
+      selectedAnswers[qIndex] = answerLetter;
+
+      // Show complete button if all answered
+      if (selectedAnswers.every(ans => ans !== null)) {
+        completeBtn.style.display = 'inline-block';
+      }
+    }
+
+    // Mark lesson complete, save XP, badges, unlock next lesson
+    function markComplete() {
+      // Calculate score
+      let score = 0;
+      for (let i=0; i<totalQuestions; i++) {
+        if (selectedAnswers[i] === correctAnswers[i]) score++;
+      }
+
+      // Save progress to localStorage
+      const user = localStorage.getItem('loggedInUser');
+      if (!user) {
+        alert('Please log in to save progress!');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // Load profiles & progress data
+      const profiles = JSON.parse(localStorage.getItem('techtonicProfiles')) || {};
+      const progress = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
+
+      // Update progress for this lesson
+      const lessonKey = 'unit1_lesson3';
+      progress[user] = progress[user] || {};
+      progress[user][lessonKey] = true;
+
+      // Save progress
+      localStorage.setItem('techtonicProgress', JSON.stringify(progress));
+
+      // Update badges & XP
+      profiles[user] = profiles[user] || {};
+      profiles[user].xpEarned = (profiles[user].xpEarned || 0) + 60; // +60 XP for lesson
+      profiles[user].badgesEarned = (profiles[user].badgesEarned || 0) + 1; // +1 badge
+
+      // Unlock next lesson
+      const nextLessons = JSON.parse(localStorage.getItem('techtonicNextLesson')) || {};
+      nextLessons[user] = 'Unit 1 Lesson 4: Debugging Basics 🐞';
+      localStorage.setItem('techtonicNextLesson', JSON.stringify(nextLessons));
+
+      // Save profiles
+      localStorage.setItem('techtonicProfiles', JSON.stringify(profiles));
+
+      // Show rewards message
+      quiz.classList.remove('active');
+      rewardsBox.style.display = 'block';
+
+      // Save last lesson page for "Continue" button on dashboard
+      localStorage.setItem('techtonicLastLessonPage', 'block_unit_1_lesson_3.html');
+
+      // After 3 seconds redirect back to unit page
+      setTimeout(() => {
+        window.location.href = 'block.html';
+      }, 3000);
+    }
+
+    // Initialize
+    showSlide(currentSlide);
+  </script>
+</body>
+</html>
 
