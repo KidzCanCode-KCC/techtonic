@@ -2,150 +2,312 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Block Building Burrow - Unit 1 Lesson 1</title>
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Comic Sans MS', sans-serif;
-      background-color: #f0f8ff;
-      color: #333;
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #d0e6ff, #f9faff);
       margin: 0;
-      padding: 0;
+      padding: 20px;
+      color: #1a1a1a;
+      user-select: none;
+      min-height: 100vh;
     }
+
+    /* Nav bar like dashboard nav */
     nav {
-      background: #007acc;
-      color: white;
-      padding: 1rem;
+      background: #4f83f1;
+      color: #f0f6ff;
+      padding: 20px 30px;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 6px 20px rgba(79, 131, 241, 0.5);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      transform-style: preserve-3d;
     }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-weight: bold;
+
+    nav .logo {
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: 0.05em;
+      user-select: text;
     }
+
+    .nav-buttons button {
+      background: #f0f6ff;
+      border: none;
+      color: #4f83f1;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 12px 26px;
+      margin-left: 15px;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(79, 131, 241, 0.3);
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .nav-buttons button:hover {
+      background-color: #dbe9ff;
+      color: #2f63d6;
+      box-shadow: 0 8px 20px rgba(47, 99, 214, 0.6);
+      transform: translateY(-3px);
+    }
+
+    /* Slide cards */
     .slide {
+      background: white;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 30px 40px;
+      border-radius: 25px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+      user-select: none;
+      transition: box-shadow 0.3s ease;
       display: none;
-      padding: 2rem;
     }
     .slide.active {
       display: block;
+      animation: fadeIn 0.6s ease forwards;
     }
-    .nav-buttons {
+    .slide:hover {
+      box-shadow: 0 12px 36px rgba(79, 131, 241, 0.2);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    .slide h2 {
+      color: #4f83f1;
+      font-weight: 800;
+      font-size: 2rem;
+      margin-top: 0;
+      margin-bottom: 15px;
+      letter-spacing: 0.04em;
+      user-select: text;
+    }
+
+    .slide p {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: #2f3e60;
+      user-select: text;
+    }
+
+    /* Navigation buttons below slides */
+    .nav-buttons-container {
       text-align: center;
-      margin-top: 1rem;
+      margin-top: 15px;
     }
-    .nav-buttons button {
-      padding: 0.5rem 1rem;
-      margin: 0 0.5rem;
-      font-size: 1rem;
-      border-radius: 10px;
-      border: none;
-      background: #007acc;
+    .nav-buttons-container button {
+      background: linear-gradient(135deg, #4f83f1, #2f63d6);
       color: white;
+      font-weight: 700;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 40px;
       cursor: pointer;
+      margin: 0 10px;
+      box-shadow: 0 7px 20px rgba(47, 99, 214, 0.5);
+      transition: background 0.4s ease, transform 0.3s ease;
+      user-select: none;
     }
+    .nav-buttons-container button:hover {
+      background: linear-gradient(135deg, #2f63d6, #1c3a93);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(28, 58, 147, 0.7);
+    }
+
+    /* Quiz section */
     .quiz {
+      background: white;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 30px 40px;
+      border-radius: 25px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+      user-select: none;
       display: none;
-      padding: 2rem;
+      transition: box-shadow 0.3s ease;
     }
     .quiz.active {
       display: block;
+      animation: fadeIn 0.6s ease forwards;
     }
+
+    .quiz h2 {
+      color: #4f83f1;
+      font-weight: 800;
+      font-size: 2rem;
+      margin-top: 0;
+      margin-bottom: 25px;
+      letter-spacing: 0.04em;
+      user-select: text;
+    }
+
     .question {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
-    .complete-btn {
-      display: none;
-      background: green;
+    .question p {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #2f3e60;
+      margin-bottom: 8px;
+      user-select: text;
+    }
+
+    .question button {
+      background: #f0f6ff;
+      border: 2px solid #4f83f1;
+      border-radius: 20px;
+      padding: 10px 18px;
+      margin-right: 10px;
+      font-weight: 700;
+      color: #4f83f1;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-size: 1rem;
+    }
+    .question button:hover {
+      background-color: #4f83f1;
       color: white;
-      padding: 0.75rem 1.5rem;
+    }
+    .question button.correct {
+      background-color: #2f63d6;
+      color: white;
+      border-color: #2f63d6;
+      cursor: default;
+    }
+    .question button.incorrect {
+      background-color: #e96b6b;
+      color: white;
+      border-color: #e96b6b;
+      cursor: default;
+    }
+
+    /* Complete button */
+    .complete-btn {
+      background: #28a745;
+      color: white;
+      padding: 14px 32px;
       border: none;
-      border-radius: 12px;
+      border-radius: 40px;
       font-size: 1.2rem;
       cursor: pointer;
-      margin-top: 2rem;
-    }
-    .rewards {
+      margin-top: 25px;
       display: none;
-      padding: 1rem;
-      text-align: center;
+      user-select: none;
+      box-shadow: 0 7px 20px rgba(40, 167, 69, 0.6);
+      transition: background 0.4s ease, transform 0.3s ease;
+    }
+    .complete-btn:hover {
+      background: #1e7e34;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(30, 126, 52, 0.8);
+    }
+
+    /* Rewards box */
+    .rewards {
       background: #d4edda;
       color: #155724;
-      margin-top: 2rem;
-      border-radius: 12px;
+      margin-top: 30px;
+      padding: 20px 30px;
+      border-radius: 25px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.3rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      display: none;
+      user-select: text;
+      box-shadow: 0 8px 22px rgba(40, 167, 69, 0.25);
+    }
+    .rewards h3 {
+      margin: 0 0 10px 0;
     }
   </style>
 </head>
 <body>
+
   <nav>
-    <div>🧱 Block Building Burrow</div>
-    <div>
-      <a href="dashboard.html">🏠 Dashboard</a>
-      <a href="lessons.html">📚 Lessons</a>
-      <a href="block.html">🧩 BBB Units</a>
+    <div class="logo">🧱 Block Building Burrow</div>
+    <div class="nav-buttons">
+      <button id="logout-btn">🔐 Logout</button>
+      <button id="lessons-btn">📚 Lessons</button>
+      <button id="profile-btn">👤 Profile</button>
+      <button id="sandbox-btn">🛠 Sandbox</button>
     </div>
   </nav>
 
-  <div class="slide active">
-    <h2>🧩 What Are Blocks?</h2>
-    <p>Blocks are visual pieces of code that snap together like puzzle pieces! They're used in block-based coding to make programming fun and easy.</p>
-  </div>
-  <div class="slide">
-    <h2>🧠 Puzzle-Piece Power</h2>
-    <p>Each block represents a command. Drag them, drop them, and snap them together to build your code.</p>
-  </div>
-  <div class="slide">
-    <h2>⚙️ Blocks = Instructions</h2>
-    <p>Blocks tell your computer what to do — move, speak, play sounds, and more!</p>
-  </div>
-  <div class="slide">
-    <h2>🧩 Types of Blocks</h2>
-    <p>There are motion blocks, looks blocks, control blocks, and many more. They're color-coded and easy to understand.</p>
-  </div>
-  <div class="slide">
-    <h2>💡 Where Do We Use Them?</h2>
-    <p>In platforms like Scratch and Blockly, you use blocks to build games, stories, and interactive art!</p>
-  </div>
-
-  <div class="nav-buttons">
-    <button onclick="prevSlide()">⬅️ Previous</button>
-    <button onclick="nextSlide()">➡️ Next</button>
-  </div>
-
-  <div class="quiz">
-    <h2>📝 Quiz Time!</h2>
-    <div class="question">
-      <p>1. What are coding blocks?</p>
-      <button onclick="checkAnswer(this, true)">A. Puzzle-like pieces of code ✅</button><br />
-      <button onclick="checkAnswer(this, false)">B. Toys you build with</button>
+  <main>
+    <div class="slide active">
+      <h2>🧩 What Are Blocks?</h2>
+      <p>Blocks are visual pieces of code that snap together like puzzle pieces! They're used in block-based coding to make programming fun and easy.</p>
     </div>
-    <div class="question">
-      <p>2. What do blocks do?</p>
-      <button onclick="checkAnswer(this, true)">A. Give commands to the computer ✅</button><br />
-      <button onclick="checkAnswer(this, false)">B. Make websites</button>
+    <div class="slide">
+      <h2>🧠 Puzzle-Piece Power</h2>
+      <p>Each block represents a command. Drag them, drop them, and snap them together to build your code.</p>
     </div>
-    <div class="question">
-      <p>3. Where can you use blocks?</p>
-      <button onclick="checkAnswer(this, true)">A. Scratch and Blockly ✅</button><br />
-      <button onclick="checkAnswer(this, false)">B. A coloring book</button>
+    <div class="slide">
+      <h2>⚙️ Blocks = Instructions</h2>
+      <p>Blocks tell your computer what to do — move, speak, play sounds, and more!</p>
     </div>
-    <button class="complete-btn" onclick="markComplete()">🏆 Mark Lesson as Complete</button>
-  </div>
+    <div class="slide">
+      <h2>🧩 Types of Blocks</h2>
+      <p>There are motion blocks, looks blocks, control blocks, and many more. They're color-coded and easy to understand.</p>
+    </div>
+    <div class="slide">
+      <h2>💡 Where Do We Use Them?</h2>
+      <p>In platforms like Scratch and Blockly, you use blocks to build games, stories, and interactive art!</p>
+    </div>
 
-  <div class="rewards" id="rewardsBox">
-    <h3>🎉 Great job!</h3>
-    <p>You've earned +50 XP and the 🥇 Block Beginner Badge!</p>
-  </div>
+    <div class="nav-buttons-container">
+      <button onclick="prevSlide()">⬅️ Previous</button>
+      <button onclick="nextSlide()">➡️ Next</button>
+    </div>
+
+    <div class="quiz">
+      <h2>📝 Quiz Time!</h2>
+      <div class="question">
+        <p>1. What are coding blocks?</p>
+        <button onclick="checkAnswer(this, true)">A. Puzzle-like pieces of code ✅</button><br />
+        <button onclick="checkAnswer(this, false)">B. Toys you build with</button>
+      </div>
+      <div class="question">
+        <p>2. What do blocks do?</p>
+        <button onclick="checkAnswer(this, true)">A. Give commands to the computer ✅</button><br />
+        <button onclick="checkAnswer(this, false)">B. Make websites</button>
+      </div>
+      <div class="question">
+        <p>3. Where can you use blocks?</p>
+        <button onclick="checkAnswer(this, true)">A. Scratch and Blockly ✅</button><br />
+        <button onclick="checkAnswer(this, false)">B. A coloring book</button>
+      </div>
+      <button class="complete-btn" onclick="markComplete()">🏆 Mark Lesson as Complete</button>
+    </div>
+
+    <div class="rewards" id="rewardsBox">
+      <h3>🎉 Great job!</h3>
+      <p>You've earned +50 XP and the 🥇 Block Beginner Badge!</p>
+    </div>
+  </main>
 
   <script>
-    let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const quiz = document.querySelector('.quiz');
     const completeBtn = document.querySelector('.complete-btn');
+    const rewardsBox = document.getElementById('rewardsBox');
+    let currentSlide = 0;
     let score = 0;
 
     function showSlide(index) {
@@ -153,6 +315,10 @@
         slide.classList.remove('active');
         if (i === index) slide.classList.add('active');
       });
+      // Hide quiz if coming back to slides
+      quiz.classList.remove('active');
+      completeBtn.style.display = 'none';
+      rewardsBox.style.display = 'none';
     }
 
     function nextSlide() {
@@ -169,32 +335,24 @@
       if (currentSlide > 0) {
         currentSlide--;
         showSlide(currentSlide);
-        quiz.classList.remove('active');
       }
     }
 
     function checkAnswer(button, isCorrect) {
+      if (button.classList.contains('correct') || button.classList.contains('incorrect')) {
+        return; // prevent multiple clicks
+      }
       if (isCorrect) {
-        button.style.background = 'green';
+        button.classList.add('correct');
         score++;
         if (score === 3) {
           completeBtn.style.display = 'inline-block';
         }
       } else {
-        button.style.background = 'red';
+        button.classList.add('incorrect');
       }
     }
 
     function markComplete() {
       localStorage.setItem('block_unit_1_lesson_1_complete', 'true');
-      localStorage.setItem('block_unit_1_lesson_1_xp', '50');
-      localStorage.setItem('block_unit_1_lesson_1_badge', 'Block Beginner');
-
-      // unlock lesson 2
-      localStorage.setItem('block_unit_1_lesson_2_unlocked', 'true');
-
-      document.getElementById('rewardsBox').style.display = 'block';
-    }
-  </script>
-</body>
-</html>
+      localStorage.set
