@@ -142,13 +142,16 @@
       font-size: 1.1rem;
       font-weight: 600;
       color: #4f83f1;
-      margin-right: 12px;
-      margin-bottom: 8px;
+      margin: 4px 12px 8px 0;
       transition: background-color 0.3s ease;
       user-select: none;
     }
     .question button:hover {
       background-color: #dbe9ff;
+    }
+    .question button.selected {
+      background-color: #4f83f1;
+      color: white;
     }
 
     .complete-btn {
@@ -268,31 +271,47 @@
 
   <div class="quiz">
     <h2>📝 Quiz Time!</h2>
-    <div class="question">
+
+    <div class="question" data-qindex="0">
       <p>1. What are coding blocks?</p>
-      <button onclick="recordAnswer(0)">A. Puzzle-like pieces of code</button><br />
-      <button onclick="recordAnswer(0)">B. Toys you build with</button>
+      <button onclick="selectAnswer(0, this)">A. Puzzle-like pieces of code</button>
+      <button onclick="selectAnswer(0, this)">B. Toys you build with</button>
+      <button onclick="selectAnswer(0, this)">C. Computer games</button>
+      <button onclick="selectAnswer(0, this)">D. Pieces of a puzzle</button>
     </div>
-    <div class="question">
+
+    <div class="question" data-qindex="1">
       <p>2. What do blocks do?</p>
-      <button onclick="recordAnswer(1)">A. Give commands to the computer</button><br />
-      <button onclick="recordAnswer(1)">B. Make websites</button>
+      <button onclick="selectAnswer(1, this)">A. Give commands to the computer</button>
+      <button onclick="selectAnswer(1, this)">B. Make websites</button>
+      <button onclick="selectAnswer(1, this)">C. Draw pictures</button>
+      <button onclick="selectAnswer(1, this)">D. Play music</button>
     </div>
-    <div class="question">
+
+    <div class="question" data-qindex="2">
       <p>3. Where can you use blocks?</p>
-      <button onclick="recordAnswer(2)">A. Scratch and Blockly</button><br />
-      <button onclick="recordAnswer(2)">B. A coloring book</button>
+      <button onclick="selectAnswer(2, this)">A. Scratch and Blockly</button>
+      <button onclick="selectAnswer(2, this)">B. A coloring book</button>
+      <button onclick="selectAnswer(2, this)">C. In a car</button>
+      <button onclick="selectAnswer(2, this)">D. At school only</button>
     </div>
-    <div class="question">
+
+    <div class="question" data-qindex="3">
       <p>4. Blocks are designed to be:</p>
-      <button onclick="recordAnswer(3)">A. Easy to snap together</button><br />
-      <button onclick="recordAnswer(3)">B. Hard to use</button>
+      <button onclick="selectAnswer(3, this)">A. Easy to snap together</button>
+      <button onclick="selectAnswer(3, this)">B. Hard to use</button>
+      <button onclick="selectAnswer(3, this)">C. Confusing</button>
+      <button onclick="selectAnswer(3, this)">D. Only for adults</button>
     </div>
-    <div class="question">
+
+    <div class="question" data-qindex="4">
       <p>5. What can you create with blocks?</p>
-      <button onclick="recordAnswer(4)">A. Games, stories, and art</button><br />
-      <button onclick="recordAnswer(4)">B. Only text documents</button>
+      <button onclick="selectAnswer(4, this)">A. Games, stories, and art</button>
+      <button onclick="selectAnswer(4, this)">B. Only text documents</button>
+      <button onclick="selectAnswer(4, this)">C. Cars and bikes</button>
+      <button onclick="selectAnswer(4, this)">D. Furniture</button>
     </div>
+
     <button class="complete-btn" onclick="markComplete()">🏆 Mark Lesson as Complete</button>
   </div>
 
@@ -309,7 +328,8 @@
     const rewardsBox = document.getElementById('rewardsBox');
 
     const totalQuestions = 5;
-    let answersGiven = new Array(totalQuestions).fill(false);
+    // Track selected answers: null means unanswered
+    let selectedAnswers = Array(totalQuestions).fill(null);
 
     function showSlide(index) {
       slides.forEach((slide, i) => {
@@ -320,8 +340,9 @@
       completeBtn.style.display = 'none';
       rewardsBox.style.display = 'none';
 
-      // Reset answers tracking when showing slides
-      answersGiven = new Array(totalQuestions).fill(false);
+      // Reset selected answers when showing slides
+      selectedAnswers = Array(totalQuestions).fill(null);
+      clearAllSelections();
     }
 
     function nextSlide() {
@@ -331,6 +352,8 @@
       } else {
         slides[currentSlide].classList.remove('active');
         quiz.classList.add('active');
+        completeBtn.style.display = 'none';
+        rewardsBox.style.display = 'none';
       }
     }
 
@@ -342,22 +365,57 @@
       }
     }
 
-    function recordAnswer(questionIndex) {
-      answersGiven[questionIndex] = true;
-      if (answersGiven.every(ans => ans)) {
+    function selectAnswer(questionIndex, button) {
+      // Deselect all buttons in the question
+      const questionDiv = button.parentElement;
+      const buttons = questionDiv.querySelectorAll('button');
+      buttons.forEach(btn => btn.classList.remove('selected'));
+
+      // Select clicked button
+      button.classList.add('selected');
+
+      // Save answer
+      selectedAnswers[questionIndex] = button.textContent;
+
+      // Check if all questions answered
+      if (selectedAnswers.every(ans => ans !== null)) {
         completeBtn.style.display = 'inline-block';
       }
     }
 
+    function clearAllSelections() {
+      const allButtons = document.querySelectorAll('.question button');
+      allButtons.forEach(btn => btn.classList.remove('selected'));
+    }
+
     function markComplete() {
+      // Save completion flag
       localStorage.setItem('block_unit_1_lesson_1_complete', 'true');
-      localStorage.setItem('block_unit_1_lesson_1_xp', '50');
-      localStorage.setItem('block_unit_1_lesson_1_badge', 'Block Beginner');
+
+      // XP and badges to add
+      const xpEarned = 50;
+      const badgeEarned = 'Block Beginner';
+
+      // Update XP in dashboard storage
+      let totalXP = parseInt(localStorage.getItem('techtonicTotalXP')) || 0;
+      totalXP += xpEarned;
+      localStorage.setItem('techtonicTotalXP', totalXP);
+
+      // Update badges in dashboard storage (store as array)
+      let badges = JSON.parse(localStorage.getItem('techtonicBadges')) || [];
+      if (!badges.includes(badgeEarned)) {
+        badges.push(badgeEarned);
+        localStorage.setItem('techtonicBadges', JSON.stringify(badges));
+      }
 
       // Unlock lesson 2
       localStorage.setItem('block_unit_1_lesson_2_unlocked', 'true');
 
       rewardsBox.style.display = 'block';
+
+      // Optionally disable button after completion to prevent double clicking
+      completeBtn.disabled = true;
+      completeBtn.textContent = 'Completed ✅';
     }
   </script>
 </body>
