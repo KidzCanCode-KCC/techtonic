@@ -18,7 +18,7 @@
 
   /* Nav bar */
   nav {
-    background: #1e40af; /* deep blue */
+    background: #1e40af;
     color: white;
     padding: 1rem 2rem;
     display: flex;
@@ -42,12 +42,12 @@
     transition: color 0.3s ease;
   }
   nav ul li:hover {
-    color: #93c5fd; /* lighter blue */
+    color: #93c5fd;
   }
 
   /* Main content container */
   main {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 2rem auto;
     padding: 0 1rem;
   }
@@ -86,8 +86,8 @@
     color: #1e40af;
   }
   .project-card p {
-    flex-grow: 1;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    margin: 0.3rem 0;
     color: #555;
   }
   .project-card small {
@@ -131,18 +131,16 @@
 <nav>
   <div class="logo">🛠️ Sandbox</div>
   <ul>
-    <li>Dashboard</li>
-    <li>Lessons</li>
-    <li>Profile</li>
+    <li onclick="goTo('dashboard.html')">Dashboard</li>
+    <li onclick="goTo('lessons.html')">Lessons</li>
+    <li onclick="goTo('profile.html')">Profile</li>
   </ul>
 </nav>
 
 <main>
   <h1>Your Projects</h1>
-  <div class="projects-grid" id="projectsGrid">
-    <!-- Project cards inserted here dynamically -->
-  </div>
-  <button class="add-project-btn" onclick="addNewProject()">+ New Project</button>
+  <div class="projects-grid" id="projectsGrid"></div>
+  <button class="add-project-btn" onclick="startNewProject()">+ New Project</button>
 </main>
 
 <footer>
@@ -150,9 +148,11 @@
 </footer>
 
 <script>
-  // Example project data, replace this with your real saved projects from localStorage
-  const savedProjects = JSON.parse(localStorage.getItem('userProjects') || '[]');
+  function goTo(page) {
+    window.location.href = page;
+  }
 
+  const savedProjects = JSON.parse(localStorage.getItem('userProjects') || '[]');
   const projectsGrid = document.getElementById('projectsGrid');
 
   function renderProjects() {
@@ -169,37 +169,73 @@
 
       card.innerHTML = `
         <h3>${project.name}</h3>
-        <p>${project.description || 'No description available.'}</p>
-        <small>Last saved: ${new Date(project.lastSaved).toLocaleDateString()}</small>
+        <p>Language: <strong>${capitalize(project.language)}</strong></p>
+        <small>Last saved: ${new Date(project.lastSaved).toLocaleString()}</small>
       `;
 
       projectsGrid.appendChild(card);
     });
   }
 
-  function addNewProject() {
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function startNewProject() {
     const name = prompt('Enter project name:');
     if(!name) return alert('Project name cannot be empty!');
-    const desc = prompt('Add a short description (optional):') || '';
+
+    // Language selection dropdown via prompt
+    const languages = {
+      block: "Block",
+      python: "Python",
+      html: "HTML",
+      js: "JavaScript"
+    };
+
+    let langOptions = "Choose language by number:\n";
+    Object.entries(languages).forEach(([key, val], idx) => {
+      langOptions += `${idx+1}. ${val}\n`;
+    });
+    const langChoice = prompt(langOptions);
+    const langIndex = parseInt(langChoice) - 1;
+
+    const langKeys = Object.keys(languages);
+    if(langIndex < 0 || langIndex >= langKeys.length) {
+      return alert('Invalid language choice');
+    }
+
+    const language = langKeys[langIndex];
+
+    const starterCodeMap = {
+      block: '{"blocks":[]} ', // Placeholder, replace with actual starter JSON or code
+      python: '# Start coding in Python\n',
+      html: '<!-- Start HTML here -->\n',
+      js: '// Start JavaScript here\n'
+    };
 
     const newProject = {
       name,
-      description: desc,
-      lastSaved: Date.now(),
-      data: {} // you can store project code or data here
+      language,
+      code: starterCodeMap[language],
+      lastSaved: Date.now()
     };
 
     savedProjects.push(newProject);
     localStorage.setItem('userProjects', JSON.stringify(savedProjects));
-    renderProjects();
+
+    // Redirect to language sandbox page with project index param
+    const sandboxPage = `sandbox_${language}.html`;
+    const projectIndex = savedProjects.length - 1;
+    window.location.href = `${sandboxPage}?project=${projectIndex}`;
   }
 
   function openProject(index) {
-    alert(`Open project: ${savedProjects[index].name}`);
-    // Implement actual opening logic here
+    const project = savedProjects[index];
+    const sandboxPage = `sandbox_${project.language}.html`;
+    window.location.href = `${sandboxPage}?project=${index}`;
   }
 
-  // Initial render
   renderProjects();
 </script>
 
