@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Block Building Burrow - Unit 1 Lesson 2</title>
+  <style>
+    /* Reuse Lesson 1 CSS styles for consistency */
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #d0e6ff, #f9faff);
+      margin: 0;
+      padding: 20px;
+      color: #1a1a1a;
+      min-height: 100vh;
+      user-select: none;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #4f83f1;
+      color: #f0f6ff;
+      padding: 15px 30px;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 6px 20px rgba(79, 131, 241, 0.5);
+      user-select: none;
+    }
+    nav div:first-child {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 0.03em;
+      text-shadow: 0 0 5px rgba(79, 131, 241, 0.4);
+    }
+    nav div:nth-child(2) a {
+      color: #f0f6ff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    nav div:nth-child(2) a:hover {
+      color: #dbe9ff;
+      text-decoration: underline;
+    }
+
+    .slide {
+      display: none;
+      background: white;
+      max-width: 900px;
+      margin: 30px auto 0;
+      padding: 30px 40px;
+      border-radius: 25px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+      transition: box-shadow 0.3s ease;
+      user-select: text;
+    }
+    .slide.active {
+      display: block;
+    }
+    .slide:hover {
+      box-shadow: 0 12px 36px rgba(79, 131, 241, 0.2);
+    }
+
+    h2 {
+      color: #4f83f1;
+      font-weight: 800;
+      font-size: 1.8rem;
+      letter-spacing: 0.03em;
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: #2f3e60;
+      margin-bottom: 0;
+    }
+
+    .nav-buttons {
+      text-align: center;
+      margin-top: 30px;
+      user-select: none;
+    }
+    .nav-buttons button {
+      background: #4f83f1;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 12px 26px;
+      margin: 0 12px;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 7px 20px rgba(79, 131, 241, 0.5);
+      transition: background 0.3s ease, transform 0.3s ease;
+      user-select: none;
+    }
+    .nav-buttons button:hover {
+      background: #2f63d6;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(47, 99, 214, 0.7);
+    }
+
+    .quiz {
+      display: none;
+      background: white;
+      max-width: 900px;
+      margin: 40px auto 0;
+      padding: 30px 40px;
+      border-radius: 25px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+      user-select: text;
+    }
+    .quiz.active {
+      display: block;
+    }
+
+    .quiz h2 {
+      margin-top: 0;
+      color: #4f83f1;
+    }
+
+    .question {
+      margin-bottom: 24px;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .question p {
+      margin-bottom: 10px;
+    }
+
+    .question button {
+      background: #f0f6ff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #4f83f1;
+      margin: 4px 12px 8px 0;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .question button:hover {
+      background-color: #dbe9ff;
+    }
+    .question button.selected {
+      background-color: #4f83f1;
+      color: white;
+    }
+
+    .complete-btn {
+      display: none;
+      background: #3bb54a;
+      color: white;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 40px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      margin-top: 30px;
+      box-shadow: 0 8px 28px rgba(59, 181, 74, 0.7);
+      user-select: none;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .complete-btn:hover {
+      background: #2e9038;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(46, 144, 56, 0.8);
+    }
+
+    .rewards {
+      display: none;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 25px 30px;
+      text-align: center;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      user-select: none;
+    }
+
+    #blocklyDiv {
+      height: 350px;
+      width: 100%;
+      border-radius: 20px;
+      border: 2px solid #4f83f1;
+      margin-top: 20px;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 650px) {
+      body {
+        padding: 15px;
+      }
+      nav {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px 15px;
+        border-radius: 0 0 20px 20px;
+      }
+      nav div:nth-child(2) a {
+        margin-left: 10px;
+        font-size: 1rem;
+      }
+      .slide, .quiz, .rewards {
+        padding: 25px 20px;
+        margin: 20px 0 0;
+        border-radius: 20px;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      p, .question {
+        font-size: 1rem;
+      }
+      .nav-buttons button {
+        font-size: 1rem;
+        padding: 10px 20px;
+        margin: 0 8px;
+      }
+      .question button {
+        font-size: 1rem;
+        padding: 8px 14px;
+        margin-right: 8px;
+      }
+      .complete-btn {
+        font-size: 1.1rem;
+        padding: 12px 28px;
+      }
+      #blocklyDiv {
+        height: 250px;
+      }
+    }
+  </style>
+  <!-- Blockly core library -->
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+</head>
+<body>
+
+  <nav>
+    <div>🧱 Block Building Burrow</div>
+    <div>
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="lessons.html">📚 Lessons</a>
+      <a href="block.html">🧩 BBB Units</a>
+    </div>
+  </nav>
+
+  <!-- Slides -->
+  <div class="slide active">
+    <h2>🖱️ Drag & Drop</h2>
+    <p>Learn how to drag and drop blocks to build code. Click and hold a block, then move it to the workspace.</p>
+  </div>
+  <div class="slide">
+    <h2>🧩 Snap Blocks</h2>
+    <p>Blocks snap together like puzzle pieces. When blocks connect, your code runs smoothly!</p>
+  </div>
+  <div class="slide">
+    <h2>🎯 Build Sequences</h2>
+    <p>Arrange blocks in the right order to tell your computer exactly what to do, step by step.</p>
+  </div>
+  <div class="slide">
+    <h2>🛠️ Experiment</h2>
+    <p>Try combining different blocks to make your own commands and actions!</p>
+  </div>
+  <div class="slide">
+    <h2>💻 Practice Coding!</h2>
+    <p>Use the Blockly workspace below to practice dragging, dropping, and snapping blocks together.</p>
+    <div id="blocklyDiv"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="prevSlide()">⬅️ Previous</button>
+    <button onclick="nextSlide()">➡️ Next</button>
+  </div>
+
+  <!-- Quiz -->
+  <div class="quiz">
+    <h2>📝 Quiz Time!</h2>
+
+    <div class="question" data-qindex="0">
+      <p>1. How do you move blocks?</p>
+      <button onclick="selectAnswer(0, this)">A. Drag and drop</button>
+      <button onclick="selectAnswer(0, this)">B. Type on the keyboard</button>
+      <button onclick="selectAnswer(0, this)">C. Click without moving</button>
+      <button onclick="selectAnswer(0, this)">D. Shake the mouse</button>
+    </div>
+
+    <div class="question" data-qindex="1">
+      <p>2. What happens when blocks snap together?</p>
+      <button onclick="selectAnswer(1, this)">A. They run your code smoothly</button>
+      <button onclick="selectAnswer(1, this)">B. They break apart</button>
+      <button onclick="selectAnswer(1, this)">C. They change colors</button>
+      <button onclick="selectAnswer(1, this)">D. They disappear</button>
+    </div>
+
+    <div class="question" data-qindex="2">
+      <p>3. What should you do to build sequences?</p>
+      <button onclick="selectAnswer(2, this)">A. Arrange blocks step by step</button>
+      <button onclick="selectAnswer(2, this)">B. Mix blocks randomly</button>
+      <button onclick="selectAnswer(2, this)">C. Use only one block</button>
+      <button onclick="selectAnswer(2, this)">D. Close your eyes</button>
+    </div>
+
+    <div class="question" data-qindex="3">
+      <p>4. What can you do in the Blockly workspace?</p>
+      <button onclick="selectAnswer(3, this)">A. Drag, drop, and snap blocks</button>
+      <button onclick="selectAnswer(3, this)">B. Write text</button>
+      <button onclick="selectAnswer(3, this)">C. Draw pictures</button>
+      <button onclick="selectAnswer(3, this)">D. Watch videos</button>
+    </div>
+
+    <div class="question" data-qindex="4">
+      <p>5. Why do we use blocks?</p>
+      <button onclick="selectAnswer(4, this)">A. To make coding fun and easy</button>
+      <button onclick="selectAnswer(4, this)">B. To make coding hard</button>
+      <button onclick="selectAnswer(4, this)">C. To confuse computers</button>
+      <button onclick="selectAnswer(4, this)">D. To write stories only</button>
+    </div>
+
+    <button class="complete-btn" onclick="markComplete()">🏆 Mark Lesson as Complete</button>
+  </div>
+
+  <div class="rewards" id="rewardsBox">
+    <h3>🎉 Awesome work!</h3>
+    <p>You've earned +75 XP and the 🥈 Block Builder Badge!</p>
+  </div>
+
+  <script>
+    // Blockly setup
+    let workspace;
+
+    function initBlockly() {
+      workspace = Blockly.inject('blocklyDiv', {
+        toolbox: `<xml xmlns="https://developers.google.com/blockly/xml" style="display: none">
+          <block type="controls_repeat_ext"></block>
+          <block type="math_number"></block>
+          <block type="math_arithmetic"></block>
+          <block type="text"></block>
+          <block type="logic_compare"></block>
+          <block type="controls_if"></block>
+          <block type="logic_boolean"></block>
+          <block type="variables_get"></block>
+          <block type="variables_set"></block>
+          <block type="text_print"></block>
+        </xml>`,
+        trashcan: true,
+        scrollbars: true,
+      });
+    }
+
+    // Initialize Blockly on the last slide
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const quiz = document.querySelector('.quiz');
+    const completeBtn = document.querySelector('.complete-btn');
+    const rewardsBox = document.getElementById('rewardsBox');
+
+    const totalQuestions = 5;
+    let selectedAnswers = Array(totalQuestions).fill(null);
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) slide.classList.add('active');
+      });
+      quiz.classList.remove('active');
+      completeBtn.style.display = 'none';
+      rewardsBox.style.display = 'none';
+
+      // Reset quiz answers when showing slides
+      selectedAnswers = Array(totalQuestions).fill(null);
+      clearAllSelections();
+
+      // Initialize Blockly only when on last slide
+      if (index === slides.length - 1 && !workspace) {
+        initBlockly();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        showSlide(currentSlide);
+      } else {
+        // Last slide: hide slides, show quiz
+        slides[currentSlide].classList.remove('active');
+        quiz.classList.add('active');
+        completeBtn.style.display = 'none';
+        rewardsBox.style.display = 'none';
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        showSlide(currentSlide);
+        quiz.classList.remove('active');
+      }
+    }
+
+    function selectAnswer(questionIndex, button) {
+      const questionDiv = button.parentElement;
+      const buttons = questionDiv.querySelectorAll('button');
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      selectedAnswers[questionIndex] = button.textContent;
+
+      if (selectedAnswers.every(ans => ans !== null)) {
+        completeBtn.style.display = 'inline-block';
+      }
+    }
+
+    function clearAllSelections() {
+      const allButtons = document.querySelectorAll('.question button');
+      allButtons.forEach(btn => btn.classList.remove('selected'));
+    }
+
+    function markComplete() {
+      // Save completion flag
+      localStorage.setItem('block_unit_1_lesson_2_complete', 'true');
+
+      // XP and badges to add
+      const xpEarned = 75;
+      const badgeEarned = 'Block Builder';
+
+      // Update XP
+      let totalXP = parseInt(localStorage.getItem('techtonicTotalXP')) || 0;
+      totalXP += xpEarned;
+      localStorage.setItem('techtonicTotalXP', totalXP.toString());
+
+      // Update badges
+      let badges = JSON.parse(localStorage.getItem('techtonicBadges') || '[]');
+      if (!badges.includes(badgeEarned)) {
+        badges.push(badgeEarned);
+        localStorage.setItem('techtonicBadges', JSON.stringify(badges));
+      }
+
+      // Unlock lesson 3 (if exists)
+      localStorage.setItem('block_unit_1_lesson_3_unlocked', 'true');
+
+      rewardsBox.style.display = 'block';
+
+      completeBtn.disabled = true;
+      completeBtn.textContent = 'Completed ✅';
+
+      setTimeout(() => {
+        window.location.href = 'block_unit_1.html'; // Change to your Unit 1 main page URL
+      }, 2000);
+    }
+
+    // Initialize first slide on load
+    showSlide(currentSlide);
+  </script>
+</body>
+</html>
