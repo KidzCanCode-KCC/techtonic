@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Block Building Burrow - Unit 1 Lesson 1</title>
   <style>
-    /* Base and layout - matching dashboard style */
+    /* Your existing styles (copied from your code) */
     body {
       font-family: 'Nunito', sans-serif;
       background: linear-gradient(135deg, #d0e6ff, #f9faff);
@@ -243,6 +243,7 @@
     </div>
   </nav>
 
+  <!-- Slides -->
   <div class="slide active">
     <h2>🧩 What Are Blocks?</h2>
     <p>Blocks are visual pieces of code that snap together like puzzle pieces! They're used in block-based coding to make programming fun and easy.</p>
@@ -269,6 +270,7 @@
     <button onclick="nextSlide()">➡️ Next</button>
   </div>
 
+  <!-- Quiz -->
   <div class="quiz">
     <h2>📝 Quiz Time!</h2>
 
@@ -328,7 +330,6 @@
     const rewardsBox = document.getElementById('rewardsBox');
 
     const totalQuestions = 5;
-    // Track selected answers: null means unanswered
     let selectedAnswers = Array(totalQuestions).fill(null);
 
     function showSlide(index) {
@@ -340,7 +341,7 @@
       completeBtn.style.display = 'none';
       rewardsBox.style.display = 'none';
 
-      // Reset selected answers when showing slides
+      // Reset quiz answers when showing slides
       selectedAnswers = Array(totalQuestions).fill(null);
       clearAllSelections();
     }
@@ -350,6 +351,7 @@
         currentSlide++;
         showSlide(currentSlide);
       } else {
+        // Last slide: hide slides, show quiz
         slides[currentSlide].classList.remove('active');
         quiz.classList.add('active');
         completeBtn.style.display = 'none';
@@ -366,18 +368,12 @@
     }
 
     function selectAnswer(questionIndex, button) {
-      // Deselect all buttons in the question
       const questionDiv = button.parentElement;
       const buttons = questionDiv.querySelectorAll('button');
       buttons.forEach(btn => btn.classList.remove('selected'));
-
-      // Select clicked button
       button.classList.add('selected');
-
-      // Save answer
       selectedAnswers[questionIndex] = button.textContent;
 
-      // Check if all questions answered
       if (selectedAnswers.every(ans => ans !== null)) {
         completeBtn.style.display = 'inline-block';
       }
@@ -396,13 +392,13 @@
       const xpEarned = 50;
       const badgeEarned = 'Block Beginner';
 
-      // Update XP in dashboard storage
+      // Update XP
       let totalXP = parseInt(localStorage.getItem('techtonicTotalXP')) || 0;
       totalXP += xpEarned;
-      localStorage.setItem('techtonicTotalXP', totalXP);
+      localStorage.setItem('techtonicTotalXP', totalXP.toString());
 
-      // Update badges in dashboard storage (store as array)
-      let badges = JSON.parse(localStorage.getItem('techtonicBadges')) || [];
+      // Update badges
+      let badges = JSON.parse(localStorage.getItem('techtonicBadges') || '[]');
       if (!badges.includes(badgeEarned)) {
         badges.push(badgeEarned);
         localStorage.setItem('techtonicBadges', JSON.stringify(badges));
@@ -413,9 +409,12 @@
 
       rewardsBox.style.display = 'block';
 
-      // Optionally disable button after completion to prevent double clicking
       completeBtn.disabled = true;
       completeBtn.textContent = 'Completed ✅';
+
+      setTimeout(() => {
+        window.location.href = 'block_unit_1.html'; // Change to your Unit 1 main page URL
+      }, 2000);
     }
   </script>
 </body>
