@@ -1,145 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Block Building Burrow - Unit 1</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Nunito', sans-serif;
-      background: #f5faff;
+      font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif;
+      background-color: #f5faff;
       color: #003366;
     }
 
     nav {
       background-color: #0077cc;
-      padding: 1rem 2rem;
+      padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: white;
-      border-bottom-left-radius: 30px;
-      border-bottom-right-radius: 30px;
+      font-size: 1.2em;
     }
 
-    nav h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-
-    .nav-links a {
+    nav a {
       color: white;
       text-decoration: none;
-      margin-left: 1.5rem;
+      margin: 0 15px;
       font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    .container {
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    .lesson-card {
-      background: white;
-      border-radius: 20px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       transition: transform 0.2s;
     }
 
-    .lesson-card.locked {
+    nav a:hover {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      margin: 30px 0 10px;
+    }
+
+    .lesson-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .lesson {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 600px;
+      margin: 15px 0;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .lesson.locked {
       opacity: 0.5;
-      pointer-events: none;
     }
 
-    .lesson-card h2 {
-      margin-top: 0;
-      font-size: 1.4rem;
+    .lesson h2 {
+      margin-bottom: 10px;
+      font-size: 1.5em;
     }
 
-    .lesson-card p {
-      font-size: 1rem;
+    .lesson p {
+      font-size: 1.1em;
+      margin-bottom: 15px;
     }
 
-    .lesson-card button {
+    .lesson button {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 30px;
       background-color: #0077cc;
       color: white;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 50px;
-      margin-top: 1rem;
       cursor: pointer;
+      transition: background-color 0.3s;
     }
 
-    .lesson-card button:hover {
+    .lesson button:hover:not([disabled]) {
       background-color: #005fa3;
+    }
+
+    .lesson button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
   <nav>
-    <h1>📦 Block Building Burrow</h1>
-    <div class="nav-links">
+    <div>👾 Block Building Burrow</div>
+    <div>
       <a href="dashboard.html">🏠 Dashboard</a>
       <a href="lessons.html">📚 Lessons</a>
       <a href="block.html">🧱 BBB Units</a>
     </div>
   </nav>
 
-  <div class="container">
-    <div class="lesson-card" id="lesson1">
-      <h2>Lesson 1: What Are Blocks? 🧩</h2>
+  <h1>📦 Unit 1: Block Basics</h1>
+
+  <div class="lesson-list">
+    <div class="lesson" id="lesson1">
+      <h2>Lesson 1: What are Blocks? 🧩</h2>
       <p>Learn what coding blocks are and how they fit together like puzzle pieces.</p>
-      <button onclick="startLesson(1)">Begin!</button>
+      <button onclick="goToLesson(1)">Begin!</button>
     </div>
-
-    <div class="lesson-card locked" id="lesson2">
-      <h2>Lesson 2: Moving Your First Block 🎯</h2>
+    <div class="lesson locked" id="lesson2">
+      <h2>Lesson 2: Moving Your First Block 🖱️</h2>
       <p>Practice dragging and dropping blocks to make things happen.</p>
-      <button disabled>Begin!</button>
+      <button onclick="goToLesson(2)" disabled>Locked 🔒</button>
     </div>
-
-    <div class="lesson-card locked" id="lesson3">
-      <h2>Lesson 3: Putting Blocks Together 🤝</h2>
+    <div class="lesson locked" id="lesson3">
+      <h2>Lesson 3: Putting Blocks Together 🔧</h2>
       <p>Snap blocks together to create your first simple program.</p>
-      <button disabled>Begin!</button>
+      <button onclick="goToLesson(3)" disabled>Locked 🔒</button>
     </div>
-
-    <div class="lesson-card locked" id="lesson4">
-      <h2>Lesson 4: Making Choices 🔀</h2>
+    <div class="lesson locked" id="lesson4">
+      <h2>Lesson 4: Making Choices 🤔</h2>
       <p>Learn how to tell your program to make decisions using blocks.</p>
-      <button disabled>Begin!</button>
+      <button onclick="goToLesson(4)" disabled>Locked 🔒</button>
     </div>
-
-    <div class="lesson-card locked" id="lesson5">
-      <h2>Lesson 5: Final Challenge! 🧠</h2>
-      <p>Use all your skills to solve a fun mini project with blocks.</p>
-      <button disabled>Begin!</button>
+    <div class="lesson locked" id="lesson5">
+      <h2>Lesson 5: Creative Challenge 🎨</h2>
+      <p>Use everything you've learned to solve a fun challenge with code!</p>
+      <button onclick="goToLesson(5)" disabled>Locked 🔒</button>
     </div>
   </div>
 
   <script>
-    function startLesson(number) {
-      localStorage.setItem('unit1_lesson' + number, true);
-      window.location.href = 'block_unit1_lesson' + number + '.html';
+    function goToLesson(num) {
+      window.location.href = `block_unit_1_lesson_${num}.html`;
     }
 
-    window.onload = function () {
-      for (let i = 2; i <= 5; i++) {
-        if (localStorage.getItem('unit1_lesson' + (i - 1))) {
-          document.getElementById('lesson' + i).classList.remove('locked');
-          const btn = document.querySelector(`#lesson${i} button`);
-          btn.disabled = false;
-          btn.onclick = () => startLesson(i);
-        }
+    // Unlock logic
+    const progress = JSON.parse(localStorage.getItem('blockUnit1Progress')) || 0;
+
+    for (let i = 1; i <= progress + 1 && i <= 5; i++) {
+      const lesson = document.getElementById(`lesson${i}`);
+      if (lesson) {
+        lesson.classList.remove("locked");
+        lesson.querySelector("button").disabled = false;
+        lesson.querySelector("button").innerText = i === 1 ? "Begin!" : "Continue";
       }
-    };
+    }
   </script>
 </body>
 </html>
