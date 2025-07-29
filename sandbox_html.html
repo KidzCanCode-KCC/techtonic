@@ -1,46 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TechTonic Sandbox - HTML</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <style>
-    .editor-container {
-      padding: 20px;
-      background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      margin: 20px auto;
-      max-width: 90%;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #e0f2ff, #ffffff);
+      color: #333;
     }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      background-color: #007bff;
+      padding: 12px 24px;
+      color: white;
+      font-weight: bold;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+      font-size: 16px;
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    .page-title {
+      text-align: center;
+      font-size: 28px;
+      margin: 30px 0 10px;
+      color: #007bff;
+    }
+
+    .editor-container {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(6px);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 1000px;
+      margin: 0 auto 40px;
+    }
+
     .code-input {
       width: 100%;
       height: 200px;
       font-family: monospace;
       font-size: 16px;
-      border-radius: 12px;
+      border-radius: 16px;
       border: 2px solid #007bff;
-      padding: 10px;
+      padding: 12px;
       box-sizing: border-box;
       resize: vertical;
+      background: #f8fbff;
+      transition: border 0.3s;
     }
-    .output {
-      margin-top: 20px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      height: 300px;
-      width: 100%;
+
+    .code-input:focus {
+      border: 2px solid #0056b3;
+      outline: none;
     }
+
     .run-btn {
+      display: inline-block;
       background-color: #007bff;
       color: white;
-      padding: 10px 20px;
+      padding: 10px 24px;
       font-size: 16px;
       border: none;
-      border-radius: 12px;
+      border-radius: 50px;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .run-btn:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .output {
+      margin-top: 20px;
+      border: 2px solid #ccc;
+      border-radius: 16px;
+      height: 300px;
+      width: 100%;
+      background: white;
     }
   </style>
 </head>
@@ -49,7 +105,7 @@
     <div class="nav-left">
       <a href="dashboard.html">🏠 Dashboard</a>
       <a href="lessons.html">📘 Lessons</a>
-      <a href="sandbox.html" class="active">🧪 Sandbox</a>
+      <a href="sandbox_home.html" class="active">🧪 Sandbox</a>
     </div>
     <div class="nav-right">
       <a href="profile.html">👤 Profile</a>
