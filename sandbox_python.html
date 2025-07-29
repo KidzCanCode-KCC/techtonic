@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechTonic Sandbox - Python</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .editor-container {
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      max-width: 90%;
+    }
+    .code-input {
+      width: 100%;
+      height: 200px;
+      font-family: monospace;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 2px solid #007bff;
+      padding: 10px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    .output {
+      margin-top: 20px;
+      background: #f1f1f1;
+      border-radius: 12px;
+      padding: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      height: 200px;
+      overflow-y: auto;
+    }
+    .run-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/skulpt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/skulpt-stdlib.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="lessons.html">📘 Lessons</a>
+      <a href="sandbox.html" class="active">🧪 Sandbox</a>
+    </div>
+    <div class="nav-right">
+      <a href="profile.html">👤 Profile</a>
+      <a href="logout.html">🚪 Logout</a>
+    </div>
+  </nav>
+
+  <h1 class="page-title">🐍 Python Playground</h1>
+
+  <div class="editor-container">
+    <textarea id="python-code" class="code-input" placeholder="Type your Python code here..."></textarea>
+    <button class="run-btn" onclick="runPython()">▶️ Run</button>
+    <div id="output" class="output"></div>
+  </div>
+
+  <script>
+    function builtinRead(x) {
+      if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+        throw "File not found: '" + x + "'";
+      return Sk.builtinFiles["files"][x];
+    }
+
+    function runPython() {
+      const outputDiv = document.getElementById("output");
+      outputDiv.innerHTML = "";
+      Sk.configure({ output: (text) => outputDiv.innerHTML += text + "\n", read: builtinRead });
+      const code = document.getElementById("python-code").value;
+      Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("__main__", false, code, true))
+        .catch(err => outputDiv.innerHTML += `\n⚠️ Error: ${err}`);
+    }
+  </script>
+</body>
+</html>
