@@ -112,6 +112,7 @@
       color: #4f83f1;
       user-select: none;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
     }
     .stat-card:hover {
       transform: translateY(-6px);
@@ -124,6 +125,12 @@
       font-weight: 500;
       font-size: 1.1rem;
       color: #2f3e60;
+    }
+
+    /* Make badge count clickable with pointer */
+    #badge-count {
+      cursor: pointer;
+      text-decoration: underline dotted;
     }
 
     /* Main sections */
@@ -242,6 +249,63 @@
       box-shadow: 0 3px 8px rgba(47, 99, 214, 0.7);
     }
 
+    /* Badge Modal Styles */
+    #badge-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.4);
+      user-select: none;
+    }
+    #badge-modal-content {
+      background: white;
+      margin: 100px auto;
+      padding: 20px 30px;
+      border-radius: 25px;
+      max-width: 400px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+      user-select: text;
+      position: relative;
+    }
+    #badge-modal h3 {
+      margin-top: 0;
+      color: #4f83f1;
+      font-weight: 800;
+      text-align: center;
+    }
+    #badge-modal ul {
+      list-style: disc inside;
+      padding-left: 0;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 12px;
+      font-size: 1.1rem;
+      color: #2f3e60;
+    }
+    #badge-modal ul li {
+      margin-bottom: 8px;
+    }
+    #badge-close-btn {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      background: #4f83f1;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    #badge-close-btn:hover {
+      background: #2f63d6;
+    }
+
     /* Responsive tweaks */
     @media (max-width: 650px) {
       .stats-container {
@@ -267,6 +331,9 @@
         font-size: 2.8rem;
         padding: 8px;
       }
+      #badge-modal-content {
+        margin: 60px 15px;
+      }
     }
   </style>
 </head>
@@ -291,8 +358,8 @@
         <div id="streak-count">0</div>
         <span>🔥 Current Streak</span>
       </div>
-      <div class="stat-card">
-        <div id="badge-count">0</div>
+      <div class="stat-card" title="Click to see your badges">
+        <div id="badge-count" tabindex="0" role="button" aria-label="View earned badges">0</div>
         <span>🏅 Badges Earned</span>
       </div>
       <div class="stat-card">
@@ -332,9 +399,25 @@
     </section>
   </main>
 
+  <!-- Badge Modal -->
+  <div id="badge-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="badge-modal-title">
+    <div id="badge-modal-content">
+      <button id="badge-close-btn" aria-label="Close badges list">&times;</button>
+      <h3 id="badge-modal-title">🏅 Your Badges</h3>
+      <ul id="badge-list">
+        <!-- Badges inserted here -->
+      </ul>
+    </div>
+  </div>
+
   <script>
+    // DOM elements
     const avatarDisplay = document.getElementById('avatar-display');
     const nicknameDisplay = document.getElementById('nickname-display');
+    const badgeCount = document.getElementById('badge-count');
+    const badgeModal = document.getElementById('badge-modal');
+    const badgeList = document.getElementById('badge-list');
+    const badgeCloseBtn = document.getElementById('badge-close-btn');
 
     const loggedInUser = localStorage.getItem('loggedInUser');
 
@@ -343,56 +426,64 @@
       window.location.href = 'index.html';
     }
 
-    // Load user profile data
+    // Load profiles and user data
     const profiles = JSON.parse(localStorage.getItem('techtonicProfiles')) || {};
     const userProfile = profiles[loggedInUser] || {};
 
+    // Show avatar and nickname
     avatarDisplay.textContent = userProfile.avatar || '😎';
     nicknameDisplay.textContent = userProfile.displayName || loggedInUser;
 
-    // Load progress data
-    const progressData = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
-    const userProgress = progressData[loggedInUser] || {};
-
-    // Calculate completed challenges
-    const completedCount = Object.values(userProgress).filter(Boolean).length;
-
-    // Load user stats (streak and badges) from profile or default 0
-    let currentStreak = userProfile.currentStreak || 0;
-    const badgesEarned = userProfile.badgesEarned || Math.floor(completedCount / 2);
-    const xpEarned = userProfile.xpEarned || (completedCount * 4); // example XP: 4 XP per challenge
-
-    // Update stats cards
-    document.getElementById('project-count').textContent = completedCount;
-    document.getElementById('badge-count').textContent = badgesEarned;
-    document.getElementById('xp-count').textContent = xpEarned;
-    document.getElementById('streak-count').textContent = currentStreak;
-
-    // Manage daily streak: increment if last login > 24 hrs ago
+    // Improved daily streak logic
     const lastLoginKey = `lastLogin_${loggedInUser}`;
     const lastLoginTime = localStorage.getItem(lastLoginKey);
     const now = Date.now();
-    if (!lastLoginTime || now - lastLoginTime > 24 * 60 * 60 * 1000) {
-      currentStreak++;
-      userProfile.currentStreak = currentStreak;
-      profiles[loggedInUser] = userProfile;
-      localStorage.setItem('techtonicProfiles', JSON.stringify(profiles));
-      localStorage.setItem(lastLoginKey, now);
-      document.getElementById('streak-count').textContent = currentStreak;
-    }
 
-    // Load next lesson (default to message if not set)
+    const lastLoginDate = lastLoginTime ? new Date(parseInt(lastLoginTime)) : null;
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    let currentStreak = userProfile.currentStreak || 0;
+
+    if (!lastLoginDate || lastLoginDate < yesterday) {
+      // Reset streak if last login was before yesterday
+      currentStreak = 1;
+    } else if (lastLoginDate.toDateString() === yesterday.toDateString()) {
+      // Increment streak if last login was exactly yesterday
+      currentStreak++;
+    } // else same day login - no change
+
+    userProfile.currentStreak = currentStreak;
+    profiles[loggedInUser] = userProfile;
+    localStorage.setItem('techtonicProfiles', JSON.stringify(profiles));
+    localStorage.setItem(lastLoginKey, now);
+
+    // Load progress
+    const progressData = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
+    const userProgress = progressData[loggedInUser] || {};
+    const completedCount = Object.values(userProgress).filter(Boolean).length;
+
+    // Load XP and badges from localStorage
+    let totalXP = parseInt(localStorage.getItem('techtonicTotalXP')) || 0;
+    let badges = JSON.parse(localStorage.getItem('techtonicBadges') || '[]');
+
+    // Update stats
+    document.getElementById('project-count').textContent = completedCount;
+    badgeCount.textContent = badges.length;
+    document.getElementById('xp-count').textContent = totalXP;
+    document.getElementById('streak-count').textContent = currentStreak;
+
+    // Next lesson
     const nextLessons = JSON.parse(localStorage.getItem('techtonicNextLesson')) || {};
     const nextLesson = nextLessons[loggedInUser] || 'No lessons assigned yet.';
     document.getElementById('next-lesson').textContent = nextLesson;
 
-    // Load recent projects (empty array if none)
+    // Recent projects
     const recentProjectsData = JSON.parse(localStorage.getItem('techtonicRecentProjects')) || {};
     const recentProjects = recentProjectsData[loggedInUser] || [];
-
     const projectList = document.getElementById('project-list');
     projectList.innerHTML = '';
-
     if (recentProjects.length === 0) {
       const li = document.createElement('li');
       li.textContent = 'No projects yet. Start coding!';
@@ -402,26 +493,28 @@
         const li = document.createElement('li');
         li.textContent = p.title;
         li.onclick = () => window.location.href = p.link;
+        li.tabIndex = 0;
+        li.setAttribute('role', 'button');
+        li.addEventListener('keypress', e => { if (e.key === 'Enter') li.click(); });
         projectList.appendChild(li);
       });
     }
 
-    // Daily challenge (could be global or per user)
+    // Daily challenge
     const dailyChallengeText = JSON.parse(localStorage.getItem('techtonicDailyChallenge')) || 'Try creating a program that prints your favorite animal!';
     document.getElementById('challenge-text').textContent = dailyChallengeText;
 
     document.getElementById('start-challenge-btn').onclick = () => {
       alert('Good luck with today’s challenge! Let’s get coding! 🎉');
-      // Replace with your actual challenge page
-      window.location.href = 'challenge.html';
+      window.location.href = 'challenge.html'; // replace with your challenge page
     };
 
-    // Progress bar - each lesson worth 4% (1/25)
-    const totalLessonsCount = 25; // fixed 25 lessons total
+    // Progress bar (25 lessons total)
+    const totalLessonsCount = 25;
     const progressPercent = Math.min((completedCount / totalLessonsCount) * 100, 100);
     document.getElementById('progress-fill').style.width = progressPercent + '%';
 
-    // Navigation buttons - exact order you requested
+    // Navigation buttons
     document.getElementById('logout-btn').onclick = () => {
       localStorage.removeItem('loggedInUser');
       alert('Logged out successfully! 👋');
@@ -437,7 +530,7 @@
       window.location.href = 'sandbox.html';
     };
 
-    // Continue Lesson button opens last lesson page from localStorage
+    // Continue Lesson button
     document.getElementById('continue-btn').onclick = () => {
       const lastLessonPage = localStorage.getItem('techtonicLastLessonPage');
       if (lastLessonPage) {
@@ -446,7 +539,51 @@
         alert('No lesson progress found. Please start a lesson first!');
       }
     };
-  </script>
 
+    // Badge modal logic
+    function openBadgeModal() {
+      badgeModal.style.display = 'block';
+      badgeModal.setAttribute('aria-hidden', 'false');
+      populateBadgeList();
+    }
+    function closeBadgeModal() {
+      badgeModal.style.display = 'none';
+      badgeModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function populateBadgeList() {
+      badgeList.innerHTML = '';
+      if (badges.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'You have not earned any badges yet.';
+        badgeList.appendChild(li);
+      } else {
+        badges.forEach((badgeName) => {
+          const li = document.createElement('li');
+          li.textContent = badgeName;
+          badgeList.appendChild(li);
+        });
+      }
+    }
+
+    badgeCount.onclick = openBadgeModal;
+    badgeCount.addEventListener('keypress', e => { if(e.key === 'Enter') openBadgeModal(); });
+
+    badgeCloseBtn.onclick = closeBadgeModal;
+
+    // Close modal if clicking outside content
+    badgeModal.onclick = (e) => {
+      if (e.target === badgeModal) {
+        closeBadgeModal();
+      }
+    };
+
+    // Accessibility: close modal on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && badgeModal.style.display === 'block') {
+        closeBadgeModal();
+      }
+    });
+  </script>
 </body>
 </html>
