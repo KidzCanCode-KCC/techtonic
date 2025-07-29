@@ -1,160 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TechTonic Sandbox</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #e0f2ff, #ffffff);
-      color: #333;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sandbox Home</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f7ff;
+    color: #222;
+  }
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      background-color: #007bff;
-      padding: 12px 24px;
-      color: white;
-      font-weight: bold;
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
+  /* Nav bar */
+  nav {
+    background: #1e40af; /* deep blue */
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  nav .logo {
+    font-size: 1.5rem;
+    user-select: none;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+  }
+  nav ul li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  nav ul li:hover {
+    color: #93c5fd; /* lighter blue */
+  }
 
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      margin: 0 12px;
-      font-size: 16px;
-    }
+  /* Main content container */
+  main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
 
-    .navbar a:hover {
-      text-decoration: underline;
-    }
+  h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
 
-    .page-title {
-      text-align: center;
-      font-size: 32px;
-      margin: 30px 0 10px;
-      color: #007bff;
-      font-weight: bold;
-    }
+  /* Projects grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 1.5rem;
+  }
 
-    .language-buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin: 30px auto;
-      max-width: 900px;
-    }
+  /* Project card */
+  .project-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgb(0 0 0 / 0.1);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgb(0 0 0 / 0.15);
+  }
+  .project-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: #1e40af;
+  }
+  .project-card p {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  .project-card small {
+    color: #888;
+    margin-top: 0.8rem;
+    font-style: italic;
+  }
 
-    .lang-btn {
-      background: white;
-      border: 3px solid #007bff;
-      border-radius: 30px;
-      padding: 16px 32px;
-      font-size: 18px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
-      color: #007bff;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-    }
+  /* Add new project button */
+  .add-project-btn {
+    display: block;
+    margin: 2rem auto;
+    padding: 0.75rem 1.5rem;
+    background: #1e40af;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+  }
+  .add-project-btn:hover {
+    background: #3b82f6;
+  }
 
-    .lang-btn:hover {
-      background: #007bff;
-      color: white;
-      transform: scale(1.05);
-    }
-
-    .projects-section {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .projects-section h2 {
-      font-size: 24px;
-      color: #007bff;
-      margin-bottom: 16px;
-    }
-
-    .project-card {
-      background: white;
-      border: 2px solid #007bff;
-      border-radius: 20px;
-      padding: 16px 24px;
-      margin-bottom: 12px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-    }
-
-    .project-card:hover {
-      background: #f0f8ff;
-      transform: scale(1.02);
-    }
-  </style>
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 3rem;
+    background: #e0e7ff;
+    color: #1e40af;
+    font-weight: 600;
+    user-select: none;
+  }
+</style>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-left">
-      <a href="dashboard.html">🏠 Dashboard</a>
-      <a href="lessons.html">📘 Lessons</a>
-      <a href="sandbox_home.html" class="active">🧪 Sandbox</a>
-    </div>
-    <div class="nav-right">
-      <a href="profile.html">👤 Profile</a>
-      <a href="logout.html">🚪 Logout</a>
-    </div>
-  </nav>
 
-  <h1 class="page-title">🧪 TechTonic Sandbox</h1>
+<nav>
+  <div class="logo">🛠️ Sandbox</div>
+  <ul>
+    <li>Dashboard</li>
+    <li>Lessons</li>
+    <li>Profile</li>
+  </ul>
+</nav>
 
-  <div class="language-buttons">
-    <button class="lang-btn" onclick="goToEditor('html')">🌐 HTML</button>
-    <button class="lang-btn" onclick="goToEditor('css')">🎨 CSS</button>
-    <button class="lang-btn" onclick="goToEditor('js')">⚙️ JavaScript</button>
-    <button class="lang-btn" onclick="goToEditor('python')">🐍 Python</button>
-    <button class="lang-btn" onclick="goToEditor('block')">🧱 Block</button>
+<main>
+  <h1>Your Projects</h1>
+  <div class="projects-grid" id="projectsGrid">
+    <!-- Project cards inserted here dynamically -->
   </div>
+  <button class="add-project-btn" onclick="addNewProject()">+ New Project</button>
+</main>
 
-  <div class="projects-section">
-    <h2>📁 Your Projects</h2>
-    <div id="projectList">
-      <!-- Project cards will be inserted here -->
-    </div>
-  </div>
+<footer>
+  KidzCanCode © 2025 — Keep Coding Fun!
+</footer>
 
-  <script>
-    function goToEditor(language) {
-      window.location.href = `sandbox_${language}.html`;
+<script>
+  // Example project data, replace this with your real saved projects from localStorage
+  const savedProjects = JSON.parse(localStorage.getItem('userProjects') || '[]');
+
+  const projectsGrid = document.getElementById('projectsGrid');
+
+  function renderProjects() {
+    projectsGrid.innerHTML = '';
+    if(savedProjects.length === 0) {
+      projectsGrid.innerHTML = '<p style="text-align:center; color:#666;">No projects yet. Create one!</p>';
+      return;
     }
 
-    // Load saved projects
-    const projectList = document.getElementById("projectList");
-    const savedProjects = JSON.parse(localStorage.getItem("sandboxProjects") || "[]");
+    savedProjects.forEach((project, i) => {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+      card.onclick = () => openProject(i);
 
-    if (savedProjects.length === 0) {
-      projectList.innerHTML = "<p>No saved projects yet.</p>";
-    } else {
-      savedProjects.forEach(project => {
-        const div = document.createElement("div");
-        div.className = "project-card";
-        div.textContent = project.name + " (" + project.language.toUpperCase() + ")";
-        div.onclick = () => {
-          // Redirect to the appropriate editor and load the code
-          localStorage.setItem("currentProject", JSON.stringify(project));
-          window.location.href = `sandbox_${project.language}.html`;
-        };
-        projectList.appendChild(div);
-      });
-    }
-  </script>
+      card.innerHTML = `
+        <h3>${project.name}</h3>
+        <p>${project.description || 'No description available.'}</p>
+        <small>Last saved: ${new Date(project.lastSaved).toLocaleDateString()}</small>
+      `;
+
+      projectsGrid.appendChild(card);
+    });
+  }
+
+  function addNewProject() {
+    const name = prompt('Enter project name:');
+    if(!name) return alert('Project name cannot be empty!');
+    const desc = prompt('Add a short description (optional):') || '';
+
+    const newProject = {
+      name,
+      description: desc,
+      lastSaved: Date.now(),
+      data: {} // you can store project code or data here
+    };
+
+    savedProjects.push(newProject);
+    localStorage.setItem('userProjects', JSON.stringify(savedProjects));
+    renderProjects();
+  }
+
+  function openProject(index) {
+    alert(`Open project: ${savedProjects[index].name}`);
+    // Implement actual opening logic here
+  }
+
+  // Initial render
+  renderProjects();
+</script>
+
 </body>
 </html>
