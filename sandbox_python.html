@@ -1,90 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechTonic Sandbox - Python</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .editor-container {
-      padding: 20px;
-      background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      margin: 20px auto;
-      max-width: 90%;
-    }
-    .code-input {
-      width: 100%;
-      height: 200px;
-      font-family: monospace;
-      font-size: 16px;
-      border-radius: 12px;
-      border: 2px solid #007bff;
-      padding: 10px;
-      box-sizing: border-box;
-      resize: vertical;
-    }
-    .output {
-      margin-top: 20px;
-      background: #f1f1f1;
-      border-radius: 12px;
-      padding: 10px;
-      font-family: monospace;
-      white-space: pre-wrap;
-      height: 200px;
-      overflow-y: auto;
-    }
-    .run-btn {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/skulpt.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/skulpt-stdlib.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sandbox - Project Editor</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f7ff;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  header {
+    background: #1e40af;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    margin: 0;
+    font-weight: 700;
+  }
+  header button {
+    background: #3b82f6;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  header button:hover {
+    background: #60a5fa;
+  }
+
+  main {
+    flex-grow: 1;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  textarea {
+    flex-grow: 1;
+    width: 100%;
+    font-family: monospace;
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: none;
+    box-sizing: border-box;
+  }
+
+  footer {
+    text-align: center;
+    padding: 1rem;
+    background: #e0e7ff;
+    color: #1e40af;
+    font-weight: 600;
+    user-select: none;
+  }
+</style>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-left">
-      <a href="dashboard.html">🏠 Dashboard</a>
-      <a href="lessons.html">📘 Lessons</a>
-      <a href="sandbox.html" class="active">🧪 Sandbox</a>
-    </div>
-    <div class="nav-right">
-      <a href="profile.html">👤 Profile</a>
-      <a href="logout.html">🚪 Logout</a>
-    </div>
-  </nav>
 
-  <h1 class="page-title">🐍 Python Playground</h1>
+<header>
+  <h1 id="projectTitle">Loading…</h1>
+  <button onclick="saveProject()">Save</button>
+</header>
 
-  <div class="editor-container">
-    <textarea id="python-code" class="code-input" placeholder="Type your Python code here..."></textarea>
-    <button class="run-btn" onclick="runPython()">▶️ Run</button>
-    <div id="output" class="output"></div>
-  </div>
+<main>
+  <label for="codeEditor">Code Editor</label>
+  <textarea id="codeEditor" spellcheck="false"></textarea>
+</main>
 
-  <script>
-    function builtinRead(x) {
-      if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-        throw "File not found: '" + x + "'";
-      return Sk.builtinFiles["files"][x];
-    }
+<footer>
+  KidzCanCode Sandbox — Keep Coding Fun!
+</footer>
 
-    function runPython() {
-      const outputDiv = document.getElementById("output");
-      outputDiv.innerHTML = "";
-      Sk.configure({ output: (text) => outputDiv.innerHTML += text + "\n", read: builtinRead });
-      const code = document.getElementById("python-code").value;
-      Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("__main__", false, code, true))
-        .catch(err => outputDiv.innerHTML += `\n⚠️ Error: ${err}`);
-    }
-  </script>
+<script>
+  // Parse query param "project"
+  function getProjectIndex() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('project');
+  }
+
+  const projectIndex = getProjectIndex();
+  if(projectIndex === null) {
+    alert('No project specified!');
+    window.location.href = 'sandbox.html';
+  }
+
+  // Load all projects
+  let projects = JSON.parse(localStorage.getItem('userProjects') || '[]');
+
+  if(projectIndex >= projects.length) {
+    alert('Project not found!');
+    window.location.href = 'sandbox.html';
+  }
+
+  const project = projects[projectIndex];
+
+  const projectTitleElem = document.getElementById('projectTitle');
+  const codeEditor = document.getElementById('codeEditor');
+
+  projectTitleElem.textContent = `${project.name} — ${capitalize(project.language)}`;
+  codeEditor.value = project.code;
+
+  // Save updated code back to localStorage
+  function saveProject() {
+    project.code = codeEditor.value;
+    project.lastSaved = Date.now();
+    projects[projectIndex] = project;
+    localStorage.setItem('userProjects', JSON.stringify(projects));
+    alert('Project saved!');
+  }
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+</script>
+
 </body>
 </html>
