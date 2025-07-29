@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechTonic Sandbox - Block</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <style>
+    .editor-container {
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      max-width: 90%;
+    }
+    #blocklyDiv {
+      height: 400px;
+      width: 100%;
+      border-radius: 12px;
+    }
+    .run-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .output {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      height: 200px;
+      padding: 10px;
+      background: #f9f9f9;
+      overflow-y: auto;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="lessons.html">📘 Lessons</a>
+      <a href="sandbox.html" class="active">🧪 Sandbox</a>
+    </div>
+    <div class="nav-right">
+      <a href="profile.html">👤 Profile</a>
+      <a href="logout.html">🚪 Logout</a>
+    </div>
+  </nav>
+
+  <h1 class="page-title">🧪 Block Coding Playground</h1>
+
+  <div class="editor-container">
+    <div id="blocklyDiv"></div>
+    <button class="run-btn" onclick="runBlockCode()">▶️ Run</button>
+    <pre id="output" class="output"></pre>
+  </div>
+
+  <xml id="toolbox" style="display: none">
+    <block type="controls_if"></block>
+    <block type="controls_repeat_ext"></block>
+    <block type="logic_compare"></block>
+    <block type="math_number"></block>
+    <block type="math_arithmetic"></block>
+    <block type="text"></block>
+    <block type="text_print"></block>
+  </xml>
+
+  <script>
+    const workspace = Blockly.inject('blocklyDiv', {
+      toolbox: document.getElementById('toolbox'),
+      scrollbars: true,
+      trashcan: true
+    });
+
+    function runBlockCode() {
+      const code = Blockly.JavaScript.workspaceToCode(workspace);
+      const output = document.getElementById("output");
+      try {
+        const result = eval(code);
+        output.textContent = result !== undefined ? result : "✅ Code ran successfully!";
+      } catch (e) {
+        output.textContent = "❌ Error: " + e.message;
+      }
+    }
+  </script>
+</body>
+</html>
