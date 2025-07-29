@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Block Building Units</title>
+  <title>Block Building Burrow Units</title>
   <style>
     :root {
       --blue: #4a90e2;
@@ -18,7 +18,6 @@
       color: #333;
     }
 
-    /* Navbar */
     nav {
       background: var(--white);
       padding: 1rem 2rem;
@@ -141,7 +140,6 @@
     <h1>Block Units</h1>
     <div class="links">
       <a href="dashboard.html">Dashboard</a>
-      <a href="lessons.html">Units</a>
     </div>
   </nav>
 
@@ -152,7 +150,7 @@
 
   <div class="container">
     <div class="unit-grid" id="unit-grid">
-      <!-- Units will be generated here -->
+      <!-- Units will be inserted here -->
     </div>
   </div>
 
@@ -189,24 +187,33 @@
     const progressBar = document.getElementById('progress-bar');
     const progressLabel = document.getElementById('progress-label');
 
-    let completed = parseInt(localStorage.getItem('blockUnitCompleted')) || 0;
+    function getCompletedCount() {
+      let count = 0;
+      for (let i = 0; i < unitData.length; i++) {
+        if (localStorage.getItem(`block_unit_${i + 1}_completed`) === "true") {
+          count++;
+        } else {
+          break; // Stop counting at the first incomplete unit
+        }
+      }
+      return count;
+    }
 
-    function updateProgressBar() {
+    function updateProgressBar(completed) {
       const percent = (completed / unitData.length) * 100;
       progressBar.style.width = percent + '%';
       progressLabel.textContent = `Units completed: ${completed} / ${unitData.length}`;
     }
 
-    function createUnits() {
+    function createUnits(completed) {
       unitData.forEach((unit, index) => {
         const card = document.createElement('div');
         card.className = 'unit-card';
 
-        if (index > completed) {
+        const isUnlocked = index === 0 || localStorage.getItem(`block_unit_${index}_completed`) === "true";
+        if (!isUnlocked) {
           card.classList.add('locked');
         }
-
-        card.dataset.index = index;
 
         const title = document.createElement('h2');
         title.textContent = unit.title;
@@ -215,11 +222,11 @@
         desc.textContent = unit.desc;
 
         const btn = document.createElement('button');
-        const visited = localStorage.getItem(`visitedUnit${index + 1}`);
-
+        const visited = localStorage.getItem(`visited_unit_${index + 1}`);
         btn.textContent = visited ? "Continue" : "Start";
+
         btn.addEventListener('click', () => {
-          localStorage.setItem(`visitedUnit${index + 1}`, true);
+          localStorage.setItem(`visited_unit_${index + 1}`, "true");
           window.location.href = unit.page;
         });
 
@@ -230,8 +237,9 @@
       });
     }
 
-    updateProgressBar();
-    createUnits();
+    const completed = getCompletedCount();
+    updateProgressBar(completed);
+    createUnits(completed);
   </script>
 </body>
 </html>
