@@ -2,417 +2,93 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TechTonic Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet" />
-  <style>
-    /* Base and layout */
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #d0e6ff, #f9faff);
-      margin: 0;
-      padding: 0 20px 40px;
-      color: #1a1a1a;
-      min-height: 100vh;
-      user-select: none;
-    }
-
-    /* Header */
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #4f83f1;
-      color: #f0f6ff;
-      padding: 20px 30px;
-      border-radius: 0 0 30px 30px;
-      box-shadow: 0 6px 20px rgba(79, 131, 241, 0.5);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      transform-style: preserve-3d;
-    }
-
-    /* Avatar with bounce animation */
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-    .avatar {
-      font-size: 3.6rem;
-      background: #f0f6ff;
-      color: #4f83f1;
-      padding: 12px;
-      border-radius: 50%;
-      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
-      animation: bounce 3s ease-in-out infinite;
-      user-select: none;
-      transition: transform 0.3s ease;
-    }
-    .avatar:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 25px rgba(79, 131, 241, 0.6);
-      cursor: default;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-weight: 700;
-      font-size: 1.5rem;
-      letter-spacing: 0.04em;
-      text-shadow: 0 0 5px rgba(79, 131, 241, 0.4);
-    }
-
-    /* Navigation buttons */
-    .nav-buttons button {
-      background: #f0f6ff;
-      border: none;
-      color: #4f83f1;
-      font-weight: 700;
-      font-size: 1.1rem;
-      padding: 12px 26px;
-      margin-left: 15px;
-      border-radius: 40px;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(79, 131, 241, 0.3);
-      transition: all 0.3s ease;
-      user-select: none;
-    }
-    .nav-buttons button:hover {
-      background-color: #dbe9ff;
-      color: #2f63d6;
-      box-shadow: 0 8px 20px rgba(47, 99, 214, 0.6);
-      transform: translateY(-3px);
-    }
-
-    /* Stats cards container */
-    .stats-container {
-      display: flex;
-      gap: 28px;
-      max-width: 900px;
-      margin: 0 auto;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 10px;
-    }
-
-    /* Individual stat cards */
-    .stat-card {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-      padding: 30px 40px;
-      flex: 1 1 260px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #4f83f1;
-      user-select: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .stat-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(79, 131, 241, 0.35);
-      cursor: default;
-    }
-    .stat-card span {
-      display: block;
-      margin-top: 14px;
-      font-weight: 500;
-      font-size: 1.1rem;
-      color: #2f3e60;
-    }
-
-    /* Main sections */
-    main section {
-      background: white;
-      max-width: 900px;
-      margin: 45px auto;
-      padding: 30px 40px;
-      border-radius: 25px;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
-      user-select: none;
-      transition: box-shadow 0.3s ease;
-    }
-    main section:hover {
-      box-shadow: 0 12px 36px rgba(79, 131, 241, 0.2);
-    }
-
-    /* Section headings */
-    main section h2 {
-      margin-top: 0;
-      color: #4f83f1;
-      font-weight: 800;
-      font-size: 1.8rem;
-      letter-spacing: 0.03em;
-      margin-bottom: 12px;
-      user-select: text;
-    }
-
-    /* Continue learning text */
-    .continue-learning p {
-      font-size: 1.25rem;
-      color: #2f3e60;
-      margin-bottom: 14px;
-      user-select: text;
-    }
-
-    /* Primary buttons */
-    .continue-learning button,
-    .daily-challenge button {
-      background: linear-gradient(135deg, #4f83f1, #2f63d6);
-      color: white;
-      font-weight: 700;
-      border: none;
-      padding: 14px 32px;
-      border-radius: 40px;
-      cursor: pointer;
-      margin-top: 16px;
-      box-shadow: 0 7px 20px rgba(47, 99, 214, 0.5);
-      transition: background 0.4s ease, transform 0.3s ease;
-      user-select: none;
-    }
-    .continue-learning button:hover,
-    .daily-challenge button:hover {
-      background: linear-gradient(135deg, #2f63d6, #1c3a93);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(28, 58, 147, 0.7);
-    }
-
-    /* Recent projects list */
-    .recent-projects ul {
-      list-style: none;
-      padding-left: 0;
-      margin-top: 18px;
-      max-height: 200px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #4f83f1 #dbe9ff;
-    }
-    .recent-projects ul::-webkit-scrollbar {
-      width: 7px;
-    }
-    .recent-projects ul::-webkit-scrollbar-track {
-      background: #dbe9ff;
-      border-radius: 10px;
-    }
-    .recent-projects ul::-webkit-scrollbar-thumb {
-      background-color: #4f83f1;
-      border-radius: 10px;
-    }
-    .recent-projects ul li {
-      padding: 12px 14px;
-      border-bottom: 1.5px solid #e3e9ff;
-      cursor: pointer;
-      color: #4f83f1;
-      font-weight: 600;
-      font-size: 1.15rem;
-      border-radius: 12px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      user-select: none;
-    }
-    .recent-projects ul li:hover {
-      background-color: #e0ebff;
-      color: #1c3a93;
-      text-decoration: underline;
-    }
-
-    /* Progress bar section */
-    .progress-bar-section h2 {
-      margin-bottom: 18px;
-      user-select: text;
-    }
-    .progress-bar {
-      width: 100%;
-      background: #e4eafc;
-      height: 28px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: inset 0 1px 3px rgba(255,255,255,0.7);
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #6a9fff, #2f63d6);
-      width: 0%;
-      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 16px 0 0 16px;
-      box-shadow: 0 3px 8px rgba(47, 99, 214, 0.7);
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 650px) {
-      .stats-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      .stat-card {
-        max-width: 320px;
-      }
-      main section {
-        margin: 25px 15px;
-        padding: 25px 30px;
-      }
-      .nav-buttons button {
-        padding: 10px 20px;
-        font-size: 1rem;
-        margin-left: 8px;
-      }
-      .user-info {
-        font-size: 1.3rem;
-      }
-      .avatar {
-        font-size: 2.8rem;
-        padding: 8px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body onload="updateDashboard()">
+  <nav>
+    <ul class="nav-buttons">
+      <li><a href="lessons.html">📘 Lessons</a></li>
+      <li><a href="profile.html">👤 Profile</a></li>
+      <li><a href="sandbox.html">🛠️ Sandbox</a></li>
+      <li><a href="logout.html">🚪 Logout</a></li>
+    </ul>
+  </nav>
 
-  <header class="dashboard-header">
-    <div class="user-info">
-      <div class="avatar" id="avatar-display">😎</div>
-      <div id="nickname-display">Coder</div>
+  <div class="dashboard-container">
+    <h1>👋 Welcome back, Coder!</h1>
+    <div class="avatar bounce"></div>
+
+    <div class="card-container">
+      <div class="card">
+        <h2>📈 Progress</h2>
+        <p><span id="lesson-progress">0</span>/25 Lessons Completed</p>
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+      </div>
+
+      <div class="card">
+        <h2>🔥 Streak</h2>
+        <p>Daily Streak: <span id="daily-streak">0</span> days</p>
+      </div>
+
+      <div class="card">
+        <h2>⭐ XP</h2>
+        <p>XP: <span id="xp">0</span></p>
+      </div>
+
+      <div class="card">
+        <h2>🏅 Badges</h2>
+        <ul id="badge-list"></ul>
+      </div>
+
+      <div class="card">
+        <h2>🎯 Challenges Completed</h2>
+        <p><span id="challenges-done">0</span> done</p>
+      </div>
     </div>
-    <nav class="nav-buttons">
-      <button id="profile-btn">👤 Profile</button>
-      <button id="lessons-btn">📚 Lessons</button>
-      <button id="logout-btn">🔐 Logout</button>
-    </nav>
-  </header>
 
-  <main>
-    <div class="stats-container">
-      <div class="stat-card">
-        <div id="streak-count">0</div>
-        <span>🔥 Current Streak</span>
-      </div>
-      <div class="stat-card">
-        <div id="badge-count">0</div>
-        <span>🏅 Badges Earned</span>
-      </div>
-      <div class="stat-card">
-        <div id="project-count">0</div>
-        <span>💻 Challenges Completed</span>
-      </div>
-    </div>
-
-    <section class="continue-learning">
-      <h2>🚀 Continue Learning</h2>
-      <p>Your next lesson: <strong id="next-lesson">Loading...</strong></p>
-      <button id="continue-btn">Continue Lesson ▶️</button>
-    </section>
-
-    <section class="recent-projects">
-      <h2>🎨 Your Recent Projects</h2>
-      <ul id="project-list">
-        <li>Loading...</li>
-      </ul>
-    </section>
-
-    <section class="daily-challenge">
-      <h2>🔥 Daily Challenge</h2>
-      <p id="challenge-text">Loading...</p>
-      <button id="start-challenge-btn">Start Challenge</button>
-    </section>
-
-    <section class="progress-bar-section">
-      <h2>📈 Overall Progress</h2>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
-    </section>
-  </main>
+    <button onclick="continueLesson()" class="continue-btn">🚀 Continue Lesson</button>
+  </div>
 
   <script>
-    const avatarDisplay = document.getElementById('avatar-display');
-    const nicknameDisplay = document.getElementById('nickname-display');
+    function updateDashboard() {
+      const progress = +localStorage.getItem("lessonsCompleted") || 0;
+      const streak = +localStorage.getItem("dailyStreak") || 0;
+      const xp = +localStorage.getItem("xp") || 0;
+      const badges = JSON.parse(localStorage.getItem("badges") || "[]");
+      const challenges = +localStorage.getItem("challengesCompleted") || 0;
 
-    const loggedInUser = localStorage.getItem('loggedInUser');
+      document.getElementById("lesson-progress").textContent = progress;
+      document.getElementById("daily-streak").textContent = streak;
+      document.getElementById("xp").textContent = xp;
+      document.getElementById("challenges-done").textContent = challenges;
 
-    if (!loggedInUser) {
-      alert('Please log in first. 🚪');
-      window.location.href = 'index.html';
+      const fill = document.getElementById("progress-fill");
+      fill.style.width = `${(progress / 25) * 100}%`;
+
+      const badgeList = document.getElementById("badge-list");
+      badgeList.innerHTML = badges.map(b => `<li>${b}</li>`).join("");
+
+      // Streak logic
+      const lastVisit = localStorage.getItem("lastVisit");
+      const today = new Date().toDateString();
+      if (lastVisit !== today) {
+        const newStreak = streak + 1;
+        localStorage.setItem("dailyStreak", newStreak);
+        localStorage.setItem("lastVisit", today);
+        document.getElementById("daily-streak").textContent = newStreak;
+      }
     }
 
-    // Load user profile data
-    const profiles = JSON.parse(localStorage.getItem('techtonicProfiles')) || {};
-    const userProfile = profiles[loggedInUser] || {};
-
-    avatarDisplay.textContent = userProfile.avatar || '😎';
-    nicknameDisplay.textContent = userProfile.displayName || loggedInUser;
-
-    // Load progress data
-    const progressData = JSON.parse(localStorage.getItem('techtonicProgress')) || {};
-    const userProgress = progressData[loggedInUser] || {};
-
-    // Calculate completed challenges
-    const completedCount = Object.values(userProgress).filter(Boolean).length;
-
-    // Load user stats (streak and badges) from profile or default 0
-    const currentStreak = userProfile.currentStreak || 0;
-    const badgesEarned = userProfile.badgesEarned || Math.floor(completedCount / 2);
-
-    // Update stats cards
-    document.getElementById('project-count').textContent = completedCount;
-    document.getElementById('badge-count').textContent = badgesEarned;
-    document.getElementById('streak-count').textContent = currentStreak;
-
-    // Load next lesson (default to message if not set)
-    const nextLessons = JSON.parse(localStorage.getItem('techtonicNextLesson')) || {};
-    const nextLesson = nextLessons[loggedInUser] || 'No lessons assigned yet.';
-    document.getElementById('next-lesson').textContent = nextLesson;
-
-    // Load recent projects (empty array if none)
-    const recentProjectsData = JSON.parse(localStorage.getItem('techtonicRecentProjects')) || {};
-    const recentProjects = recentProjectsData[loggedInUser] || [];
-
-    const projectList = document.getElementById('project-list');
-    projectList.innerHTML = '';
-
-    if (recentProjects.length === 0) {
-      const li = document.createElement('li');
-      li.textContent = 'No projects yet. Start coding!';
-      projectList.appendChild(li);
-    } else {
-      recentProjects.forEach(p => {
-        const li = document.createElement('li');
-        li.textContent = p.title;
-        li.onclick = () => window.location.href = p.link;
-        projectList.appendChild(li);
-      });
+    function continueLesson() {
+      const lastLesson = localStorage.getItem("lastLesson");
+      if (lastLesson) {
+        window.location.href = lastLesson;
+      } else {
+        alert("Start a lesson first!");
+      }
     }
-
-    // Daily challenge (could be global or per user)
-    const dailyChallengeText = JSON.parse(localStorage.getItem('techtonicDailyChallenge')) || 'Try creating a program that prints your favorite animal!';
-    document.getElementById('challenge-text').textContent = dailyChallengeText;
-
-    document.getElementById('start-challenge-btn').onclick = () => {
-      alert('Good luck with today’s challenge! Let’s get coding! 🎉');
-      // Replace with your actual challenge page
-      window.location.href = 'challenge.html';
-    };
-
-    // Progress bar
-    const totalLessonsCount = JSON.parse(localStorage.getItem('techtonicTotalLessons')) || 20;
-    const progressPercent = totalLessonsCount > 0 ? (completedCount / totalLessonsCount) * 100 : 0;
-    document.getElementById('progress-fill').style.width = progressPercent + '%';
-
-    // Navigation buttons
-    document.getElementById('profile-btn').onclick = () => {
-      window.location.href = 'profile.html';
-    };
-    document.getElementById('lessons-btn').onclick = () => {
-      window.location.href = 'lessons.html';
-    };
-    document.getElementById('logout-btn').onclick = () => {
-      localStorage.removeItem('loggedInUser');
-      alert('Logged out successfully! 👋');
-      window.location.href = 'index.html';
-    };
   </script>
-
 </body>
 </html>
