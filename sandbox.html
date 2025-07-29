@@ -3,87 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sandbox - TechTonic</title>
+  <title>🧪 TechTonic Sandbox</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://cdn.jsdelivr.net/npm/lucide-static@0.308.0/font/lucide.css" rel="stylesheet" />
   <style>
-    .editor-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      background: white;
-      padding: 1rem;
-      border-radius: 1rem;
+    .sandbox-page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      transition: transform 0.2s;
     }
-    .editor-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .card:hover {
+      transform: scale(1.02);
     }
-    .editor-header select {
-      font-size: 1rem;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      border: 1px solid #ccc;
+    .card h2 {
+      margin-bottom: 10px;
+      color: #007bff;
     }
-    iframe {
-      width: 100%;
-      height: 400px;
-      border: 1px solid #ddd;
-      border-radius: 1rem;
+    .card p {
+      color: #444;
+    }
+    .launch-btn {
+      margin-top: 15px;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .sandbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
     }
   </style>
 </head>
 <body>
   <nav class="navbar">
     <div class="nav-left">
-      <span class="logo">🌋 TechTonic</span>
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="lessons.html">📘 Lessons</a>
+      <a href="sandbox.html" class="active">🧪 Sandbox</a>
     </div>
     <div class="nav-right">
-      <a href="dashboard.html">📊 Dashboard</a>
-      <a href="lessons.html">📘 Lessons</a>
-      <a href="index.html">🧱 Homes</a>
-      <a href="sandbox.html" class="active">🧪 Sandbox</a>
-      <a href="index.html">🚪 Logout</a>
+      <a href="profile.html">👤 Profile</a>
+      <a href="logout.html">🚪 Logout</a>
     </div>
   </nav>
 
-  <main class="container">
-    <h1 class="title">🧪 TechTonic Sandbox</h1>
-    <p class="subtitle">Code freely in your favorite language!</p>
+  <section class="sandbox-page">
+    <h1 class="page-title">🧪 Welcome to the TechTonic Sandbox</h1>
+    <p style="text-align:center; font-size: 18px; color: #444;">Choose your favorite language and start building your own code playgrounds!</p>
 
-    <div class="editor-container">
-      <div class="editor-header">
-        <label for="language">Choose a language:</label>
-        <select id="language">
-          <option value="html">HTML/CSS/JS</option>
-          <option value="python">Python</option>
-          <option value="block">Blockly</option>
-        </select>
+    <div class="sandbox-grid">
+      <div class="card">
+        <h2>🌐 HTML/CSS/JS</h2>
+        <p>Build web pages and style them freely!</p>
+        <a href="sandbox_html.html"><button class="launch-btn">Launch Editor</button></a>
       </div>
-      <iframe id="sandbox-frame" src="sandbox_html.html"></iframe>
+      <div class="card">
+        <h2>🐍 Python</h2>
+        <p>Write Python code and see it run instantly.</p>
+        <a href="sandbox_python.html"><button class="launch-btn">Launch Editor</button></a>
+      </div>
+      <div class="card">
+        <h2>🧱 Blocks</h2>
+        <p>Use drag-and-drop blocks to code visually.</p>
+        <a href="sandbox_blocks.html"><button class="launch-btn">Launch Editor</button></a>
+      </div>
+      <div class="card">
+        <h2>☕ JavaScript</h2>
+        <p>Make things happen with JS logic and interactivity!</p>
+        <a href="sandbox_js.html"><button class="launch-btn">Launch Editor</button></a>
+      </div>
+      <div class="card">
+        <h2>🎨 p5.js</h2>
+        <p>Create interactive drawings and animations.</p>
+        <a href="sandbox_p5.html"><button class="launch-btn">Launch Editor</button></a>
+      </div>
     </div>
-  </main>
-
-  <script>
-    const frame = document.getElementById('sandbox-frame');
-    const langSelector = document.getElementById('language');
-
-    langSelector.addEventListener('change', () => {
-      const lang = langSelector.value;
-      switch (lang) {
-        case 'html':
-          frame.src = 'sandbox_html.html';
-          break;
-        case 'python':
-          frame.src = 'sandbox_python.html';
-          break;
-        case 'block':
-          frame.src = 'sandbox_block.html';
-          break;
-      }
-    });
-  </script>
+  </section>
 </body>
 </html>
