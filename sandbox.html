@@ -1,96 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🧪 TechTonic Sandbox</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechTonic Sandbox</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    .sandbox-page {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 30px;
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #e0f7ff, #ffffff);
+      color: #333;
     }
-    .card {
+
+    .navbar {
       background: #ffffff;
-      border-radius: 20px;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 20px;
-      text-align: center;
-      transition: transform 0.2s;
+      border-radius: 0 0 20px 20px;
     }
-    .card:hover {
-      transform: scale(1.02);
-    }
-    .card h2 {
-      margin-bottom: 10px;
+
+    .navbar a {
       color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 12px;
     }
-    .card p {
-      color: #444;
+
+    .navbar a:hover {
+      text-decoration: underline;
     }
-    .launch-btn {
-      margin-top: 15px;
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
+
+    .sandbox-hero {
+      text-align: center;
+      padding: 80px 20px 40px;
+    }
+
+    .sandbox-hero h1 {
+      font-size: 48px;
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .sandbox-hero p {
+      font-size: 20px;
+      color: #555;
+    }
+
+    .sandbox-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin: 50px 20px;
+    }
+
+    .sandbox-button {
+      background: white;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 250px;
+      transition: 0.3s;
       cursor: pointer;
     }
-    .sandbox-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+
+    .sandbox-button:hover {
+      transform: scale(1.05);
+      background: #f0faff;
+    }
+
+    .sandbox-button h2 {
+      font-size: 24px;
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .sandbox-button p {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px;
+      background: #f0faff;
+      margin-top: 60px;
+      border-top: 2px dashed #ccc;
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-left">
+
+  <div class="navbar">
+    <div>
       <a href="dashboard.html">🏠 Dashboard</a>
       <a href="lessons.html">📘 Lessons</a>
-      <a href="sandbox.html" class="active">🧪 Sandbox</a>
+      <a href="sandbox.html">🧪 Sandbox</a>
     </div>
-    <div class="nav-right">
+    <div>
       <a href="profile.html">👤 Profile</a>
       <a href="logout.html">🚪 Logout</a>
     </div>
-  </nav>
+  </div>
 
-  <section class="sandbox-page">
-    <h1 class="page-title">🧪 Welcome to the TechTonic Sandbox</h1>
-    <p style="text-align:center; font-size: 18px; color: #444;">Choose your favorite language and start building your own code playgrounds!</p>
+  <div class="sandbox-hero">
+    <h1>🧪 Welcome to the Sandbox!</h1>
+    <p>Choose a coding world to explore freely ✨</p>
+  </div>
 
-    <div class="sandbox-grid">
-      <div class="card">
-        <h2>🌐 HTML/CSS/JS</h2>
-        <p>Build web pages and style them freely!</p>
-        <a href="sandbox_html.html"><button class="launch-btn">Launch Editor</button></a>
-      </div>
-      <div class="card">
-        <h2>🐍 Python</h2>
-        <p>Write Python code and see it run instantly.</p>
-        <a href="sandbox_python.html"><button class="launch-btn">Launch Editor</button></a>
-      </div>
-      <div class="card">
-        <h2>🧱 Blocks</h2>
-        <p>Use drag-and-drop blocks to code visually.</p>
-        <a href="sandbox_blocks.html"><button class="launch-btn">Launch Editor</button></a>
-      </div>
-      <div class="card">
-        <h2>☕ JavaScript</h2>
-        <p>Make things happen with JS logic and interactivity!</p>
-        <a href="sandbox_js.html"><button class="launch-btn">Launch Editor</button></a>
-      </div>
-      <div class="card">
-        <h2>🎨 p5.js</h2>
-        <p>Create interactive drawings and animations.</p>
-        <a href="sandbox_p5.html"><button class="launch-btn">Launch Editor</button></a>
-      </div>
+  <div class="sandbox-buttons">
+    <div class="sandbox-button" onclick="location.href='block.html'">
+      <h2>🧱 Block Code</h2>
+      <p>Drag, drop, and experiment in Blockly!</p>
     </div>
-  </section>
+    <div class="sandbox-button" onclick="location.href='python.html'">
+      <h2>🐍 Python</h2>
+      <p>Type real code and see what happens!</p>
+    </div>
+    <div class="sandbox-button" onclick="location.href='htmlcss.html'">
+      <h2>🌐 HTML/CSS</h2>
+      <p>Design and style your own webpage!</p>
+    </div>
+    <div class="sandbox-button" onclick="location.href='javascript.html'">
+      <h2>⚡ JavaScript</h2>
+      <p>Make your sites interactive with JS!</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    🚀 Keep testing your ideas and building cool things!<br>
+    © 2025 TechTonic by KidzCanCode
+  </div>
+
 </body>
 </html>
