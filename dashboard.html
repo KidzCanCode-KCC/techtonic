@@ -6,6 +6,7 @@
   <title>TechTonic Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet" />
   <style>
+    /* Your exact CSS from before, unchanged */
     /* Base and layout */
     body {
       font-family: 'Nunito', sans-serif;
@@ -277,9 +278,10 @@
       <div id="nickname-display">Coder</div>
     </div>
     <nav class="nav-buttons">
-      <button id="profile-btn">👤 Profile</button>
-      <button id="lessons-btn">📚 Lessons</button>
       <button id="logout-btn">🔐 Logout</button>
+      <button id="lessons-btn">📚 Lessons</button>
+      <button id="profile-btn">👤 Profile</button>
+      <button id="sandbox-btn">🧪 Sandbox</button>
     </nav>
   </header>
 
@@ -296,6 +298,10 @@
       <div class="stat-card">
         <div id="project-count">0</div>
         <span>💻 Challenges Completed</span>
+      </div>
+      <div class="stat-card">
+        <div id="xp-count">0</div>
+        <span>✨ XP Earned</span>
       </div>
     </div>
 
@@ -352,13 +358,28 @@
     const completedCount = Object.values(userProgress).filter(Boolean).length;
 
     // Load user stats (streak and badges) from profile or default 0
-    const currentStreak = userProfile.currentStreak || 0;
+    let currentStreak = userProfile.currentStreak || 0;
     const badgesEarned = userProfile.badgesEarned || Math.floor(completedCount / 2);
+    const xpEarned = userProfile.xpEarned || (completedCount * 4); // example XP: 4 XP per challenge
 
     // Update stats cards
     document.getElementById('project-count').textContent = completedCount;
     document.getElementById('badge-count').textContent = badgesEarned;
+    document.getElementById('xp-count').textContent = xpEarned;
     document.getElementById('streak-count').textContent = currentStreak;
+
+    // Manage daily streak: increment if last login > 24 hrs ago
+    const lastLoginKey = `lastLogin_${loggedInUser}`;
+    const lastLoginTime = localStorage.getItem(lastLoginKey);
+    const now = Date.now();
+    if (!lastLoginTime || now - lastLoginTime > 24 * 60 * 60 * 1000) {
+      currentStreak++;
+      userProfile.currentStreak = currentStreak;
+      profiles[loggedInUser] = userProfile;
+      localStorage.setItem('techtonicProfiles', JSON.stringify(profiles));
+      localStorage.setItem(lastLoginKey, now);
+      document.getElementById('streak-count').textContent = currentStreak;
+    }
 
     // Load next lesson (default to message if not set)
     const nextLessons = JSON.parse(localStorage.getItem('techtonicNextLesson')) || {};
@@ -395,22 +416,35 @@
       window.location.href = 'challenge.html';
     };
 
-    // Progress bar
-    const totalLessonsCount = JSON.parse(localStorage.getItem('techtonicTotalLessons')) || 20;
-    const progressPercent = totalLessonsCount > 0 ? (completedCount / totalLessonsCount) * 100 : 0;
+    // Progress bar - each lesson worth 4% (1/25)
+    const totalLessonsCount = 25; // fixed 25 lessons total
+    const progressPercent = Math.min((completedCount / totalLessonsCount) * 100, 100);
     document.getElementById('progress-fill').style.width = progressPercent + '%';
 
-    // Navigation buttons
-    document.getElementById('profile-btn').onclick = () => {
-      window.location.href = 'profile.html';
-    };
-    document.getElementById('lessons-btn').onclick = () => {
-      window.location.href = 'lessons.html';
-    };
+    // Navigation buttons - exact order you requested
     document.getElementById('logout-btn').onclick = () => {
       localStorage.removeItem('loggedInUser');
       alert('Logged out successfully! 👋');
       window.location.href = 'index.html';
+    };
+    document.getElementById('lessons-btn').onclick = () => {
+      window.location.href = 'lessons.html';
+    };
+    document.getElementById('profile-btn').onclick = () => {
+      window.location.href = 'profile.html';
+    };
+    document.getElementById('sandbox-btn').onclick = () => {
+      window.location.href = 'sandbox.html';
+    };
+
+    // Continue Lesson button opens last lesson page from localStorage
+    document.getElementById('continue-btn').onclick = () => {
+      const lastLessonPage = localStorage.getItem('techtonicLastLessonPage');
+      if (lastLessonPage) {
+        window.location.href = lastLessonPage;
+      } else {
+        alert('No lesson progress found. Please start a lesson first!');
+      }
     };
   </script>
 
